@@ -6,6 +6,8 @@ import Tab from '../tab/tab';
 
 const Widget = () => {
   const [tab, setTab] = useState(null);
+
+  // TODO: should we move this data into the navbar itself, now that it is not being used by any other component?
   const events = useFetch(
     `${metrics_config.settings.base_url}?filter=work_uri:${metrics_config.settings.work_uri}&aggregation=measure_uri`
   );
@@ -25,7 +27,7 @@ const Widget = () => {
         activeType={tab}
         onItemClick={ToggleTab}
       />
-      <Tab events={events.data} activeType={tab} />
+      <Tab activeType={tab} />
     </div>
   );
 };

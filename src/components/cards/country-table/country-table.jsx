@@ -5,7 +5,7 @@ import fetchAllUrls from '../../../utils/fetch-all-urls/fetch-all-urls';
 import flattenArray from '../../../utils/flatten-array/flatten-array';
 import countryCodeFromURI from '../../../utils/country-code-from-uri/country-code-from-uri';
 
-const CountryTable = ({ uris }) => {
+const CountryTable = ({ uris, onReady, hidden }) => {
   const [tableData, setTableData] = useState(null);
 
   const fetchURIs = async () => {
@@ -37,6 +37,9 @@ const CountryTable = ({ uris }) => {
 
       // Update the state with the new info
       setTableData(sorted);
+
+      // Tell the parent that we're ready
+      onReady();
     });
   };
 
@@ -49,14 +52,15 @@ const CountryTable = ({ uris }) => {
     fetchURIs();
   }, [uris]);
 
+  if (hidden) return null;
   if (tableData) return <KeyValueTable data={tableData} />;
-
-  // TODO: Something nicer here?
-  return <p>Loading</p>;
+  return null;
 };
 
 CountryTable.propTypes = {
-  uris: PropTypes.array.isRequired
+  uris: PropTypes.array.isRequired,
+  onReady: PropTypes.func,
+  hidden: PropTypes.bool
 };
 
 export default CountryTable;

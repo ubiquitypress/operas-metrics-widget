@@ -5,7 +5,7 @@ import MapGraph from '../../graphs/map-graph/map-graph';
 import fetchAllUrls from '../../../utils/fetch-all-urls/fetch-all-urls';
 import countryCodeFromURI from '../../../utils/country-code-from-uri/country-code-from-uri';
 
-const WorldMap = ({ uris }) => {
+const WorldMap = ({ uris, onReady, hidden }) => {
   const [codes, setCodes] = useState(null);
 
   const fetchURIs = async () => {
@@ -28,6 +28,9 @@ const WorldMap = ({ uris }) => {
 
       // Update the state, so that we can view the data
       setCodes(codes);
+
+      // Tell the parent that we're ready
+      onReady();
     });
   };
 
@@ -40,14 +43,15 @@ const WorldMap = ({ uris }) => {
     fetchURIs();
   }, [uris]);
 
+  if (hidden) return null;
   if (codes) return <MapGraph mapData={codes} />;
-
-  // TODO: Something nicer here?
-  return <p>Loading</p>;
+  return null;
 };
 
 WorldMap.propTypes = {
-  uris: PropTypes.array.isRequired
+  uris: PropTypes.array.isRequired,
+  hidden: PropTypes.bool,
+  onReady: PropTypes.func
 };
 
 export default WorldMap;

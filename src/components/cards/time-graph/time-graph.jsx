@@ -4,7 +4,7 @@ import flattenArray from '../../../utils/flatten-array/flatten-array';
 import PropTypes from 'prop-types';
 import LineGraph from '../../graphs/line-graph/line-graph';
 
-const TimeGraph = ({ uris }) => {
+const TimeGraph = ({ uris, onReady, hidden }) => {
   const [graphData, setGraphData] = useState(null);
 
   const fetchURIs = async () => {
@@ -54,6 +54,9 @@ const TimeGraph = ({ uris }) => {
         series: sorted.map(date => date.value),
         xAxis: xAxis
       });
+
+      // Tell the parent that we're ready
+      onReady();
     });
   };
 
@@ -66,6 +69,7 @@ const TimeGraph = ({ uris }) => {
     fetchURIs();
   }, [uris]);
 
+  if (hidden) return null;
   if (graphData)
     return (
       <LineGraph
@@ -73,13 +77,13 @@ const TimeGraph = ({ uris }) => {
         xAxisCategories={graphData.xAxis}
       />
     );
-
-  // TODO: Something nicer here?
-  return <p>Loading</p>;
+  return null;
 };
 
 TimeGraph.propTypes = {
-  uris: PropTypes.array.isRequired
+  uris: PropTypes.array.isRequired,
+  onReady: PropTypes.func,
+  hidden: PropTypes.bool
 };
 
 export default TimeGraph;

@@ -9,7 +9,7 @@ This documentation covers both the general usage and installation of the widget,
   - [Settings](#settings)
   - [Tabs](#tabs)
 - [Supported Languages](#supported-languages)
-- [Supported Metrics](#supported-metrics)
+- [Supported Events](#supported-events)
 - [Supported Graphs](#supported-graphs)
 
 ## Getting Started
@@ -65,7 +65,7 @@ The following fields are accepted within the `settings` object of the `metrics_c
 
 ### Tabs
 
-Within the `tabs` object of the `metrics_config` object, each field will represent the name of the metric you wish to display. Each field will represent a new navigation tab. A full list of supported fields can be found [here](#supported-metrics).
+Within the `tabs` object of the `metrics_config` object, each field will represent the name of the metric you wish to display. Each field will represent a new navigation tab. A full list of supported fields can be found [here](#supported-events).
 
 For example, to display metrics for downloads, tweets, and sessions, the `tabs` object would look like this:
 
@@ -89,6 +89,8 @@ downloads: {
 The `nav_counts` array accepts a list of URIs that will contribute towards the metrics count displayed in the navigation menu. If you wish to include all URIs in the count, you can simply write a `['*']` wildcard.
 
 The `graphs` object accepts fields for all pre-defined graphs to be shown. A full list of supported graphs can be found [here](#supported-graphs).
+
+Not all graphs will work for all events, as it depends on the data provided by the URI. For example, Google Analytics may provide geographical data (allowing for country tables and map graphs to be embedded), whereas other metrics providers such as OAPEN may not - even if the data is for the same event. If a graph will not display any data, it may be worth checking that the graph can work with the URI. The [Supported Graphs](#supported-graphs) section lists which fields are required for the graph to work.
 
 Each object within the `graphs` object expects an array of URIs to be provided. Only one graph will be rendered regardless of the number of URIs provided, as the values will be merged together. Unlike for the `nav_counts` object, you cannot specify a wildcard here.
 
@@ -132,12 +134,12 @@ The following metric events are _officially_ supported. Whilst it may be possibl
 
 The following graphs are supported:
 
-| name               | label               | description                                                                                                                                               | version |
-| ------------------ | ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
-| country_table      | {metric} By Country | a table containing a list of countries and their metric values, descending<br> the `world_map` graph represents the same data, but as a map of the world  | 0.0.1+  |
-| time_graph         | {metric} Over Time  | a line graph which shows the total metric values over time                                                                                                | 0.0.1+  |
-| wikipedia_articles | Wikipedia Articles  | a list of wikipedia articles where this item is referenced                                                                                                | 0.0.1+  |
-| world_map          | {metric} By Country | a heatmap of the world, with countries having the most metric values being warmest<br> the `country_table` graph represents the same data, but as a table | 0.0.1+  |
+| name               | label               | required URI fields    | description                                                                                                                                           | version |
+| ------------------ | ------------------- | ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
+| country_table      | {metric} By Country | `country_uri`, `value` | a table containing a list of countries and their metric values, descending the `world_map` graph represents the same data, but as a map of the world  | 0.0.1+  |
+| time_graph         | {metric} Over Time  | `timestamp`, `value`   | a line graph which shows the total metric values over time                                                                                            | 0.0.1+  |
+| wikipedia_articles | Wikipedia Articles  | `event_uri`            | a list of wikipedia articles where this item is referenced                                                                                            | 0.0.1+  |
+| world_map          | {metric} By Country | `country_uri`, `value` | a heatmap of the world, with countries having the most metric values being warmest the `country_table` graph represents the same data, but as a table | 0.0.1+  |
 
 ## Developer Guide
 

@@ -2,6 +2,8 @@ import React from 'react';
 import Chart from 'react-apexcharts';
 
 const LineGraph = ({ seriesData = [], xAxisCategories = [] }) => {
+  if (process.env.NODE_ENV === 'test') return null;
+
   // One series only - with the data provided
   const series = [{ data: seriesData }];
 

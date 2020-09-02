@@ -48,7 +48,10 @@ const WorldMap = ({ uris, activeType, onReady, hidden }) => {
   if (hidden) return null;
   if (codes)
     return (
-      <CardWrapper label={getString('labels.by_country', { name: activeType })}>
+      <CardWrapper
+        label={getString('labels.by_country', { name: activeType })}
+        data-testid='world-map'
+      >
         <MapGraph mapData={codes} />
       </CardWrapper>
     );

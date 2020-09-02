@@ -1,4 +1,7 @@
 const fetchAllUrls = async (urls, callback) => {
+  // Validation
+  if (!Array.isArray(urls)) return callback(null);
+
   // Call fetch() on all URLs provided
   await Promise.all(urls.map(url => fetch(url)))
     // Parse the `responses` array into JSON and pull the `data` field from the JSON
@@ -9,6 +12,10 @@ const fetchAllUrls = async (urls, callback) => {
       ).then(json => {
         return callback(json);
       });
+    })
+    .catch(err => {
+      // TODO: something here?
+      console.error(err);
     });
 };
 

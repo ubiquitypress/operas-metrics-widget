@@ -4,7 +4,7 @@ import styles from './loading.module.scss';
 
 const Loading = () => {
   return (
-    <div className={styles.loading}>
+    <div className={styles.loading} data-testid='loading'>
       <div className={styles.bars}>
         <div className={styles.loadingBar} />
         <div className={styles.loadingBar} />

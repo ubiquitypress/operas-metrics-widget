@@ -8,7 +8,7 @@ try {
   metrics_config; // make sure the variable exists; will throw an error if not
   ReactDOM.render(<Widget />, document.getElementById('metrics-block'));
 } catch (error) {
-  console.log(error);
+  console.error(error);
   ReactDOM.render(
     <p>No configuration found - please check the documentation.</p>,
     document.getElementById('metrics-block')

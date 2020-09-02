@@ -60,11 +60,17 @@ const Tab = ({ activeType, onLoadingChange }) => {
   // Make sure we have some graphs to render
   if (Object.keys(graphs).length > 0)
     return (
-      <div>
+      <div data-testid='tab'>
         {loading.isLoading && <Loading />}
         <ul className={styles.tab}>
           {Object.keys(graphs).map(name => {
             const uris = graphs[name];
+
+            // Only render a placeholder div if we're testing, since we'll have
+            // many different API calls made and it'll be impossible (and thankfully
+            // unnecessary) to test all, since each component has its own unit test.
+            if (process.env.NODE_ENV === 'test')
+              return <div key={name} data-testid={`placeholder-${name}`} />;
 
             // Update this whenever new cards are added
             switch (name) {
@@ -121,7 +127,7 @@ const Tab = ({ activeType, onLoadingChange }) => {
     );
 
   // There is no graph data to display
-  return <p>{getString('general.no_graphs')}</p>;
+  return <p data-testid='no-data'>{getString('general.no_graphs')}</p>;
 };
 
 Tab.propTypes = {

@@ -60,7 +60,10 @@ const CountryTable = ({ uris, activeType, onReady, hidden }) => {
   if (hidden) return null;
   if (tableData)
     return (
-      <CardWrapper label={getString('labels.by_country', { name: activeType })}>
+      <CardWrapper
+        label={getString('labels.by_country', { name: activeType })}
+        data-testid='country-table'
+      >
         <KeyValueTable data={tableData} />
       </CardWrapper>
     );

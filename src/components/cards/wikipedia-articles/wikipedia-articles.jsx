@@ -53,7 +53,10 @@ const WikipediaArticles = ({ uris, onReady, hidden }) => {
   if (hidden) return null;
   if (tableData)
     return (
-      <CardWrapper label={getString('labels.wikipedia_articles')}>
+      <CardWrapper
+        label={getString('labels.wikipedia_articles')}
+        data-testid='wikipedia-articles'
+      >
         <KeyValueTable data={tableData} />
       </CardWrapper>
     );

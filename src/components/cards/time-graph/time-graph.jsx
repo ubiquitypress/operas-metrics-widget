@@ -81,7 +81,10 @@ const TimeGraph = ({ uris, activeType, onReady, hidden }) => {
   if (hidden) return null;
   if (graphData)
     return (
-      <CardWrapper label={getString('labels.over_time', { name: activeType })}>
+      <CardWrapper
+        label={getString('labels.over_time', { name: activeType })}
+        data-testid='time-graph'
+      >
         <LineGraph
           seriesData={graphData.series}
           xAxisCategories={graphData.xAxis}

@@ -5,6 +5,8 @@ import { VectorMap } from 'react-jvectormap';
 // of the data should be an object with key/value pairs for the count
 // of the Alpha-2 country code  ie. { GB: 10, JP: 12, US: 11 }
 const MapGraph = ({ mapData = {} }) => {
+  if (process.env.NODE_ENV === 'test') return null;
+
   return (
     <div id='world-map'>
       <VectorMap

@@ -57,13 +57,13 @@ const Navigation = ({ activeType, onItemClick }) => {
 
   if (loading)
     return (
-      <div className={styles.loading}>
+      <div className={styles.loading} data-testid='loading'>
         <p>{getString('general.loading_widget')}</p>
       </div>
     );
   if (navItems) {
     return (
-      <nav className={styles.navigation}>
+      <nav className={styles.navigation} data-testid='navigation'>
         <ul>
           {Object.keys(navItems).map(type => (
             <li key={type}>

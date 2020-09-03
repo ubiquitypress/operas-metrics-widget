@@ -1,5 +1,5 @@
-import useFetch from './use-fetch';
 import { renderHook, act } from '@testing-library/react-hooks';
+import useFetch from './use-fetch';
 import { mockFetchSuccess, mockFetchFailure } from '../__mocks__/mockFetch';
 
 afterEach(() => {

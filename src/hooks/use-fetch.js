@@ -9,8 +9,8 @@ const useFetch = url => {
 
     try {
       const response = await fetch(url);
-      const { data } = await response.json();
-      setData({ loading: false, error: null, data });
+      const json = await response.json();
+      setData({ loading: false, error: null, data: json.data });
     } catch (error) {
       setData({ loading: false, error, data: null });
     }

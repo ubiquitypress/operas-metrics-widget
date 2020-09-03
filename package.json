@@ -6,6 +6,7 @@
   "scripts": {
     "start": "webpack-dev-server --open",
     "build": "webpack --mode production",
+    "clean": "modclean -n default:safe,default:caution --no-progress --run",
     "lint": "eslint --ignore-path .eslintignore . --ext .js,.ts,.tsx",
     "prettier": "prettier --write .",
     "test": "jest",
@@ -35,6 +36,7 @@
     "identity-obj-proxy": "^3.0.0",
     "jest": "^26.4.2",
     "jsdom": "^16.4.0",
+    "modclean": "^3.0.0-beta.1",
     "react-test-renderer": "^16.13.1",
     "sass-loader": "^9.0.3",
     "style-loader": "^1.2.1",

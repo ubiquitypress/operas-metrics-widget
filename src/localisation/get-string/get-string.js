@@ -1,6 +1,6 @@
-import en from '../en.json';
-import getWidgetLanguage from '../../utils/get-widget-language/get-widget-language';
 import PropTypes from 'prop-types';
+import getWidgetLanguage from '../../utils/get-widget-language/get-widget-language';
+import en from '../en.json';
 
 const getString = (path, interpolations, languageOverride) => {
   // Choose the language
@@ -11,6 +11,7 @@ const getString = (path, interpolations, languageOverride) => {
   let dict = {};
   switch (language) {
     case 'en':
+    default:
       dict = en;
       break;
   }

@@ -1,6 +1,6 @@
 import React from 'react';
-import TimeGraph from './time-graph';
 import { render as rtlRender, waitFor } from '@testing-library/react';
+import TimeGraph from './time-graph';
 import { mockFetchSuccess } from '../../../__mocks__/mockFetch';
 
 afterEach(() => {

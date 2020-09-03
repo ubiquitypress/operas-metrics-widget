@@ -5,15 +5,18 @@ import flattenArray from '../../../utils/flatten-array/flatten-array';
 import CardWrapper from '../../card-wrapper/card-wrapper';
 import getString from '../../../localisation/get-string/get-string';
 import KeyValueTable from '../../graphs/key-value-table/key-value-table';
+import getMetricsConfig from '../../../utils/get-metrics-config/get-metrics-config';
 
 const WikipediaArticles = ({ uris, onReady, hidden }) => {
   const [tableData, setTableData] = useState(null);
 
   const fetchURIs = async () => {
+    const metricsConfig = getMetricsConfig();
+
     // Get the full URLs
     const urls = uris.map(
       uri =>
-        `${metrics_config.settings.base_url}?filter=work_uri:${metrics_config.settings.work_uri},measure_uri:${uri}`
+        `${metricsConfig.settings.base_url}?filter=work_uri:${metricsConfig.settings.work_uri},measure_uri:${uri}`
     );
 
     // Fetch all URLs
@@ -42,6 +45,7 @@ const WikipediaArticles = ({ uris, onReady, hidden }) => {
   };
 
   // Called when component mounts, or the array of UIRs changes
+  // eslint-disable-next-line consistent-return
   useEffect(() => {
     // No URIs provided, or the tab was closed
     if (!uris || uris.length === 0) return setTableData(null);
@@ -64,9 +68,13 @@ const WikipediaArticles = ({ uris, onReady, hidden }) => {
 };
 
 WikipediaArticles.propTypes = {
-  uris: PropTypes.array.isRequired,
+  uris: PropTypes.arrayOf(PropTypes.string).isRequired,
   onReady: PropTypes.func,
   hidden: PropTypes.bool
+};
+WikipediaArticles.defaultProps = {
+  hidden: false,
+  onReady: null
 };
 
 export default WikipediaArticles;

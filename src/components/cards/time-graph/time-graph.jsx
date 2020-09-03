@@ -1,20 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import moment from 'moment';
+import PropTypes from 'prop-types';
 import fetchAllUrls from '../../../utils/fetch-all-urls/fetch-all-urls';
 import flattenArray from '../../../utils/flatten-array/flatten-array';
-import PropTypes from 'prop-types';
 import LineGraph from '../../graphs/line-graph/line-graph';
 import CardWrapper from '../../card-wrapper/card-wrapper';
 import getString from '../../../localisation/get-string/get-string';
+import getMetricsConfig from '../../../utils/get-metrics-config/get-metrics-config';
 
 const TimeGraph = ({ uris, activeType, onReady, hidden }) => {
   const [graphData, setGraphData] = useState(null);
 
   const fetchURIs = async () => {
+    const metricsConfig = getMetricsConfig();
+
     // Get the full URLs
     const urls = uris.map(
       uri =>
-        `${metrics_config.settings.base_url}?filter=work_uri:${metrics_config.settings.work_uri},measure_uri:${uri}`
+        `${metricsConfig.settings.base_url}?filter=work_uri:${metricsConfig.settings.work_uri},measure_uri:${uri}`
     );
 
     // Fetch all URLs
@@ -62,7 +65,7 @@ const TimeGraph = ({ uris, activeType, onReady, hidden }) => {
       // Update the state with the new info
       setGraphData({
         series: sorted.map(date => date.value),
-        xAxis: xAxis
+        xAxis
       });
 
       // Tell the parent that we're ready
@@ -71,6 +74,7 @@ const TimeGraph = ({ uris, activeType, onReady, hidden }) => {
   };
 
   // Called when component mounts, or the array of UIRs changes
+  // eslint-disable-next-line consistent-return
   useEffect(() => {
     // No URIs provided, or the tab was closed
     if (!uris || uris.length === 0) return setGraphData(null);
@@ -96,10 +100,14 @@ const TimeGraph = ({ uris, activeType, onReady, hidden }) => {
 };
 
 TimeGraph.propTypes = {
-  uris: PropTypes.array.isRequired,
+  uris: PropTypes.arrayOf(PropTypes.string).isRequired,
   activeType: PropTypes.string.isRequired,
   onReady: PropTypes.func,
   hidden: PropTypes.bool
+};
+TimeGraph.defaultProps = {
+  hidden: false,
+  onReady: null
 };
 
 export default TimeGraph;

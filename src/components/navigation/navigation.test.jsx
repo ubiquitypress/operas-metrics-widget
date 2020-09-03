@@ -1,8 +1,8 @@
 import React from 'react';
+import { act } from 'react-dom/test-utils';
 import { render as rtlRender, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import Navigation from './navigation';
-import { act } from 'react-dom/test-utils';
 import { mockFetchSuccess } from '../../__mocks__/mockFetch';
 
 afterEach(() => {

@@ -1,8 +1,8 @@
 import React from 'react';
+import { act } from 'react-dom/test-utils';
 import { render as rtlRender } from '@testing-library/react';
 import Tab from './tab';
 import { mockFetchSuccess } from '../../__mocks__/mockFetch';
-import { act } from 'react-dom/test-utils';
 
 afterEach(() => {
   jest.clearAllMocks();

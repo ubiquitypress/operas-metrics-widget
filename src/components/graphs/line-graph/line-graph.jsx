@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Chart from 'react-apexcharts';
 
 const LineGraph = ({ seriesData = [], xAxisCategories = [] }) => {
@@ -64,6 +65,15 @@ const LineGraph = ({ seriesData = [], xAxisCategories = [] }) => {
       options={options}
     />
   );
+};
+
+LineGraph.propTypes = {
+  seriesData: PropTypes.arrayOf(PropTypes.number),
+  xAxisCategories: PropTypes.arrayOf(PropTypes.string)
+};
+LineGraph.defaultProps = {
+  seriesData: [],
+  xAxisCategories: []
 };
 
 export default LineGraph;

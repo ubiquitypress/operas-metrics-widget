@@ -1,6 +1,6 @@
 import React from 'react';
-import WorldMap from './world-map';
 import { render as rtlRender, waitFor } from '@testing-library/react';
+import WorldMap from './world-map';
 import { mockFetchSuccess } from '../../../__mocks__/mockFetch';
 
 afterEach(() => {

@@ -1,6 +1,6 @@
 import React from 'react';
-import WikipediaArticles from './wikipedia-articles';
 import { render as rtlRender, waitFor } from '@testing-library/react';
+import WikipediaArticles from './wikipedia-articles';
 import { mockFetchSuccess } from '../../../__mocks__/mockFetch';
 
 afterEach(() => {
@@ -64,9 +64,7 @@ test('renders data on success', async () => {
     getByTestId('wikipedia-articles');
   });
 
-  res.forEach(res => {
-    getByText(res.expected);
-  });
+  res.forEach(res2 => getByText(res2.expected));
 });
 
 test('does not render if `hidden`', async () => {

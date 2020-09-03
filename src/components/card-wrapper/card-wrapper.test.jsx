@@ -1,6 +1,6 @@
 import React from 'react';
-import CardWrapper from './card-wrapper';
 import { render as rtlRender } from '@testing-library/react';
+import CardWrapper from './card-wrapper';
 
 const render = (label, children = <></>, testId) => {
   return {

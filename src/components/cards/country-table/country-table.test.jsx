@@ -1,6 +1,6 @@
 import React from 'react';
-import CountryTable from './country-table';
 import { render as rtlRender, waitFor } from '@testing-library/react';
+import CountryTable from './country-table';
 import { mockFetchSuccess } from '../../../__mocks__/mockFetch';
 
 afterEach(() => {
@@ -51,9 +51,9 @@ test('renders data on success', async () => {
     getByTestId('country-table');
   });
 
-  res.forEach(res => {
-    getByText(res.country_uri);
-    getByText(res.value.toString());
+  res.forEach(res2 => {
+    getByText(res2.country_uri);
+    getByText(res2.value.toString());
   });
 });
 

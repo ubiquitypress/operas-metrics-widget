@@ -6,15 +6,18 @@ import flattenArray from '../../../utils/flatten-array/flatten-array';
 import countryCodeFromURI from '../../../utils/country-code-from-uri/country-code-from-uri';
 import CardWrapper from '../../card-wrapper/card-wrapper';
 import getString from '../../../localisation/get-string/get-string';
+import getMetricsConfig from '../../../utils/get-metrics-config/get-metrics-config';
 
 const CountryTable = ({ uris, activeType, onReady, hidden }) => {
   const [tableData, setTableData] = useState(null);
 
   const fetchURIs = async () => {
+    const metricsConfig = getMetricsConfig();
+
     // Get the full URLs
     const urls = uris.map(
       uri =>
-        `${metrics_config.settings.base_url}?filter=work_uri:${metrics_config.settings.work_uri},measure_uri:${uri}`
+        `${metricsConfig.settings.base_url}?filter=work_uri:${metricsConfig.settings.work_uri},measure_uri:${uri}`
     );
 
     // Fetch all URLs
@@ -27,7 +30,7 @@ const CountryTable = ({ uris, activeType, onReady, hidden }) => {
         let code = countryCodeFromURI(country_uri);
 
         // Localise the code, if specified in the settings
-        if (metrics_config.settings.localise_country_codes)
+        if (metricsConfig.settings.localise_country_codes)
           code = getString(`countries.${code}`);
 
         codes[code] = codes[code] ? codes[code] + value : value;
@@ -49,6 +52,7 @@ const CountryTable = ({ uris, activeType, onReady, hidden }) => {
   };
 
   // Called when component mounts, or the array of UIRs changes
+  // eslint-disable-next-line consistent-return
   useEffect(() => {
     // No URIs provided, or the tab was closed
     if (!uris || uris.length === 0) return setTableData(null);
@@ -71,10 +75,14 @@ const CountryTable = ({ uris, activeType, onReady, hidden }) => {
 };
 
 CountryTable.propTypes = {
-  uris: PropTypes.array.isRequired,
+  uris: PropTypes.arrayOf(PropTypes.string).isRequired,
   activeType: PropTypes.string.isRequired,
   onReady: PropTypes.func,
   hidden: PropTypes.bool
+};
+CountryTable.defaultProps = {
+  hidden: false,
+  onReady: null
 };
 
 export default CountryTable;

@@ -16,5 +16,9 @@ export default CardWrapper;
 CardWrapper.propTypes = {
   label: PropTypes.string,
   children: PropTypes.node.isRequired,
-  testId: PropTypes.string
+  'data-testid': PropTypes.string
+};
+CardWrapper.defaultProps = {
+  label: null,
+  'data-testid': null
 };

@@ -7,6 +7,7 @@ import CountryTable from '../cards/country-table/country-table';
 import WikipediaArticles from '../cards/wikipedia-articles/wikipedia-articles';
 import styles from './tab.module.scss';
 import getString from '../../localisation/get-string/get-string';
+import getMetricsConfig from '../../utils/get-metrics-config/get-metrics-config';
 
 const Tab = ({ activeType, onLoadingChange }) => {
   const [graphs, setGraphs] = useState({});
@@ -38,21 +39,23 @@ const Tab = ({ activeType, onLoadingChange }) => {
   }, [loading]);
 
   // Only re-calculate data when the activeType is changed
+  // eslint-disable-next-line consistent-return
   useEffect(() => {
     // No data if we toggle it closed
     if (!activeType) return setGraphs({});
 
     // Pull the configs from the `metrics_config`
-    const graphs = metrics_config.tabs[activeType].graphs;
+    const metricsConfig = getMetricsConfig();
+    const mcGraphs = metricsConfig.tabs[activeType].graphs;
 
     // Set the graphs in the object
-    setGraphs(graphs);
+    setGraphs(mcGraphs);
 
     // Update the loading state
     setLoading({
       ...loading,
       isLoading: true,
-      childrenLength: Object.keys(graphs).length,
+      childrenLength: Object.keys(mcGraphs).length,
       childrenLoaded: 0
     });
   }, [activeType]);
@@ -117,10 +120,9 @@ const Tab = ({ activeType, onLoadingChange }) => {
                     />
                   </li>
                 );
+              default:
+                return null;
             }
-
-            // No matching cards are found
-            return null;
           })}
         </ul>
       </div>
@@ -133,6 +135,10 @@ const Tab = ({ activeType, onLoadingChange }) => {
 Tab.propTypes = {
   activeType: PropTypes.string,
   onLoadingChange: PropTypes.func
+};
+Tab.defaultProps = {
+  activeType: null,
+  onLoadingChange: null
 };
 
 export default Tab;

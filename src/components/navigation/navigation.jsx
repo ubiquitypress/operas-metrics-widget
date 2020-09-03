@@ -1,21 +1,26 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import styles from './navigation.module.scss';
-import PropTypes from 'prop-types';
 import getString from '../../localisation/get-string/get-string';
 import useFetch from '../../hooks/use-fetch';
+import getMetricsConfig from '../../utils/get-metrics-config/get-metrics-config';
 
 const Navigation = ({ activeType, onItemClick }) => {
   const [navItems, setNavItems] = useState({});
-  const { loading, error, data } = useFetch(
-    `${metrics_config.settings.base_url}?filter=work_uri:${metrics_config.settings.work_uri}&aggregation=measure_uri`
+  const { loading, data } = useFetch(
+    `${getMetricsConfig().settings.base_url}?filter=work_uri:${
+      getMetricsConfig().settings.work_uri
+    }&aggregation=measure_uri`
   );
 
   // Called when the component mounts
   useEffect(() => {
     if (data) {
+      const metricsConfig = getMetricsConfig();
+
       // Get all event categories as keys in `metrics_config`
-      const categories = Object.keys(metrics_config.tabs);
+      const categories = Object.keys(metricsConfig.tabs);
 
       // Remove API results that are not marked as categories
       const filtered = data.filter(
@@ -25,7 +30,7 @@ const Navigation = ({ activeType, onItemClick }) => {
       // Remove filtered items that are not listed in the `nav_counts`
       const items = {};
       categories.forEach(category => {
-        const navCounts = metrics_config.tabs[category].nav_counts;
+        const navCounts = metricsConfig.tabs[category].nav_counts;
 
         // Loop through each URI provided in the `nav_counts` object
         navCounts.forEach(uri => {
@@ -68,6 +73,7 @@ const Navigation = ({ activeType, onItemClick }) => {
           {Object.keys(navItems).map(type => (
             <li key={type}>
               <button
+                type='button'
                 onClick={() => onButtonClick(type)}
                 className={classnames({
                   [styles.active]: activeType === type
@@ -91,7 +97,6 @@ Navigation.propTypes = {
   activeType: PropTypes.string,
   onItemClick: PropTypes.func.isRequired
 };
-
 Navigation.defaultProps = {
   activeType: null
 };

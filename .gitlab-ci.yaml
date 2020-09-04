@@ -1,0 +1,13 @@
+image: eu.gcr.io/ubiquity-ci/gitlab-base:43
+
+stages:
+  - test
+
+run-tests:
+  stage: test
+  script:
+    - apk add npm
+    - npm ci
+    - npm run test
+  only:
+    - tags

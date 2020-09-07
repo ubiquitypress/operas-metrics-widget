@@ -2,6 +2,7 @@ image: eu.gcr.io/ubiquity-ci/gitlab-base:43
 
 stages:
   - test
+  - jira
 
 run-tests:
   stage: test
@@ -10,5 +11,12 @@ run-tests:
     - npm ci
     - npm run test
     - npm run build
+  only:
+    - tags
+
+create-version:
+  stage: jira
+  script:
+    - python3 kubernetes/ci/create_jira_release.py
   only:
     - tags

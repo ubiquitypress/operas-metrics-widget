@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import styles from './twitter.module.scss';
 import Loading from '../../loading/loading';
 import getTwitterIdFromURI from '../../../utils/get-twitter-id-from-uri/get-twitter-id-from-uri';
+import getString from '../../../localisation/get-string/get-string';
+import Button from '../../button/button';
 
 const Twitter = ({ uris }) => {
   const LIMIT_INC = 5;
@@ -25,7 +27,7 @@ const Twitter = ({ uris }) => {
               ) : (
                 <TwitterTweetEmbed
                   tweetId={twitterId}
-                  placeholder={<Loading />}
+                  placeholder={<Loading message={getString('loading.tweet')} />}
                 />
               )}
             </li>
@@ -35,9 +37,7 @@ const Twitter = ({ uris }) => {
       })}
 
       {uris.length > limit && (
-        <button type='button' onClick={increaseLimit}>
-          View more
-        </button>
+        <Button onClick={increaseLimit}>View more</Button>
       )}
     </ul>
   );

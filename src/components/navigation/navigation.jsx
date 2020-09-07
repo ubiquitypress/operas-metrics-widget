@@ -63,7 +63,7 @@ const Navigation = ({ activeType, onItemClick }) => {
   if (loading)
     return (
       <div className={styles.loading} data-testid='loading'>
-        <p>{getString('loading.loading_widget')}</p>
+        <p>{getString('loading.widget')}</p>
       </div>
     );
   if (navItems) {

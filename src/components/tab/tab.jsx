@@ -65,7 +65,7 @@ const Tab = ({ activeType, onLoadingChange }) => {
   if (Object.keys(graphs).length > 0)
     return (
       <div data-testid='tab'>
-        {loading.isLoading && <Loading />}
+        {loading.isLoading && <Loading message={getString('loading.graphs')} />}
         <ul className={styles.tab}>
           {Object.keys(graphs).map(name => {
             const uris = graphs[name];

@@ -3,9 +3,10 @@
     "no_graphs": "No data to display."
   },
   "loading": {
-    "loading_widget": "Loading Metrics",
-    "loading_graphs": "Loading Graph Data",
-    "loading_tweet": "Loading Tweet"
+    "default": "Loading",
+    "widget": "Loading Metrics",
+    "graphs": "Loading Graph Data",
+    "tweet": "Loading Tweet"
   },
   "tabs": {
     "downloads": "Downloads",

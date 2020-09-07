@@ -1,0 +1,14 @@
+.button {
+  padding: 1em;
+  width: 100%;
+  text-align: center;
+  background: #edf0fb;
+  background: rgba(80, 108, 211, 0.1);
+  border: 1px solid transparent;
+  border-radius: 0.4em;
+  cursor: pointer;
+
+  &:hover {
+    border-color: #506bd3;
+  }
+}

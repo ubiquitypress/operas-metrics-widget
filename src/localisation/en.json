@@ -23,6 +23,10 @@
     "cited_in": "Cited in",
     "wikipedia_articles": "Wikipedia articles"
   },
+  "other": {
+    "view_more": "View more",
+    "view_more_amount": "View {{amount}} more"
+  },
   "countries": {
     "AF": "Afghanistan",
     "AX": "\u00c5land Islands",

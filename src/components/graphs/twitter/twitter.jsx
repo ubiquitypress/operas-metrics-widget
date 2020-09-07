@@ -37,7 +37,9 @@ const Twitter = ({ uris }) => {
       })}
 
       {uris.length > limit && (
-        <Button onClick={increaseLimit}>View more</Button>
+        <Button onClick={increaseLimit}>
+          {getString('other.view_more_amount', { amount: LIMIT_INC })}
+        </Button>
       )}
     </ul>
   );

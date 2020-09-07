@@ -12,7 +12,7 @@ const Loading = () => {
       </div>
       <div className={styles.message}>
         <p role='alert' aria-busy='true'>
-          {getString('general.loading_graphs')}
+          {getString('loading.loading_graphs')}
         </p>
       </div>
     </div>

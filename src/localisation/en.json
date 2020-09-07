@@ -1,8 +1,11 @@
 {
   "general": {
-    "loading_widget": "Loading Metrics",
-    "loading_graphs": "Loading graph data",
     "no_graphs": "No data to display."
+  },
+  "loading": {
+    "loading_widget": "Loading Metrics",
+    "loading_graphs": "Loading Graph Data",
+    "loading_tweet": "Loading Tweet"
   },
   "tabs": {
     "downloads": "Downloads",

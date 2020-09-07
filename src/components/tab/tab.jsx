@@ -8,6 +8,7 @@ import WikipediaArticles from '../cards/wikipedia-articles/wikipedia-articles';
 import styles from './tab.module.scss';
 import getString from '../../localisation/get-string/get-string';
 import getMetricsConfig from '../../utils/get-metrics-config/get-metrics-config';
+import Tweets from '../cards/tweets/tweets';
 
 const Tab = ({ activeType, onLoadingChange }) => {
   const [graphs, setGraphs] = useState({});
@@ -120,6 +121,16 @@ const Tab = ({ activeType, onLoadingChange }) => {
                     />
                   </li>
                 );
+              case 'tweets':
+                return (
+                  <li key={name}>
+                    <Tweets
+                      uris={uris}
+                      onReady={onChildLoad}
+                      hidden={loading.isLoading}
+                    />
+                  </li>
+                );
               default:
                 return null;
             }
@@ -129,7 +140,11 @@ const Tab = ({ activeType, onLoadingChange }) => {
     );
 
   // There is no graph data to display
-  return <p data-testid='no-data'>{getString('general.no_graphs')}</p>;
+  return (
+    <p className={styles.noData} data-testid='no-data'>
+      {getString('general.no_graphs')}
+    </p>
+  );
 };
 
 Tab.propTypes = {

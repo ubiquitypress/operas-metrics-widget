@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import classnames from 'classnames';
 import styles from './navigation.module.scss';
 import getString from '../../localisation/get-string/get-string';
 import useFetch from '../../hooks/use-fetch';
@@ -75,9 +74,7 @@ const Navigation = ({ activeType, onItemClick }) => {
               <button
                 type='button'
                 onClick={() => onButtonClick(type)}
-                className={classnames({
-                  [styles.active]: activeType === type
-                })}
+                className={activeType === type ? styles.active : ''}
               >
                 <div className={styles.count}>
                   {navItems[type].toLocaleString()}

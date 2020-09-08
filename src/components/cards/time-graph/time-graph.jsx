@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import moment from 'moment';
 import PropTypes from 'prop-types';
 import fetchAllUrls from '../../../utils/fetch-all-urls/fetch-all-urls';
 import flattenArray from '../../../utils/flatten-array/flatten-array';
@@ -7,6 +6,7 @@ import LineGraph from '../../graphs/line-graph/line-graph';
 import CardWrapper from '../../card-wrapper/card-wrapper';
 import getString from '../../../localisation/get-string/get-string';
 import getMetricsConfig from '../../../utils/get-metrics-config/get-metrics-config';
+import formatTimestamp from '../../../utils/format-timestamp/format-timestamp';
 
 const TimeGraph = ({ uris, activeType, onReady, hidden }) => {
   const [graphData, setGraphData] = useState(null);
@@ -56,23 +56,15 @@ const TimeGraph = ({ uris, activeType, onReady, hidden }) => {
         }
       });
 
-      // Add a 0 to the front
-      if (sorted.length === 1)
-        sorted.unshift({
-          key: moment(sorted[0].key).subtract(1, 'day').toISOString(),
-          value: 0
-        });
-
       // Determine the xAxis categories
       const xAxis = [];
-
       sorted.forEach((item, index) => {
         if (
           index === 0 ||
           index === Math.floor(sorted.length / 2) ||
           index === sorted.length - 1
         )
-          xAxis.push(moment(item.key).format('MMM YYYY'));
+          xAxis.push(formatTimestamp(item.key));
         else xAxis.push('');
       });
 

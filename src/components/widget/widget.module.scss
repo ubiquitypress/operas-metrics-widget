@@ -3,18 +3,17 @@
   font-family: inherit;
 
   // Resets
-  li {
-    list-style-type: none;
-  }
+  label,
+  button,
+  p,
+  a,
   ul,
   li {
-    padding: 0;
-    margin: 0;
-  }
-  p {
-    margin: 0;
-  }
-  button {
     font-family: inherit;
+    margin: 0;
+    padding: 0;
+  }
+  li {
+    list-style-type: none;
   }
 }

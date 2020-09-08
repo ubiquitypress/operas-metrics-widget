@@ -23,18 +23,29 @@ const WikipediaArticles = ({ uris, onReady, hidden }) => {
     fetchAllUrls(urls, res => {
       const data = flattenArray(res).filter(item => item.event_uri);
 
-      // Get an array of articles
-      const mapped = data
-        .map(item => item.event_uri) // populate only with event_uri values
-        .map(item => item.replace(/.*\/wiki\//g, '')) // remove URL part of string
-        .map(item => item.replace(/_/g, ' ')) // replace _ with a space
-        .map(item => decodeURIComponent(item)); // decode any encoded characters
+      // Remove data that does not contain an event URI, and return
+      // an array of only the event URIs
+      const filtered = data
+        .filter(item => item.event_uri)
+        .map(item => item.event_uri);
 
-      // Sort alphabetically
-      mapped.sort();
+      // Sort the URIs alphabetically
+      filtered.sort();
 
       // Convert into a key/value object for the table
-      const keyValue = mapped.map(item => ({ key: item, value: null }));
+      const keyValue = filtered.map(uri => {
+        // Replace the key to be a string
+        let key = uri.replace(/.*\/wiki\//g, '');
+        key = key.replace(/_/g, ' ');
+        key = decodeURIComponent(key);
+
+        // Return an object for the KeyValueTable
+        return {
+          key,
+          keyLink: uri,
+          value: null
+        };
+      });
 
       // Update the state with the new info
       setTableData(keyValue);

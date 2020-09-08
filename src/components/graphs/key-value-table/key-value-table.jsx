@@ -7,7 +7,15 @@ const KeyValueTable = ({ data }) => {
     <ul className={styles.table} data-testid='key-value-table'>
       {data.map(item => (
         <li key={item.key}>
-          <div className={styles.key}>{item.key}</div>
+          <div className={styles.key}>
+            {item.keyLink ? (
+              <a href={item.keyLink} target='_blank' rel='noopener noreferrer'>
+                {item.key}
+              </a>
+            ) : (
+              item.key
+            )}
+          </div>
           <div className={styles.value}>{item.value}</div>
         </li>
       ))}
@@ -19,7 +27,8 @@ KeyValueTable.propTypes = {
   data: PropTypes.arrayOf(
     PropTypes.shape({
       key: PropTypes.string,
-      value: PropTypes.string
+      value: PropTypes.string,
+      link: PropTypes.string
     })
   ).isRequired
 };

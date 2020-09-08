@@ -30,3 +30,21 @@ test('renders each item provided', () => {
     if (item.value === '31') expect(getAllByText(item.value).length).toBe(7);
   });
 });
+
+test('renders keyLink if provided', () => {
+  const data = [
+    { key: 'Link 1', keyLink: 'https://link1.com', value: null },
+    { key: 'Link 2', keyLink: 'https://link2.com', value: null },
+    { key: 'Link 3', keyLink: 'https://link3.com', value: null },
+    { key: 'Link 4', keyLink: 'https://link4.com', value: null }
+  ];
+  const { getByText, getByRole } = render(data);
+
+  data.forEach(item => {
+    getByText(item.key);
+    const link = getByRole('link', { name: item.key });
+    expect(link).toHaveAttribute('href', item.keyLink);
+    expect(link).toHaveAttribute('rel', 'noopener noreferrer');
+    expect(link).toHaveAttribute('target', '_blank');
+  });
+});

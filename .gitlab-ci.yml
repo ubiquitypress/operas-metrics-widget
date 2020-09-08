@@ -1,8 +1,19 @@
 image: eu.gcr.io/ubiquity-ci/gitlab-base:43
 
 stages:
+  - k8s-scripts
   - test
   - jira
+
+scripts:
+  stage: k8s-scripts
+  script:
+    - git clone https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/ubiquitypress/kubernetes --dept 1 kubernetes
+  artifacts:
+    paths:
+    - kubernetes/
+  only:
+    - tags
 
 run-tests:
   stage: test

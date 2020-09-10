@@ -1,19 +1,19 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import Chart from 'react-apexcharts';
+import loadExternalScript from '../../../utils/load-external-script/load-external-script';
 
 const LineGraph = ({ seriesData = [], xAxisCategories = [] }) => {
+  const [graph, setGraph] = useState(null);
   if (process.env.NODE_ENV === 'test') return null;
 
-  // One series only - with the data provided
-  const series = [{ data: seriesData }];
-
-  // Options for the graph
   const options = {
+    series: [{ data: seriesData }],
     dataLabels: {
       enabled: false
     },
     chart: {
+      type: 'area',
+      height: 200,
       animations: {
         enabled: false
       },
@@ -56,15 +56,22 @@ const LineGraph = ({ seriesData = [], xAxisCategories = [] }) => {
     }
   };
 
-  return (
-    <Chart
-      series={series}
-      type='area'
-      width='100%'
-      height='200px'
-      options={options}
-    />
-  );
+  // Load the apexcharts script from the CDN, and
+  // then make a new graph with the provided data
+  useEffect(() => {
+    if (!graph) {
+      loadExternalScript('apexcharts', () => {
+        setGraph(
+          // eslint-disable-next-line no-undef
+          new ApexCharts(document.querySelector('#line-graph'), options)
+        );
+      });
+    } else {
+      graph.render();
+    }
+  }, [graph, seriesData]);
+
+  return <div id='line-graph' />;
 };
 
 LineGraph.propTypes = {

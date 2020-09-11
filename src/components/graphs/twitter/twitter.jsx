@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { TwitterTweetEmbed } from 'react-twitter-embed';
 import PropTypes from 'prop-types';
 import styles from './twitter.module.scss';
 import Loading from '../../loading/loading';
 import getTwitterIdFromURI from '../../../utils/get-twitter-id-from-uri/get-twitter-id-from-uri';
 import getString from '../../../localisation/get-string/get-string';
 import Button from '../../button/button';
+import Tweet from './tweet/tweet';
 
 const Twitter = ({ uris }) => {
   const LIMIT_INC = 5;
@@ -25,7 +25,7 @@ const Twitter = ({ uris }) => {
               {process.env.NODE_ENV === 'test' ? (
                 <p>{twitterId}</p>
               ) : (
-                <TwitterTweetEmbed
+                <Tweet
                   tweetId={twitterId}
                   placeholder={<Loading message={getString('loading.tweet')} />}
                 />
@@ -37,9 +37,11 @@ const Twitter = ({ uris }) => {
       })}
 
       {uris.length > limit && (
-        <Button onClick={increaseLimit}>
-          {getString('other.view_more_amount', { amount: LIMIT_INC })}
-        </Button>
+        <div className={styles.viewMore}>
+          <Button className={styles.button} onClick={increaseLimit}>
+            {getString('other.view_more_amount', { amount: LIMIT_INC })}
+          </Button>
+        </div>
       )}
     </ul>
   );

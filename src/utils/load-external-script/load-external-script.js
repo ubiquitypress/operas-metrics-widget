@@ -13,20 +13,36 @@ const loadExternalScript = (id, callback) => {
 
   // Has the script already been inserted?
   const existingScript = document.getElementById(id);
-  if (existingScript) return callback();
+  if (existingScript) {
+    // Is it already loaded?
+    if (existingScript.dataset.loaded === 'true') return callback();
 
-  // Replace the version dynamically
-  ids[id] = ids[id].replace(
-    '{version}',
-    process.env.NODE_ENV === 'development' ? 'dev' : getVersion()
-  );
+    // Listen for the DOM event change, from `[loaded='false']` to `[loaded='true']`
+    const MutationObserver =
+      window.MutationObserver || window.WebKitMutationObserver;
+    const observer = new MutationObserver(() => callback());
+    observer.observe(existingScript, {
+      subtree: true,
+      attributes: true
+    });
+  } else {
+    // Replace the version dynamically
+    ids[id] = ids[id].replace(
+      '{version}',
+      process.env.NODE_ENV === 'development' ? 'dev' : getVersion()
+    );
 
-  // Create a new script
-  const script = document.createElement('script');
-  script.src = ids[id];
-  script.id = id;
-  document.body.appendChild(script);
-  script.onload = () => callback();
+    // Create a new script
+    const script = document.createElement('script');
+    script.src = ids[id];
+    script.id = id;
+    script.dataset.loaded = false;
+    document.body.appendChild(script);
+    script.onload = () => {
+      script.dataset.loaded = true;
+      callback();
+    };
+  }
 };
 
 export default loadExternalScript;

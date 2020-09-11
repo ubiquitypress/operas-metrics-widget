@@ -1,3 +1,4 @@
+import { waitFor } from '@testing-library/dom';
 import loadExternalScript from './load-external-script';
 
 test('logs an error if the id does not exist', () => {
@@ -14,7 +15,7 @@ test('inserts a new script tag into the DOM', () => {
 test('callback is returned when a new script is inserted', () => {
   const cb = jest.fn();
   loadExternalScript('__test', cb);
-  expect(cb).toHaveBeenCalledTimes(1);
+  waitFor(() => expect(cb).toHaveBeenCalledTimes(1));
 });
 
 test('duplicate script is not re-added if called twice', () => {

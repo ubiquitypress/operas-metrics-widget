@@ -3,5 +3,6 @@
   "jquery": "https://storage.googleapis.com/operas/metrics-widget-{version}/jquery-3.5.1.min.js",
   "jvectormap": "https://storage.googleapis.com/operas/metrics-widget-{version}/jquery-jvectormap-2.0.5.min.js",
   "worldmap": "https://storage.googleapis.com/operas/metrics-widget-{version}/jquery-jvectormap-world-merc.js",
-  "apexcharts": "https://storage.googleapis.com/operas/metrics-widget-{version}/apexcharts.min.js"
+  "apexcharts": "https://storage.googleapis.com/operas/metrics-widget-{version}/apexcharts.min.js",
+  "twitter": "https://platform.twitter.com/widgets.js"
 }

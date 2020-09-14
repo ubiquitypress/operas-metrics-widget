@@ -21,7 +21,7 @@ To embed the widget onto a page, you will need to add three core components.
 
 The widget is compiled into a single `widget.js` file, and is stored on a CDN. This file will need to be imported in order for the widget to display.
 
-The current version of the widget is hosted at https://storage.googleapis.com/operas/metrics-widget-0.0.13/widget.js and is 180 KB in size.
+The current version of the widget is hosted at https://storage.googleapis.com/operas/metrics-widget-0.0.14/widget.js and is 184 KB in size.
 
 Note that certain graphs, such as the world map or line charts, take up a large amount of space due to the complexity of the SVGs used. In order to compromise for this, these graphs are excluded from the main `widget.js` build file, but additional scripts will be loaded into the DOM automatically if the widget detects a missing script.
 

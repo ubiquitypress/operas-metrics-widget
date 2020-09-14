@@ -32,6 +32,9 @@ const TimeGraph = ({ uris, activeType, onReady, hidden }) => {
         dates[date] = dates[date] ? dates[date] + item.value : item.value;
       });
 
+      // There is no data
+      if (Object.keys(dates).length === 0) return onReady();
+
       // Dates should already be in order, but sort them just to be sure.
       // This function will sort by the oldest dates first
       const sorted = [];
@@ -44,9 +47,12 @@ const TimeGraph = ({ uris, activeType, onReady, hidden }) => {
         return 0;
       });
 
-      // Do we have data?
-      if (sorted.length === 0) {
-        return onReady();
+      // Make sure we always have at least two data points
+      // since the graph will render as empty if there is only one
+      if (sorted.length === 1) {
+        const dayBefore = new Date(sorted[0].key);
+        dayBefore.setDate(dayBefore.getDate() - 1);
+        sorted.unshift({ key: dayBefore.toISOString(), value: 0 });
       }
 
       // Go through each item to make it cumulative

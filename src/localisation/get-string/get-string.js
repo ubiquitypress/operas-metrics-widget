@@ -1,9 +1,11 @@
 import PropTypes from 'prop-types';
 import getWidgetLanguage from '../../utils/get-widget-language/get-widget-language';
 import en from '../en.json';
+import getMetricsConfig from '../../utils/get-metrics-config/get-metrics-config';
+import getPathFromObject from '../../utils/get-path-from-object/get-path-from-object';
 
 const getString = (path, interpolations, languageOverride) => {
-  // Choose the language
+  // Get the language
   const language = languageOverride || getWidgetLanguage();
 
   // Make the dictionary depending on the chosen language
@@ -16,26 +18,33 @@ const getString = (path, interpolations, languageOverride) => {
       break;
   }
 
-  // Find the localisation value
-  try {
-    const split = path.split('.');
-    let marker = dict;
-    split.forEach(item => {
-      marker = marker[item];
-    });
-    if (!marker) return path;
+  // Store the localised string
+  let string = null;
 
-    // Replace any provided interpolations
-    if (interpolations) {
-      Object.keys(interpolations).forEach(key => {
-        marker = marker.replace(`{{${key}}}`, interpolations[key]);
-      });
-    }
+  // Does an override locale exist?
+  const { locales } = getMetricsConfig();
+  if (locales && locales[language])
+    string = getPathFromObject(locales[language], path);
 
-    return marker;
-  } catch (error) {
-    return path;
+  // Override locale does not exist, find it from the dictionary
+  if (!string) {
+    string = getPathFromObject(dict, path);
+    if (!string && language !== 'en') string = getPathFromObject(en, path);
+    if (!string) return path;
   }
+
+  // Replace any provided interpolations
+  if (interpolations) {
+    Object.keys(interpolations).forEach(key => {
+      string = string.replace(
+        new RegExp(`{{${key}}}`, 'g'),
+        interpolations[key]
+      );
+    });
+  }
+
+  // Return the localised string
+  return string;
 };
 
 getString.defaultProps = {

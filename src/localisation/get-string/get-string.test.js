@@ -1,57 +1,45 @@
 import getString from './get-string';
 
-jest.mock('../en.json', () => ({
-  conversations: {
-    greetings: {
-      greeting1: 'hello',
-      greeting2: 'good day',
-      greeting3: 'hi, {{name}}'
-    },
-    farewells: {
-      farewell1: 'goodbye',
-      farewell2: 'bye, {{name}}!'
-    },
-    weather: "it's really {{weather}} today!"
-  }
-}));
-
-test('returns the correct phrase at the specified path', () => {
-  let str = '';
-
-  str = getString('conversations.greetings.greeting1', {}, 'en');
-  expect(str).toBe('hello');
-
-  str = getString('conversations.greetings.greeting2', {}, 'en');
-  expect(str).toBe('good day');
-
-  str = getString('conversations.farewells.farewell1', {}, 'en');
-  expect(str).toBe('goodbye');
+test('returns string', () => {
+  expect(getString('tabs.tweets')).toBe('Tweets');
 });
 
-test('returns the correct interpolated phrase at the specified path', () => {
-  let str = '';
-
-  str = getString('conversations.greetings.greeting3', { name: 'John' }, 'en');
-  expect(str).toBe('hi, John');
-
-  str = getString('conversations.farewells.farewell2', { name: 'Smith' }, 'en');
-  expect(str).toBe('bye, Smith!');
-
-  str = getString('conversations.weather', { weather: 'sunny' }, 'en');
-  expect(str).toBe("it's really sunny today!");
+test('returns overriden string', () => {
+  global.metrics_config.locales = { en: { tabs: { tweets: 'Twitters' } } };
+  expect(getString('tabs.tweets')).toBe('Twitters');
 });
 
-test('returns original path if phrase is not found', () => {
-  let str = '';
-
-  str = getString('not.found.at.all', {}, 'en');
-  expect(str).toBe('not.found.at.all');
-
-  str = getString('conversations.greetings.farewell', {}, 'en');
-  expect(str).toBe('conversations.greetings.farewell');
-
-  str = getString('conversations.greetings.farewell', { not: 'real' }, 'en');
-  expect(str).toBe('conversations.greetings.farewell');
+test('returns string in different language', () => {
+  global.metrics_config.locales = { it: { tabs: { tweets: 'tweeter' } } };
+  expect(getString('tabs.tweets')).toBe('Tweets'); // English
+  expect(getString('tabs.tweets', {}, 'it')).toBe('tweeter'); // Italian
 });
 
-test.todo('returns correct phrase in the specified language');
+test('returns English localisation if provided one does not exist', () => {
+  global.metrics_config.locales = { it: { tabs: { tweets: undefined } } };
+  expect(getString('tabs.tweets', {}, 'it')).toBe('Tweets');
+});
+
+test('returns the path if no string is found in English', () => {
+  expect(getString('tabs.doesNotExist')).toBe('tabs.doesNotExist'); // English
+  expect(getString('tabs.doesNotExist', {}, 'it')).toBe('tabs.doesNotExist'); // Italian
+});
+
+test('correctly interpolates strings', () => {
+  global.metrics_config.locales = {
+    en: {
+      tabs: {
+        tweets: '{{number}} Tweets',
+        downloads: 'There are {{amount}} {{name}}',
+        citations: '{{name}} {{name}}'
+      }
+    }
+  };
+  expect(getString('tabs.tweets', { number: 109 })).toBe('109 Tweets');
+  expect(getString('tabs.downloads', { amount: 6, name: 'Downloads' })).toBe(
+    'There are 6 Downloads'
+  );
+  expect(getString('tabs.citations', { name: 'Citations' })).toBe(
+    'Citations Citations'
+  );
+});

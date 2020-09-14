@@ -60,10 +60,11 @@ All configuration for the widget is handled within the `merics_config` object, s
 
 Within the object, the following keys should be present:
 
-| field    | type   | required | description                                         |
-| -------- | ------ | -------- | --------------------------------------------------- |
-| settings | object | yes      | an object of key/value settings for the widget      |
-| tabs     | object | yes      | all of the tabs (downloads, citations, etc) to show |
+| field    | type   | required | description                                                 |
+| -------- | ------ | -------- | ----------------------------------------------------------- |
+| settings | object | yes      | an object of key/value settings for the widget              |
+| tabs     | object | yes      | all of the tabs (downloads, citations, etc) to show         |
+| locales  | object | no       | object of string overrides to replace default localisations |
 
 ### Settings
 
@@ -123,6 +124,26 @@ You can display as little or many graphs as you want for each tab, though keep i
 
 NOTE: The best way to know which metrics can be used within which graph array is by visiting the base URL endpoint with the `measure_uri` aggregation attached. For example, to find out which URIs I would want to use to count `downloads` for a work with a `base_url` of _https://metrics-api.operas-eu.org/events_ and a `work_uri` of _'info:doi:10.5334/bay'_ (both provided in the `metrics_config.settings` object), visiting the following URL https://metrics-api.operas-eu.org/events/?filter=work_uri:info:doi:10.5334/bbc&aggregation=measure_uri will provide a list of all possible `measure_uri` fields. In the case above, three objects are labelled as `type: 'downloads'` and so any of their measure URIs can be used within the array above.
 
+### Locales
+
+In some cases, you may want to override one or more of the strings shown by the widget. By defining a `locales` object, this is extremely easy to do. The object should be formatted in the same way as one of the [translation files](https://gitlab.com/ubiquitypress/metrics-widget/-/blob/master/src/localisation/en.json), but you will only need to provide the overrided strings.
+
+For example, to replace the initial loading message of the widget from 'Loading Metrics' to 'Will be right with you,' the _locales_ object would look like this:
+
+```
+locales: {
+  en: {
+    loading: {
+      widget: "Will be right with you"
+    }
+  }
+}
+```
+
+This object format almost exactly matches the one used by the _en.json_ file linked above, but with one parent node `en` wrapping everything else. The top-level node after declaring the `locales` object should be a ISO 639-1 language code. Should your widget's language be served dynamically, you may want to localise the widget in all of your website's available languages.
+
+Whilst it is recommended to only use the [supported languages](#supported-languages), this overriding method will also allow you to write definitions for brand new languages. If you do end up localising the widget in another language, consider contributing it to be another supported language of the widget.
+
 ## Supported Languages
 
 The following languages are currently supported:
@@ -130,6 +151,8 @@ The following languages are currently supported:
 | name    | code | version |
 | ------- | ---- | ------- |
 | English | `en` | 0.0.1+  |
+
+For more information on how to override supported languages, or on how to add localisations for other languages, see [Locales](#locales).
 
 ## Supported Events
 

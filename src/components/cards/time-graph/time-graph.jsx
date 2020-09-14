@@ -93,6 +93,9 @@ const TimeGraph = ({ uris, activeType, onReady, hidden }) => {
 
     // Go through each URI and fetch its data
     fetchURIs();
+
+    // On component unmount
+    return () => setGraphData(null);
   }, [uris]);
 
   if (hidden) return null;
@@ -104,6 +107,7 @@ const TimeGraph = ({ uris, activeType, onReady, hidden }) => {
       >
         <LineGraph
           seriesData={graphData.series}
+          seriesName={activeType}
           xAxisCategories={graphData.xAxis}
         />
       </CardWrapper>

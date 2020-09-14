@@ -59,6 +59,9 @@ const WikipediaArticles = ({ uris, onReady, hidden }) => {
 
     // Go through each URI and fetch its data
     fetchURIs();
+
+    // On component unmount
+    return () => setTableData(null);
   }, [uris]);
 
   if (hidden) return null;

@@ -2,12 +2,16 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import loadExternalScript from '../../../utils/load-external-script/load-external-script';
 
-const LineGraph = ({ seriesData = [], xAxisCategories = [] }) => {
+const LineGraph = ({
+  seriesData = [],
+  seriesName = '',
+  xAxisCategories = []
+}) => {
   const [graph, setGraph] = useState(null);
   if (process.env.NODE_ENV === 'test') return null;
 
   const options = {
-    series: [{ data: seriesData }],
+    series: [{ name: seriesName, data: seriesData }],
     dataLabels: {
       enabled: false
     },
@@ -28,7 +32,7 @@ const LineGraph = ({ seriesData = [], xAxisCategories = [] }) => {
       }
     },
     tooltip: {
-      enabled: false
+      enabled: true
     },
     fill: {
       type: 'gradient',
@@ -76,10 +80,12 @@ const LineGraph = ({ seriesData = [], xAxisCategories = [] }) => {
 
 LineGraph.propTypes = {
   seriesData: PropTypes.arrayOf(PropTypes.number),
+  seriesName: PropTypes.string,
   xAxisCategories: PropTypes.arrayOf(PropTypes.string)
 };
 LineGraph.defaultProps = {
   seriesData: [],
+  seriesName: '',
   xAxisCategories: []
 };
 

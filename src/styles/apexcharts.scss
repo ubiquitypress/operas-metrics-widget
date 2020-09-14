@@ -1,0 +1,38 @@
+.apexcharts-canvas {
+  .apexcharts-xaxistooltip {
+    display: none !important;
+  }
+  .apexcharts-tooltip {
+    border: 1px solid #ccc;
+    box-shadow: rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+
+    .apexcharts-tooltip-title {
+      display: none !important;
+    }
+    .apexcharts-tooltip-series-group {
+      padding: 1.1em !important;
+      pointer-events: none;
+      background: #ffffff;
+      border-radius: 0.5em;
+      color: #3c4043;
+      font-size: 0.8em;
+
+      .apexcharts-tooltip-y-group {
+        padding: 0 !important;
+      }
+
+      .apexcharts-tooltip-text-label {
+        text-transform: capitalize;
+      }
+
+      .apexcharts-tooltip-text-value {
+        margin-left: 2em;
+        font-weight: 600;
+      }
+
+      .apexcharts-tooltip-marker {
+        display: none !important;
+      }
+    }
+  }
+}

@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Widget from './components/widget/widget';
 import getMetricsConfig from './utils/get-metrics-config/get-metrics-config';
-import './styles/world-map.scss';
+import './styles/global.scss';
 
 try {
   // Make sure a `metrics_config` variable exists

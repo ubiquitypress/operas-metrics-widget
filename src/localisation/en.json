@@ -22,15 +22,23 @@
     "by_country": "{{name}} by country",
     "cited_in": "Cited in",
     "wikipedia_articles": "Wikipedia articles",
-    "wordpress": "Wordpress"
+    "wordpress": "Wordpress",
+    "hypothesis": "Hypothesis"
+  },
+  "hypothesis_table": {
+    "date": "Date",
+    "author": "Author",
+    "summary": "Summary"
   },
   "other": {
     "view_more": "View more",
-    "view_more_amount": "View {{amount}} more"
+    "view_more_amount": "View {{amount}} more",
+    "trimmed_string": "{{string}}..."
   },
   "dates": {
     "months": "Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec",
-    "format": "{{month}} {{year}}"
+    "format_short": "{{month}} {{year}}",
+    "format_long": "{{day}} {{month}} {{year}}"
   },
   "countries": {
     "AF": "Afghanistan",

@@ -4,7 +4,7 @@ import styles from './twitter.module.scss';
 import Loading from '../../loading/loading';
 import getTwitterIdFromURI from '../../../utils/get-twitter-id-from-uri/get-twitter-id-from-uri';
 import getString from '../../../localisation/get-string/get-string';
-import Button from '../../button/button';
+import Button from '../../ui/button/button';
 import Tweet from './tweet/tweet';
 
 const Twitter = ({ uris }) => {

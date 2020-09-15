@@ -1,0 +1,15 @@
+.tableCell {
+  display: table-cell;
+  padding: 1em;
+  text-align: left;
+  font-size: 1.3em;
+
+  &.th {
+    font-weight: 500;
+    color: #6f6f6f;
+  }
+
+  &.td {
+    font-weight: 400;
+  }
+}

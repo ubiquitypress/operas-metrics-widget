@@ -1,0 +1,14 @@
+.tableBody {
+  display: table-row-group;
+
+  tr:nth-child(2n-1) td {
+    background: #f9f9f9;
+
+    &:first-child {
+      border-radius: 1rem 0 0 1rem;
+    }
+    &:last-child {
+      border-radius: 0 1rem 1rem 0;
+    }
+  }
+}

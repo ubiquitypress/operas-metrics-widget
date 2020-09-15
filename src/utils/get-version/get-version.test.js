@@ -8,5 +8,5 @@ afterAll(() => {
 });
 
 test('returns current app version', () => {
-  expect(getVersion()).toEqual('1.12.29');
+  expect(getVersion()).toBe('1.12.29');
 });

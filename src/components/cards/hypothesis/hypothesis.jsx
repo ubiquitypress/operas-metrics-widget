@@ -13,6 +13,7 @@ import TableBody from '../../ui/table-body/table-body';
 import formatTimestamp from '../../../utils/format-timestamp/format-timestamp';
 import trimString from '../../../utils/trim-string/trim-string';
 import styles from './hypothesis.module.scss';
+import getVersion from '../../../utils/get-version/get-version';
 
 const Hypothesis = ({ uris, onReady, hidden }) => {
   const [tableData, setTableData] = useState(null);
@@ -102,7 +103,7 @@ const Hypothesis = ({ uris, onReady, hidden }) => {
                   >
                     <img
                       className={styles.icon}
-                      src='https://storage.googleapis.com/operas/metrics-widget-dev/hypothesis.jpg'
+                      src={`https://storage.googleapis.com/operas/metrics-widget-${getVersion()}/hypothesis.jpg`}
                       alt='Hypothesis'
                     />
                   </a>

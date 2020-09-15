@@ -27,10 +27,7 @@ const loadExternalScript = (id, callback) => {
     });
   } else {
     // Replace the version dynamically
-    ids[id] = ids[id].replace(
-      '{version}',
-      process.env.NODE_ENV === 'development' ? 'dev' : getVersion()
-    );
+    ids[id] = ids[id].replace('{version}', getVersion());
 
     // Create a new script
     const script = document.createElement('script');

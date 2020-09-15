@@ -20,7 +20,7 @@ test('turns full URIs into IDs', () => {
     }
   ];
 
-  tests.forEach(t => expect(cb(t.uri)).toEqual(t.expected));
+  tests.forEach(t => expect(cb(t.uri)).toBe(t.expected));
 });
 
 test('turns direct URI formats into IDs', () => {
@@ -39,7 +39,7 @@ test('turns direct URI formats into IDs', () => {
     }
   ];
 
-  tests.forEach(t => expect(cb(t.uri)).toEqual(t.expected));
+  tests.forEach(t => expect(cb(t.uri)).toBe(t.expected));
 });
 
 test('does not modify direct ID arguments', () => {
@@ -49,5 +49,5 @@ test('does not modify direct ID arguments', () => {
     '1302396092957569032'
   ];
 
-  tests.forEach(t => expect(cb(t)).toEqual(t));
+  tests.forEach(t => expect(cb(t)).toBe(t));
 });

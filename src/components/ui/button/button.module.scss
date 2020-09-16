@@ -7,8 +7,11 @@
   border: 1px solid transparent;
   border-radius: 0.4em;
   cursor: pointer;
+  color: inherit;
 
   &:hover {
     border-color: #506bd3;
+    background: rgba(80, 108, 211, 0.1);
+    color: inherit;
   }
 }

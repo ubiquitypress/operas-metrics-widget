@@ -75,9 +75,8 @@ The following fields are accepted within the `settings` object of the `metrics_c
 | base_url               | string  | yes      | the base URL of where the metrics are hosted<br> example: https://metrics-api.operas-eu.org/events                                                                                      |
 | work_uri               | string  | yes      | the URI scheme and URI to use<br> example: `info:doi:10.5334/bay`                                                                                                                       |
 | language               | string  | no       | the ISO 639-1 language code to display text in<br> if your [language is not supported](#supported-languages), please consider contributing<br> the default value for this field is `en` |
-| localise_country_codes | boolean | false    | if `true`, graphs that display country codes will display their name instead<br> language names will be localised to the provided `language`<br> example: `fr` => `French`              |
-
-### Tabs
+| localise_country_codes | boolean | no       | if `true`, graphs that display country codes will display their name instead<br> language names will be localised to the provided `language`<br> example: `fr` => `French`              |
+| one_per_row_width      | number  | no       | if provided, all graphs will occupy their own row if the window width is less than or equal to this value                                                                               |
 
 Within the `tabs` object of the `metrics_config` object, each field will represent the name of the metric you wish to display. Each field will represent a new navigation tab. A full list of supported fields can be found [here](#supported-events).
 

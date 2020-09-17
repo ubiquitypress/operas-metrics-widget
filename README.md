@@ -121,7 +121,7 @@ const metrics_config = {
 
 The example above will override the English localisation for `tabs.sessions` to read as 'Abstract Views' instead of the hard-coded 'Sessions' string. This can be done for any amount of strings, and any amount of languages.
 
-To override a language, you will need to first indicate the language code that you are overriding. A list of supported languages can be found here TODO, or can be found in the list of filenames [here](https://gitlab.com/ubiquitypress/metrics-widget/-/tree/master/src/localisation). In the example above, the language code _en_ is being overriden. Next, you will need to provide the exact same path structure used by the widget for that language. For example, to replace the phrase 'Sessions' with 'Abstract views', the path in the [en.json](https://gitlab.com/ubiquitypress/metrics-widget/-/blob/master/src/localisation/en.json) file is `tabs.sessions`, which is why the above code works.
+To override a language, you will need to first indicate the language code that you are overriding. A list of supported languages can be found [here](#supported-languages), or can be found in the list of filenames in the [GitLab repository](https://gitlab.com/ubiquitypress/metrics-widget/-/tree/master/src/localisation). In the example above, the language code _en_ is being overriden. Next, you will need to provide the exact same path structure used by the widget for that language. For example, to replace the phrase 'Sessions' with 'Abstract views', the path in the [en.json](https://gitlab.com/ubiquitypress/metrics-widget/-/blob/master/src/localisation/en.json) file is `tabs.sessions`, which is why the above code works.
 
 It is also possible to use this functionality to add your own language interpretation, such as adding a new `en-us` language code and setting the _language_ [setting](#settings) to be the same value.
 
@@ -140,7 +140,7 @@ The `tabs` object is the third and final field expected by the _metrics_config_ 
 
 This object will contain additional key/value pairs that tell the widget which measures to display (such as downloads, citations, references), what metric URIs should count towards the figures, and what graphs to display for each.
 
-In order to know which measures are available, take a look at this table TODO to see which measures are officially supported. Depending on the API you are using for your metrics, additional measures may be available - though anything not listed on the table should not be considered as officially supported.
+In order to know which measures are available, take a look at [this table](#supported-measures) to see which measures are officially supported. Depending on the API you are using for your metrics, additional measures may be available - though anything not listed on the table should not be considered as officially supported.
 
 ```javascript
 const metrics_config = {
@@ -169,7 +169,7 @@ const metrics_config = {
 
 The above code seems quite complicated at first, though it can be quite intutive once broken down.
 
-The first thing to note is the `sessions` object, which is a direct child field of the _tabs_ object. Sessions is one of the supported measures TODO by the widget, along with many other data sources. The widget expects any child fields of the _tabs_ object to match one of the supported measures - so _sessions_ here could easily be something else, such as _downloads_, _tweets_, _annotations_, and so forth.
+The first thing to note is the `sessions` object, which is a direct child field of the _tabs_ object. Sessions is one of the [supported measures](#supported-measures) by the widget, along with many other data sources. The widget expects any child fields of the _tabs_ object to match one of the supported measures - so _sessions_ here could easily be something else, such as _downloads_, _tweets_, _annotations_, and so forth.
 
 As we've defined a _sessions_ object, we have now told the widget that we want to be able to see the metrics available to us for the _sessions_ measure, making it appear on the navigation menu. Within the _sessions_ object are two more child fields - `nav_counts` and `graphs`.
 
@@ -199,7 +199,7 @@ This will tell the widget to include every recorded metric value when displaying
 
 The _graphs_ object is slightly more complex than the _nav_counts_ array, though the Measure URIs and principles are exactly the same.
 
-In the example above, the first thing to note is that there are three direct children of the _graphs_ object: `time_graph`, `country_table`, and `world_map`. These are not arbritrary values, but instead tell the widget exactly what graphs should appear when the user clicks on (in this case) the Sessions button on the navigation menu; we want to see a time graph, a country table, and a world map. There are many more graph options available, and they can all be found in this table TODO.
+In the example above, the first thing to note is that there are three direct children of the _graphs_ object: `time_graph`, `country_table`, and `world_map`. These are not arbritrary values, but instead tell the widget exactly what graphs should appear when the user clicks on (in this case) the Sessions button on the navigation menu; we want to see a time graph, a country table, and a world map. There are many more graph options available, and they can all be found in [this table](#supported-graphs).
 
 Within each object you will see the required fields of `width` and `uris`, as well as a `hideLabel` field present on the _world_map_ object - which is optional and does not need to be present.
 
@@ -219,7 +219,7 @@ The following languages are currently supported:
 | ------- | ---- | ------- |
 | English | `en` | 0.0.1+  |
 
-For more information on how to override supported languages, or on how to add localisations for other languages, see locales TODO.
+For more information on how to override supported languages, or on how to add localisations for other languages, see [Locales](#locales).
 
 ## Supported Measures
 

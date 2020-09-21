@@ -1,6 +1,6 @@
 # HIRMEOS Metrics Widget
 
-This documentation aims to provide as much information as possible for getting started with, implementing, and updating the widget.
+This documentation aims to offer as much information as possible for getting started with, implementing, and updating the widget.
 
 ## Table of Contents
 
@@ -15,18 +15,28 @@ This documentation aims to provide as much information as possible for getting s
 - [Supported Languages](#supported-languages)
 - [Supported Measures](#supported-measures)
 - [Supported Graphs](#supported-graphs)
+- [Developer-Information](#developer-information)
+  - [Running the source](#running-the-source)
+  - [Graph vs. Card](#graph-vs-card)
+  - [Adding Cards](#adding-cards)
+  - [Adding Graphs](#adding-graphs)
+  - [External Files](#external-files)
+  - [Localisation](#localisation)
+  - [Building](#building)
+  - [Testing](#testing)
+  - [Deployment](#deployment)
 
 ## Introduction
 
-The HIRMEOS metrics widget is a small, embeddable HTML widget which can provide visual information from services such as Google Analytics, OPERAS, and Ubiquity Press in the form of graphs, tables, and numerical figures.
+The HIRMEOS metrics widget is a small, embeddable HTML widget which can offer visual information from services such as Google Analytics, OPERAS, and Ubiquity Press in the form of graphs, tables, and numerical figures.
 
 When embedded, users will be able to see a navigation menu with numerical figures for different measures supported by the widget, such as the number of downloads a specific book has. Upon clicking one of the navigation items, the user will then be able to see additional information in the form of graphs, tables, and more.
 
-The widget is designed to be extremely flexible with its implementation, allowing almost complete configuration to be made without needing to touch the source code. More customisation options will become available over time, and updates to the widget will be made under new version numbers - giving implementers the ability to test and configure any updates before deploying the changes live.
+The widget is designed to be extremely flexible with its implementation, allowing almost complete configuration to be made without needing to touch the source code. More customisation options will become available over time, and updates to the widget will be made under new version numbers - giving implementors the ability to test and configure any updates before deploying the changes live.
 
 Implementing the widget requires some knowledge of HTML and JavaScript, and having knowledge on how the metrics URIs and endpoints work will also be beneficial.
 
-This documentation is written assuming the implementer has no prior knowledge of the metrics API endpoints or response body.
+This documentation is written assuming the implementor has no prior knowledge of the metrics API endpoints or response body.
 
 ## Getting Started
 
@@ -73,7 +83,7 @@ If using the file above as reference, please do note that it is primarily used d
 
 ### Settings
 
-The most important field within the _metrics_config_ object is the `settings` object. This will contain all of the key/value pairs to help the metrics widget understand which API to fetch data from, as well as to allow for more precise configuration.
+The most important field within the _metrics_config_ object is the `settings` object. This will contain all the key/value pairs to help the metrics widget understand which API to fetch data from, as well as to allow for more precise configuration.
 
 ```javascript
 const metrics_config = {
@@ -248,3 +258,121 @@ The following graphs are currently supported:
 | tweets             | Tweets              | `event_uri`            | a list of embedded Twitter tweets as iframes                                                                                                          | 0.0.6+  |
 | wordpress          | Wordpress           | `event_uri`            | a list of Wordpress posts where this item is referenced                                                                                               | 0.0.14+ |
 | hypothesis         | Hypothesis          | `event_uri`            | a list of Hypothesis titles where this item is referenced                                                                                             | 0.0.17+ |
+
+## Developer Information
+
+This section contains information for developers interested in continuing to enhance and expand on the widget source. The widget is created in React, and then compiled using Webpack.
+
+### Running the source
+
+Once cloning the repository, you will firstly need to install all dependencies that the widget uses. In order to reduce the overall size of the widget, the majority of dependencies are either hosted externally and only called when needed, or are installed as devDependencies meaning that they are not required in the production build.
+
+To install all dependencies, run:
+
+```javascript
+npm ci
+```
+
+After all dependencies are installed, you can run:
+
+```javascript
+npm run start
+```
+
+This will launch the application on `localhost:8080`. Any changes made to files will automatically update the application, and the browser page should automatically reload.
+
+To stop the application from running, enter the key combination `CTRL`+`C` on the terminal window, and the process will exit.
+
+### Graph vs Card
+
+Within the widget, there are two distinct definitions used within the source code. Whilst the _metrics_config_ object uses the word _graphs_ to define which graphs will be visible for each tab, the widget is built in such a way that the [Supported Graphs](#supported-graphs) are actually referred to internally as 'cards'.
+
+A `graph`, located in the _components/graphs_ directory, is a mostly stateless component which has no connection to the API, or any knowledge about the context it is being used in. It receives all of its necessary information as component props, and simply renders what it receives.
+
+A `card`, located in the _components/cards_ directory, represents every single possible type of display shown in the [Supported Graphs](#supported-graphs) section. Each card will make its own API request, parse its response data, and then pass all the formatted data along to the appropriate `graph` to be rendered accordingly.
+
+The reason for this is due to the fact that, in many cases, there can be a many-to-one relationship between cards and graphs. For instance, the list of Wikipedia Articles and the list of Countries both are rendered as identical tables - with the only difference between them being the actual content of the table. However, because each will need to make its own API calls, parse the data its own way, and then display the graph, it makes more sense to have all of this handled within one component, and then have another, stateless, component handle the displaying of the graph. This way, two cards (_country-table_ and _wikipedia-articles_) only need to rely on one graph existing, the _key-value-table_. This makes updating the styling or format of each graph much easier to maintain.
+
+### Adding Cards
+
+Cards are the components defined by the user when setting up the widget, and represent which graph(s) should be shown for each tab in the navigation menu. Card components need to take a variety of different props, though the logic within them only varies slightly.
+
+Because most of the code within cards are so similar, a file - `__template.jsx` has been created within the root directory of _components/cards_ to provide further explanations towards the main components of the card. There are also `CHANGEME` comments scattered around, which indicate which parts of the code should be changed for a specific card. This will hopefully be further optimised at some point in the future.
+
+Once you have all the data you need from a card, it simply needs to call the graph associated with it. Remember that it is a many-to-one mapping with graphs, so many different types of card can map to the same graph component; so do use an already existing graph if one already exists to match your needs.
+
+### Adding Graphs
+
+As graphs are purely the visual aspect of the widget, they are fairly straightforward to implement. The first step is to determine what graph is being added.
+
+In some cases, you may wish to use a JavaScript library for the graph you are implementing. If this is the case, it is recommended _not_ to install the NPM package for the library, but instead to download the files and host them externally, as this will keep the widget's file size low. See [External Files](#external-files) for further information on this.
+
+The graph itself does not need to have any special properties, and only needs to render the data it receives. The graph should be called only by a _card_ component once it is completed.
+
+### External Files
+
+In order to ensure that the main widget file size remains as low as possible, some files (such as the country graph and line graph) are hosted externally, and only imported if they are needed.
+
+To add external JavaScript files to the widget, a few steps need to be taken. The first is to upload the files to the `-dev` directory of the storage bucket, found [here](<https://console.cloud.google.com/storage/browser/operas/metrics-widget-dev?project=hirmeos-257513&pageState=(%22StorageObjectListTable%22:(%22f%22:%22%255B%255D%22))&prefix=&forceOnObjectsSortingFiltering=false>). Whenever the application is running locally (the _process.env.NODE_ENV_ variable is set to _development_), this is the storage bucket that will be used to pull files from.
+
+Once the file is uploaded, the next step is to add a type definition to the _loadExternalScript_ JSON file, found in _utils/load-external-script/ids.json_. The key here should be a quick name referencing the file, and the value should be the link to the file in the storage bucket. Note that you should replace the word `dev` with `version` here, so that the widget can properly route to the correct location when in development/production mode.
+
+Once this has been set up, you should now be able to call the _loadExternalScript()_ function from within the file you are calling this script (which likely will be a `graph`). To see an example of how this is acheived, take a look at _components/graphs/map-graph_. This component relies on three external files to be loaded before it returns.
+
+Because of how the _loadExternalScript()_ function has been implemented, you do not need to worry about checking that a script is loaded, or already exists. The function has validation built in to ensure that a script is only loaded into the DOM once - no matter how many times it is called, and that callbacks are only executed once the script is actually loaded and ready to go.
+
+### Localisation
+
+Adding new languages to the widget is designed to be as straightforward as possible. All localisations are stored in the _localisation_ directory as JSON files. When adding a new language, it is recommended to copy the `en.json` file, as this will the the most up-to-date template.
+
+The file name should follow the ISO 639-1 language format, which essentially means a two-character code. A [Wikipedia Article](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) lists all codes, and you should make sure to refer to the `639-1` column.
+
+Within the localisation file, there is a field titled `countries`, which contains localisations for every country code. Thankfully, a GitHub repository provides these localisations for almost every language. Simply visit<br>
+https://github.com/umpirsky/country-list/blob/master/data/{CODE}/country.json<br>
+(replacing `{CODE}` with the country code, such as `en`) and paste the JSON data into your new localisation template.
+
+Once the file is complete, the widget should automatically support the new language. You can test this at any time by changing the widget language in _dist/index.html_ to the new language code, though please do change it back to `'en'` prior to committing any changes.
+
+### Building
+
+To build a new version of the widget, simply run:
+
+```javascript
+npm run build
+```
+
+This will override the file (if it exists) in _dist/widget.js_ with a compressed JavaScript file representing all the widget code.
+
+### Testing
+
+Unit tests are set up for every component within the widget, and will be run as part of the CI pipeline. You can also run tests manually:
+
+```javascript
+npm run test
+```
+
+The code above will run the test program once, and will tell you whether the tests pass or fail.
+
+```javascript
+npm run test:watch
+```
+
+The code above will run the test program and keep it running until closed (`CTRL`+`C`), and will re-run the program if a file is detected to have changed. There are different options within this program that allow you to test only specific files.
+
+### Deployment
+
+Whilst there is currently a CI pipeline for new versions, the deployments themselves are currently performed manually.
+
+The first step is to increase the widget's version by running _bumpversion_. In the vast majority of updates, you'll want to tag the update as a `patch`:
+
+```javascript
+bumpversion[major | minor | patch];
+```
+
+Once this is done, you will then need to push the changes and separately push the new version tag that was created. This will then start the CI pipeline.
+
+Once the pipeline tests have passed, create a new directory in the [Storage Bucket](https://console.cloud.google.com/storage/browser/operas;tab=objects?forceOnBucketsSortingFiltering=false&project=hirmeos-257513&prefix=) called `metrics-widget-{VERSION}` - where `{VERSION}` is the current version of the widget based on the _bumpversion_. For example, if the version was _1.2.3_, the file would be called _metrics-widget-1.2.3_.
+
+The next thing to do is to copy all the files from `metrics-widget-dev` into this new directory. Once done, you'll then want to [build](#building) the widget and upload the `widget.js` file (without renaming it!) to the new directory in the storage bucket.
+
+Lastly, you'll want to update this very README file to replace the URL in the [Getting Started](#getting-started) section with the new URL (just updating the version number will be enough), and also updating the file size number with the new size of the `widget.js` file that was just built.

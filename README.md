@@ -92,7 +92,7 @@ const metrics_config = {
     work_uri: 'info:doi:10.5334/bbc',
     language: 'en',
     localise_country_codes: true,
-    one_per_column_width: 450
+    one_per_row_width: 450
   }
 };
 ```

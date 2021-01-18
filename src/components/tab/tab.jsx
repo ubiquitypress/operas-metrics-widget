@@ -71,7 +71,7 @@ const Tab = ({ activeType, onLoadingChange }) => {
         {loading.isLoading && <Loading message={getString('loading.graphs')} />}
         <ul className={styles.tab}>
           {Object.keys(graphs).map(name => {
-            const { width, uris, hideLabel } = graphs[name];
+            const { width, uris, hide_label } = graphs[name];
 
             // Only render a placeholder div if we're testing, since we'll have
             // many different API calls made and it'll be impossible (and thankfully
@@ -90,7 +90,7 @@ const Tab = ({ activeType, onLoadingChange }) => {
                     onReady={onChildLoad}
                     hidden={loading.isLoading}
                     width={width}
-                    hideLabel={hideLabel}
+                    hideLabel={hide_label}
                   />
                 );
               case 'time_graph':
@@ -102,6 +102,7 @@ const Tab = ({ activeType, onLoadingChange }) => {
                     onReady={onChildLoad}
                     hidden={loading.isLoading}
                     width={width}
+                    hideLabel={hide_label}
                   />
                 );
               case 'country_table':
@@ -113,6 +114,7 @@ const Tab = ({ activeType, onLoadingChange }) => {
                     onReady={onChildLoad}
                     hidden={loading.isLoading}
                     width={width}
+                    hideLabel={hide_label}
                   />
                 );
               case 'wikipedia_articles':
@@ -123,6 +125,7 @@ const Tab = ({ activeType, onLoadingChange }) => {
                     onReady={onChildLoad}
                     hidden={loading.isLoading}
                     width={width}
+                    hideLabel={hide_label}
                   />
                 );
               case 'tweets':
@@ -133,6 +136,7 @@ const Tab = ({ activeType, onLoadingChange }) => {
                     onReady={onChildLoad}
                     hidden={loading.isLoading}
                     width={width}
+                    hideLabel={hide_label}
                   />
                 );
               case 'wordpress':
@@ -143,6 +147,7 @@ const Tab = ({ activeType, onLoadingChange }) => {
                     onReady={onChildLoad}
                     hidden={loading.isLoading}
                     width={width}
+                    hideLabel={hide_label}
                   />
                 );
               case 'hypothesis':
@@ -153,6 +158,7 @@ const Tab = ({ activeType, onLoadingChange }) => {
                     onReady={onChildLoad}
                     hidden={loading.isLoading}
                     width={width}
+                    hideLabel={hide_label}
                   />
                 );
               case 'operas_definition':
@@ -162,6 +168,7 @@ const Tab = ({ activeType, onLoadingChange }) => {
                     uris={uris}
                     onReady={onChildLoad}
                     hidden={loading.isLoading}
+                    hideLabel={hide_label}
                   />
                 );
               default:

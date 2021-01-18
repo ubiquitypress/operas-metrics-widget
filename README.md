@@ -168,7 +168,7 @@ const metrics_config = {
         },
         world_map: {
           width: 70,
-          hideLabel: true,
+          hide_label: true,
           uris: ['https://metrics.operas-eu.org/up-ga/sessions/v1']
         }
       }
@@ -211,7 +211,7 @@ The _graphs_ object is slightly more complex than the _nav_counts_ array, though
 
 In the example above, the first thing to note is that there are three direct children of the _graphs_ object: `time_graph`, `country_table`, and `world_map`. These are not arbritrary values, but instead tell the widget exactly what graphs should appear when the user clicks on (in this case) the Sessions button on the navigation menu; we want to see a time graph, a country table, and a world map. There are many more graph options available, and they can all be found in [this table](#supported-graphs).
 
-Within each object you will see the required fields of `width` and `uris`, as well as a `hideLabel` field present on the _world_map_ object - which is optional and does not need to be present.
+Within each object you will see the required fields of `width` and `uris`, as well as a `hide_label` field present on the _world_map_ object - which is optional and does not need to be present.
 
 The _width_ field does exactly what it suggests - it tells the widget the **percentage width** of space that this graph should take up on the page. You may notice that the first graph is already set to occupy 100% of the space, but this is absolutely fine; the widget allows graphs to overflow onto as many rows as you'd like. Based on the values provided in the example above, there will be two rows - one row which contains only the time graph, and another row beneath where the space is unevenly shared between the country table and world map. The value of the _width_ field supports a number `100`, a string `"100"`, or a complete string `"100%"`. In order to prevent any whitespace, ensure that the total widths of your graphs is divisible by 100.
 
@@ -219,7 +219,7 @@ The _uris_ array is exactly the same as witnessed when setting up the [nav_count
 
 With the _uris_ array, specifying additional URIs will NOT cause additional graphs to be rendered, but instead will simply merge the results from all URIs into the same graph. For example, if you are rendering the country table graph with data from Google Analytics (USA: 50) and OPERAS (USA: 20), you would only see one table - but the count for USA Would be 70. This is the same across all graphs.
 
-Lastly, the _hideLabel_ field is a simple boolean that will tell the widget whether or not the label above the graph should be displayed. In the example above, we are displaying country data side by side, both in table form and in vector form. Because we already have labelled the former, it may not be necessary to label the vector graph as well. This is completely up to preference and will only hide the label from the view - but it will still be visible to screen readers and assistive technologies.
+Lastly, the _hide_label_ field is a simple boolean that will tell the widget whether or not the label above the graph should be displayed. In the example above, we are displaying country data side by side, both in table form and in vector form. Because we already have labelled the former, it may not be necessary to label the vector graph as well. This is completely up to preference and will only hide the label from the view - but it will still be visible to screen readers and assistive technologies.
 
 ## Supported Languages
 

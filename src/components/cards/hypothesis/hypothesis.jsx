@@ -93,26 +93,30 @@ const Hypothesis = ({ uris, onReady, hidden, width, hideLabel }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {tableData.map(item => (
-              <TableRow>
-                <TableCell>{formatTimestamp(item.created, 'long')}</TableCell>
-                <TableCell>{item.user.replace('acct:', '')}</TableCell>
-                <TableCell>
-                  <a
-                    href={item.links.html}
-                    target='_blank'
-                    rel='noopener noreferrer'
-                  >
-                    <img
-                      className={styles.icon}
-                      src={`https://storage.googleapis.com/operas/metrics-widget-${getVersion()}/hypothesis.jpg`}
-                      alt='Hypothesis'
-                    />
-                  </a>
-                  {trimString(item.document.title || item.text, 100)}
-                </TableCell>
-              </TableRow>
-            ))}
+            {tableData.map(item => {
+              if (!item || item.status) return null;
+
+              return (
+                <TableRow key={item.created}>
+                  <TableCell>{formatTimestamp(item.created, 'long')}</TableCell>
+                  <TableCell>{item.user.replace('acct:', '')}</TableCell>
+                  <TableCell>
+                    <a
+                      href={item.links.html}
+                      target='_blank'
+                      rel='noopener noreferrer'
+                    >
+                      <img
+                        className={styles.icon}
+                        src={`https://storage.googleapis.com/operas/metrics-widget-${getVersion()}/hypothesis.jpg`}
+                        alt='Hypothesis'
+                      />
+                    </a>
+                    {trimString(item.document.title || item.text, 100)}
+                  </TableCell>
+                </TableRow>
+              );
+            })}
           </TableBody>
         </Table>
       </CardWrapper>

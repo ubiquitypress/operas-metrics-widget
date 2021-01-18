@@ -7,7 +7,7 @@ import styles from './operas-definition.module.scss';
 const OperasDefinition = ({ uris, onReady, hidden }) => {
   useEffect(() => {
     onReady();
-  }, []);
+  }, [uris]);
 
   if (hidden || !uris || uris.length === 0) return null;
 

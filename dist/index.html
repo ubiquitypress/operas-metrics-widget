@@ -29,7 +29,7 @@
       const metrics_config = {
         settings: {
           base_url: 'https://metrics-api.operas-eu.org/events',
-          work_uri: 'info:doi:10.5334/bbc',
+          work_uri: 'info:doi:10.5334/baj',
           language: 'en',
           localise_country_codes: true,
           one_per_column_width: 450
@@ -57,6 +57,9 @@
                 width: 70,
                 hideLabel: true,
                 uris: ['https://metrics.operas-eu.org/up-ga/sessions/v1']
+              },
+              operas_definition: {
+                uris: ['https://metrics.operas-eu.org/up-ga/sessions/v1']
               }
             }
           },
@@ -81,6 +84,9 @@
                   'https://metrics.operas-eu.org/up-ga/downloads/v1',
                   'https://metrics.operas-eu.org/oapen/downloads/v1'
                 ]
+              },
+              operas_definition: {
+                uris: ['https://metrics.operas-eu.org/up-ga/downloads/v1']
               }
             }
           },
@@ -90,6 +96,9 @@
               time_graph: {
                 width: 100,
                 uris: ['https://metrics.operas-eu.org/crossref/citations/v1']
+              },
+              operas_definition: {
+                uris: ['https://metrics.operas-eu.org/crossref/citations/v1']
               }
             }
           },
@@ -97,11 +106,14 @@
             nav_counts: ['*'],
             graphs: {
               tweets: {
-                width: 50,
+                width: 80,
                 uris: ['https://metrics.operas-eu.org/twitter/tweets/v1']
               },
               time_graph: {
-                width: 50,
+                width: 20,
+                uris: ['https://metrics.operas-eu.org/twitter/tweets/v1']
+              },
+              operas_definition: {
                 uris: ['https://metrics.operas-eu.org/twitter/tweets/v1']
               }
             }
@@ -116,6 +128,9 @@
               wordpress: {
                 width: 100,
                 uris: ['https://metrics.operas-eu.org/wordpress/references/v1']
+              },
+              operas_definition: {
+                uris: ['https://metrics.operas-eu.org/wikipedia/references/v1']
               }
             }
           },
@@ -130,6 +145,11 @@
               },
               hypothesis: {
                 width: 100,
+                uris: [
+                  'https://metrics.operas-eu.org/hypothesis/annotations/v1'
+                ]
+              },
+              operas_definition: {
                 uris: [
                   'https://metrics.operas-eu.org/hypothesis/annotations/v1'
                 ]
@@ -150,6 +170,9 @@
               world_map: {
                 width: 70,
                 hideLabel: true,
+                uris: ['https://metrics.operas-eu.org/up-ga/reads/v1']
+              },
+              operas_definition: {
                 uris: ['https://metrics.operas-eu.org/up-ga/reads/v1']
               }
             }

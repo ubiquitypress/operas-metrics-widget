@@ -34,7 +34,8 @@
     "view_more": "View more",
     "view_more_amount": "View {{amount}} more",
     "trimmed_string": "{{string}}...",
-    "no_data": "No data available"
+    "no_data": "No data available",
+    "operas": "Definition for this metric on the OPERAS website"
   },
   "dates": {
     "months": "Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec",

@@ -8,6 +8,7 @@ import WikipediaArticles from '../cards/wikipedia-articles/wikipedia-articles';
 import Tweets from '../cards/tweets/tweets';
 import Wordpress from '../cards/wordpress/wordpress';
 import Hypothesis from '../cards/hypothesis/hypothesis';
+import OperasDefinition from '../cards/operas-definition/operas-definition';
 import getString from '../../localisation/get-string/get-string';
 import getMetricsConfig from '../../utils/get-metrics-config/get-metrics-config';
 import styles from './tab.module.scss';
@@ -152,6 +153,15 @@ const Tab = ({ activeType, onLoadingChange }) => {
                     onReady={onChildLoad}
                     hidden={loading.isLoading}
                     width={width}
+                  />
+                );
+              case 'operas_definition':
+                return (
+                  <OperasDefinition
+                    key={name}
+                    uris={uris}
+                    onReady={onChildLoad}
+                    hidden={loading.isLoading}
                   />
                 );
               default:

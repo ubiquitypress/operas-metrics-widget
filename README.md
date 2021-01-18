@@ -249,15 +249,16 @@ The following measures are currently supported:
 
 The following graphs are currently supported:
 
-| name               | label               | required URI fields    | description                                                                                                                                           | version |
-| ------------------ | ------------------- | ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
-| country_table      | {metric} By Country | `country_uri`, `value` | a table containing a list of countries and their metric values, descending the `world_map` graph represents the same data, but as a map of the world  | 0.0.1+  |
-| time_graph         | {metric} Over Time  | `timestamp`, `value`   | a line graph which shows the total metric values over time                                                                                            | 0.0.1+  |
-| wikipedia_articles | Wikipedia Articles  | `event_uri`            | a list of Wikipedia articles where this item is referenced                                                                                            | 0.0.1+  |
-| world_map          | {metric} By Country | `country_uri`, `value` | a heatmap of the world, with countries having the most metric values being warmest the `country_table` graph represents the same data, but as a table | 0.0.1+  |
-| tweets             | Tweets              | `event_uri`            | a list of embedded Twitter tweets as iframes                                                                                                          | 0.0.6+  |
-| wordpress          | Wordpress           | `event_uri`            | a list of Wordpress posts where this item is referenced                                                                                               | 0.0.14+ |
-| hypothesis         | Hypothesis          | `event_uri`            | a list of Hypothesis titles where this item is referenced                                                                                             | 0.0.17+ |
+| name               | label                                            | required URI fields    | description                                                                                                                                                                          | version |
+| ------------------ | ------------------------------------------------ | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------- |
+| country_table      | {metric} By Country                              | `country_uri`, `value` | a table containing a list of countries and their metric values, descending the `world_map` graph represents the same data, but as a map of the world                                 | 0.0.1+  |
+| time_graph         | {metric} Over Time                               | `timestamp`, `value`   | a line graph which shows the total metric values over time                                                                                                                           | 0.0.1+  |
+| wikipedia_articles | Wikipedia Articles                               | `event_uri`            | a list of Wikipedia articles where this item is referenced                                                                                                                           | 0.0.1+  |
+| world_map          | {metric} By Country                              | `country_uri`, `value` | a heatmap of the world, with countries having the most metric values being warmest the `country_table` graph represents the same data, but as a table                                | 0.0.1+  |
+| tweets             | Tweets                                           | `event_uri`            | a list of embedded Twitter tweets as iframes                                                                                                                                         | 0.0.6+  |
+| wordpress          | Wordpress                                        | `event_uri`            | a list of Wordpress posts where this item is referenced                                                                                                                              | 0.0.14+ |
+| hypothesis         | Hypothesis                                       | `event_uri`            | a list of Hypothesis titles where this item is referenced                                                                                                                            | 0.0.17+ |
+| operas_definition  | Definition for this metric on the OPERAS website | `event_uri`            | a link to this metric's definition on the OPERAS website.<br />The `event_uri` should be the link to the definition (a single-length array).<br />The `width` is always set to 100%. | 0.0.20+ |
 
 ## Developer Information
 

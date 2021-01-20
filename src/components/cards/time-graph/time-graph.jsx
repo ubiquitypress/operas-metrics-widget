@@ -47,28 +47,62 @@ const TimeGraph = ({ uris, activeType, onReady, hidden, width, hideLabel }) => {
         return 0;
       });
 
+      // Make sure we have no missing data for a month
+      const allDates = [];
+      try {
+        const [todayYear, todayMonth] = new Date().toISOString().split('-');
+        let [year, month] = sorted[0].key.split('-');
+        // eslint-disable-next-line no-constant-condition
+        while (true) {
+          // eslint-disable-next-line no-loop-func
+          const match = sorted.filter(({ key }) =>
+            key.includes(`${year}-${month}`)
+          );
+          if (match.length > 0) match.forEach(item => allDates.push(item));
+          else
+            allDates.push({
+              key: `${year}-${month}-01T00:00:00+0000`,
+              value: 0
+            });
+
+          // Get the next date
+          let nextMonth = (Number.parseInt(month, 10) + 1).toString();
+          if (nextMonth === '13') nextMonth = '01';
+          if (nextMonth.length === 1) nextMonth = `0${nextMonth}`;
+          month = nextMonth;
+          year =
+            nextMonth === '01'
+              ? (Number.parseInt(year, 10) + 1).toString()
+              : year;
+
+          if (year === todayYear && month === todayMonth) break;
+        }
+      } catch (err) {
+        // Something went wrong
+        console.error(err);
+        sorted.forEach(item => allDates.push(item));
+      }
+
       // Make sure we always have at least two data points
       // since the graph will render as empty if there is only one
-      if (sorted.length === 1) {
+      if (allDates.length === 1) {
         const dayBefore = new Date(sorted[0].key);
         dayBefore.setDate(dayBefore.getDate() - 1);
-        sorted.unshift({ key: dayBefore.toISOString(), value: 0 });
+        allDates.unshift({ key: dayBefore.toISOString(), value: 0 });
       }
 
       // Go through each item to make it cumulative
-      sorted.forEach((item, index) => {
-        if (index > 0) {
-          sorted[index].value += sorted[index - 1].value;
-        }
+      allDates.forEach((item, i) => {
+        if (i > 0) allDates[i].value += allDates[i - 1].value;
       });
 
       // Determine the xAxis categories
       const xAxis = [];
-      sorted.forEach((item, index) => {
+      allDates.forEach((item, index) => {
         if (
           index === 0 ||
-          index === Math.floor(sorted.length / 2) ||
-          index === sorted.length - 1
+          index === Math.floor(allDates.length / 2) ||
+          index === allDates.length - 1
         )
           xAxis.push(formatTimestamp(item.key));
         else xAxis.push('');
@@ -76,7 +110,7 @@ const TimeGraph = ({ uris, activeType, onReady, hidden, width, hideLabel }) => {
 
       // Update the state with the new info
       setGraphData({
-        series: sorted.map(date => date.value),
+        series: allDates.map(date => date.value),
         xAxis
       });
 

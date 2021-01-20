@@ -72,6 +72,7 @@ const Tab = ({ activeType, onLoadingChange }) => {
         <ul className={styles.tab}>
           {Object.keys(graphs).map(name => {
             const { width, uris, hide_label } = graphs[name];
+            const localisedType = getString(`tabs.${activeType.toLowerCase()}`);
 
             // Only render a placeholder div if we're testing, since we'll have
             // many different API calls made and it'll be impossible (and thankfully
@@ -86,7 +87,7 @@ const Tab = ({ activeType, onLoadingChange }) => {
                   <WorldMap
                     key={name}
                     uris={uris}
-                    activeType={activeType}
+                    activeType={localisedType}
                     onReady={onChildLoad}
                     hidden={loading.isLoading}
                     width={width}
@@ -98,7 +99,7 @@ const Tab = ({ activeType, onLoadingChange }) => {
                   <TimeGraph
                     key={name}
                     uris={uris}
-                    activeType={activeType}
+                    activeType={localisedType}
                     onReady={onChildLoad}
                     hidden={loading.isLoading}
                     width={width}
@@ -110,7 +111,7 @@ const Tab = ({ activeType, onLoadingChange }) => {
                   <CountryTable
                     key={name}
                     uris={uris}
-                    activeType={activeType}
+                    activeType={localisedType}
                     onReady={onChildLoad}
                     hidden={loading.isLoading}
                     width={width}

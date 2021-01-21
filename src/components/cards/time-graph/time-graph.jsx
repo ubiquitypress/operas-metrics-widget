@@ -49,6 +49,7 @@ const TimeGraph = ({ uris, activeType, onReady, hidden, width, hideLabel }) => {
 
       // Make sure we have no missing data for a month
       const allDates = [];
+      const uniqueDates = []; // used for calculating the midpoint
       try {
         const [todayYear, todayMonth] = new Date().toISOString().split('-');
         let [year, month] = sorted[0].key.split('-');
@@ -64,6 +65,7 @@ const TimeGraph = ({ uris, activeType, onReady, hidden, width, hideLabel }) => {
               key: `${year}-${month}-01T00:00:00+0000`,
               value: 0
             });
+          uniqueDates.push(`${year}-${month}-01T00:00:00+0000`);
 
           // Get the next date
           let nextMonth = (Number.parseInt(month, 10) + 1).toString();
@@ -97,16 +99,17 @@ const TimeGraph = ({ uris, activeType, onReady, hidden, width, hideLabel }) => {
       });
 
       // Determine the xAxis categories
-      const xAxis = [];
-      allDates.forEach((item, index) => {
-        if (
-          index === 0 ||
-          index === Math.floor(allDates.length / 2) ||
-          index === allDates.length - 1
-        )
-          xAxis.push(formatTimestamp(item.key));
-        else xAxis.push('');
-      });
+      const xAxis = Array(allDates.length)
+        .fill(null)
+        .map(() => '');
+      xAxis[0] = formatTimestamp(uniqueDates[0]); // first
+      xAxis[Math.floor(allDates.length / 2)] = // median
+        uniqueDates.length > 2
+          ? formatTimestamp(uniqueDates[Math.floor(uniqueDates.length / 2) - 1])
+          : '';
+      xAxis[allDates.length - 1] = formatTimestamp(
+        uniqueDates[uniqueDates.length - 1]
+      ); // last
 
       // Update the state with the new info
       setGraphData({

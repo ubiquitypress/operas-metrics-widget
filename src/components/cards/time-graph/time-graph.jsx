@@ -77,7 +77,7 @@ const TimeGraph = ({ uris, activeType, onReady, hidden, width, hideLabel }) => {
               ? (Number.parseInt(year, 10) + 1).toString()
               : year;
 
-          if (year === todayYear && month === todayMonth) break;
+          if (year >= todayYear && month > todayMonth) break;
         }
       } catch (err) {
         // Something went wrong

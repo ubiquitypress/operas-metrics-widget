@@ -17,7 +17,7 @@ const LineGraph = ({
     },
     chart: {
       type: 'area',
-      height: 200,
+      height: 250,
       animations: {
         enabled: false
       },

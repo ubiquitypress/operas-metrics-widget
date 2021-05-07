@@ -1,0 +1,55 @@
+.navigation {
+  display: flex;
+  overflow-y: auto;
+  padding: 0;
+}
+
+.navigation-button {
+  border: 0.1em solid transparent;
+  background: transparent;
+  padding: 1em;
+  border-radius: 0.4em;
+  transition: background-color 0.2s ease;
+  cursor: pointer;
+  min-width: 7em;
+  text-align: center;
+  font-size: inherit;
+
+  &:not(:last-child) {
+    margin-right: 0.5em;
+  }
+
+  &:first-child {
+    margin-left: auto;
+  }
+
+  &:last-child {
+    margin-right: auto;
+  }
+
+  &:global(.active),
+  &:hover {
+    cursor: pointer;
+    background: #edf0fb;
+  }
+
+  &:focus {
+    border-color: #506bd3;
+    outline: none;
+  }
+}
+
+.navigation-button.active {
+  background: red;
+}
+
+.navigation-count {
+  color: #506cd3;
+  font-size: larger;
+  font-weight: 600;
+  margin-bottom: 0.3em;
+}
+
+.navigation-name {
+  color: #000;
+}

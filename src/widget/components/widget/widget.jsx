@@ -6,6 +6,7 @@ import { useMetrics } from '../../contexts/metrics';
 import Loading from '../loading';
 import Navigation from '../navigation';
 import Panel from '../panel';
+import styles from './widget.module.scss';
 
 const Widget = () => {
   const [data, setData] = useState({ loading: true, tabs: {}, active: null });
@@ -54,12 +55,12 @@ const Widget = () => {
 
   if (data.loading) return <Loading message={t('loading.widget')} />;
   return (
-    <>
+    <div className={styles.widget}>
       <Navigation tabs={data.tabs} active={data.active} setTab={setTab} />
       {Object.keys(data.tabs).map(tab => (
         <Panel key={tab} name={tab} active={data.active === tab} />
       ))}
-    </>
+    </div>
   );
 };
 

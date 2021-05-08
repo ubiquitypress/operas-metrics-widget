@@ -25,7 +25,7 @@ const Panel = ({ name, active }) => {
       {(active || opened) && (
         <>
           {Object.entries(graphs).map(([type, options]) => (
-            <Graph key={type} type={type} options={options} />
+            <Graph key={type} type={type} tab={name} options={options} />
           ))}
         </>
       )}

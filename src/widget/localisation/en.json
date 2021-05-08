@@ -19,8 +19,9 @@
     "annotations": "Annotations"
   },
   "labels": {
-    "over_time": "{{name}} over time",
-    "by_country": "{{name}} by country",
+    "tweets": "Tweets",
+    "time_graph": "{{name}} over time",
+    "country_table": "{{name}} by country",
     "cited_in": "Cited in",
     "wikipedia_articles": "Wikipedia articles",
     "wordpress": "Wordpress",

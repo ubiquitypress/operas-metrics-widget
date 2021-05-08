@@ -1,0 +1,24 @@
+.graph-wrapper {
+  display: inline-block;
+  vertical-align: top;
+  padding: 0 1.5em;
+  box-sizing: border-box;
+  margin-bottom: 1em;
+
+  &:global(.hidden) {
+    display: none;
+  }
+}
+
+.graph-wrapper-label {
+  font-weight: 500;
+  font-size: 1.2em;
+  text-transform: capitalize;
+  margin: 0 0 1em 0;
+
+  &:global(.hidden) {
+    opacity: 0;
+    cursor: default;
+    pointer-events: none;
+  }
+}

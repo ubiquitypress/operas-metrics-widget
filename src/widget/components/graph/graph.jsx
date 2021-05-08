@@ -32,15 +32,16 @@ const Graph = ({ type, tab, options }) => {
     getData();
   }, []);
 
-  console.log(options);
-
   if (!data) return <Loading />;
   return (
     <GraphWrapper
       width={options.width}
-      label={t(`labels.${tab}`, { name: tab.toLowerCase() })}
+      label={t(`labels.${type.toLowerCase()}`, {
+        name: t(`tabs.${tab.toLowerCase()}`)
+      })}
+      hideLabel={options.hide_label}
     >
-      graph here
+      Graph here
     </GraphWrapper>
   );
 };

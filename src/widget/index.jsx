@@ -5,6 +5,7 @@ import Widget from './components/widget';
 import MetricsProvider from './contexts/metrics';
 import I18nProvider from './contexts/i18n';
 import { configPropTypes } from './proptypes';
+import './polyfills';
 
 const Main = ({ config }) => {
   return (

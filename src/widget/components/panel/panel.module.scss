@@ -1,0 +1,5 @@
+.panel {
+  &:global(.hidden) {
+    display: none;
+  }
+}

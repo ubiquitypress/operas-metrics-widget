@@ -5,6 +5,7 @@ import { useTranslation } from '../../contexts/i18n';
 import { useMetrics } from '../../contexts/metrics';
 import Loading from '../loading';
 import Navigation from '../navigation';
+import Panel from '../panel';
 
 const Widget = () => {
   const [data, setData] = useState({ loading: true, tabs: {}, active: null });
@@ -55,6 +56,9 @@ const Widget = () => {
   return (
     <>
       <Navigation tabs={data.tabs} active={data.active} setTab={setTab} />
+      {Object.keys(data.tabs).map(tab => (
+        <Panel key={tab} name={tab} active={data.active === tab} />
+      ))}
     </>
   );
 };

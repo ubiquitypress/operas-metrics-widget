@@ -1,3 +1,4 @@
+import tweets from './tweets';
 import world_map from './world-map';
 import wordpress from './wordpress';
 import hypothesis from './hypothesis';
@@ -6,6 +7,7 @@ import country_table from './country-table';
 import wikipedia_articles from './wikipedia-articles';
 
 export default {
+  tweets,
   wordpress,
   world_map,
   hypothesis,

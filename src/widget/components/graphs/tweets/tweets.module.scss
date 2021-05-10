@@ -1,0 +1,13 @@
+.tweets {
+  width: 100%;
+  overflow-y: auto;
+  max-height: 250px;
+  padding: 0;
+
+  ul,
+  li {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+}

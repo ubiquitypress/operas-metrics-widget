@@ -11,6 +11,7 @@ import KeyValueTable from '../graphs/key-value-table';
 import Hypothesis from '../graphs/hypothesis';
 import LineGraph from '../graphs/line-graph';
 import WorldMap from '../graphs/world-map';
+import Tweets from '../graphs/tweets';
 
 const Graph = ({ type, tab, options, onReady }) => {
   const [data, setData] = useState(null);
@@ -43,20 +44,24 @@ const Graph = ({ type, tab, options, onReady }) => {
 
   // Determine the graph to render
   let graph = null;
+  const props = { ...data, onReady };
   switch (type) {
     case 'world_map':
-      graph = <WorldMap {...data} onReady={onReady} />;
+      graph = <WorldMap {...props} />;
       break;
     case 'time_graph':
-      graph = <LineGraph {...data} onReady={onReady} />;
+      graph = <LineGraph {...props} />;
       break;
     case 'country_table':
     case 'wikipedia_articles':
     case 'wordpress':
-      graph = <KeyValueTable {...data} onReady={onReady} />;
+      graph = <KeyValueTable {...props} />;
       break;
     case 'hypothesis':
-      graph = <Hypothesis {...data} onReady={onReady} />;
+      graph = <Hypothesis {...props} />;
+      break;
+    case 'tweets':
+      graph = <Tweets {...props} />;
       break;
     default:
       graph = <p>not implemented</p>;

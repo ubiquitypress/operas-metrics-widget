@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from '../../../contexts/i18n';
 import { Table, TableBody, TableCell, TableHead, TableRow } from '../../table';
@@ -8,8 +8,12 @@ import trimString from '../../../utils/trim-string';
 import styles from './hypothesis.module.scss';
 import formatTimestamp from '../../../utils/format-timestamp';
 
-const Hypothesis = ({ data }) => {
+const Hypothesis = ({ data, onReady }) => {
   const { t } = useTranslation();
+
+  useEffect(() => {
+    if (onReady) onReady();
+  }, []);
 
   return (
     <Table>
@@ -60,7 +64,8 @@ Hypothesis.propTypes = {
       }),
       text: PropTypes.string
     })
-  ).isRequired
+  ).isRequired,
+  onReady: PropTypes.func.isRequired
 };
 
 export default Hypothesis;

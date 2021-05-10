@@ -12,7 +12,7 @@ import Hypothesis from '../graphs/hypothesis';
 import LineGraph from '../graphs/line-graph';
 import WorldMap from '../graphs/world-map';
 
-const Graph = ({ type, tab, options }) => {
+const Graph = ({ type, tab, options, onReady }) => {
   const [data, setData] = useState(null);
   const { fetchMetric } = useMetrics();
   const { t } = useTranslation();
@@ -45,18 +45,18 @@ const Graph = ({ type, tab, options }) => {
   let graph = null;
   switch (type) {
     case 'world_map':
-      graph = <WorldMap {...data} />;
+      graph = <WorldMap {...data} onReady={onReady} />;
       break;
     case 'time_graph':
-      graph = <LineGraph {...data} />;
+      graph = <LineGraph {...data} onReady={onReady} />;
       break;
     case 'country_table':
     case 'wikipedia_articles':
     case 'wordpress':
-      graph = <KeyValueTable {...data} />;
+      graph = <KeyValueTable {...data} onReady={onReady} />;
       break;
     case 'hypothesis':
-      graph = <Hypothesis {...data} />;
+      graph = <Hypothesis {...data} onReady={onReady} />;
       break;
     default:
       graph = <p>not implemented</p>;
@@ -77,7 +77,8 @@ const Graph = ({ type, tab, options }) => {
 Graph.propTypes = {
   type: PropTypes.string.isRequired,
   tab: PropTypes.string.isRequired,
-  options: PropTypes.shape(graphPropTypes).isRequired
+  options: PropTypes.shape(graphPropTypes).isRequired,
+  onReady: PropTypes.func.isRequired
 };
 
 export default Graph;

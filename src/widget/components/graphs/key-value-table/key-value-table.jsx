@@ -1,11 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import LinkWrapper from '../../link-wrapper';
 import { useTranslation } from '../../../contexts/i18n';
 import styles from './key-value-table.module.scss';
 
-const KeyValueTable = ({ data }) => {
+const KeyValueTable = ({ data, onReady }) => {
   const { t } = useTranslation();
+
+  useEffect(() => {
+    if (onReady) onReady();
+  }, []);
 
   if (data.length === 0) return <p>{t('other.no_data')}</p>;
   return (
@@ -33,7 +37,8 @@ KeyValueTable.propTypes = {
       link: PropTypes.string,
       value: PropTypes.string
     })
-  ).isRequired
+  ).isRequired,
+  onReady: PropTypes.func.isRequired
 };
 
 export default KeyValueTable;

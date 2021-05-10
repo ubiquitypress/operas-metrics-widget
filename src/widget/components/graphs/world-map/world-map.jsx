@@ -4,7 +4,7 @@ import { useTranslation } from '../../../contexts/i18n';
 import loadScript from '../../../utils/load-script';
 import styles from './world-map.module.scss';
 
-const WorldMap = ({ data }) => {
+const WorldMap = ({ data, onReady }) => {
   const { tab, values } = data;
   const { t } = useTranslation();
 
@@ -49,6 +49,7 @@ const WorldMap = ({ data }) => {
         loadScript('jquery-jvectormap-world-merc.js', () => {
           // eslint-disable-next-line no-undef
           $(`#${tab}-world-map`).vectorMap(options);
+          if (onReady) onReady();
         });
       });
     });
@@ -311,7 +312,8 @@ WorldMap.propTypes = {
       ZM: PropTypes.number,
       ZW: PropTypes.number
     })
-  }).isRequired
+  }).isRequired,
+  onReady: PropTypes.func.isRequired
 };
 
 export default WorldMap;

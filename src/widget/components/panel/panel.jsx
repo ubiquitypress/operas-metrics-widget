@@ -6,18 +6,28 @@ import deepFind from '../../utils/deep-find';
 import Graph from '../graph';
 import LinkWrapper from '../link-wrapper';
 import { useTranslation } from '../../contexts/i18n';
+import Loading from '../loading';
 
 const Panel = ({ name, active }) => {
   const config = useConfig();
   const { t } = useTranslation();
-  const [opened, setOpened] = useState(false);
+  const [status, setStatus] = useState({
+    opened: false,
+    loaded: 0
+  });
   const [data] = useState({
     graphs: deepFind(config, `tabs.${name}.graphs`),
     definition: deepFind(config, `tabs.${name}.operas_definition`)
   });
+  const isLoaded = status.loaded === Object.keys(data.graphs).length;
 
+  // Called when a graph is fully loaded
+  const onGraphReady = () =>
+    setStatus(prevState => ({ ...prevState, loaded: prevState.loaded + 1 }));
+
+  // Once the panel has been opened once, keep its content permanently rendered
   useEffect(() => {
-    if (active && !opened) setOpened(true);
+    if (active && !status.opened) setStatus({ ...status, opened: true });
   }, [active]);
 
   return (
@@ -28,19 +38,29 @@ const Panel = ({ name, active }) => {
       id={`mw-tabpanel-${name}`}
       aria-labelledby={`mw-tab-${name}`}
     >
-      {(active || opened) && (
+      {(active || status.opened) && (
         <>
-          {/* Render each graph for this panel */}
-          {Object.entries(data.graphs).map(([type, options]) => (
-            <Graph key={type} type={type} tab={name} options={options} />
-          ))}
+          {!isLoaded && <Loading message={t('loading.graphs')} />}
 
-          {/* OPERAS Definition */}
-          {data.definition && (
-            <LinkWrapper href={data.definition}>
-              {t('other.operas')}
-            </LinkWrapper>
-          )}
+          <div style={{ opacity: isLoaded ? '1' : '0' }}>
+            {/* Render each graph for this panel */}
+            {Object.entries(data.graphs).map(([type, options]) => (
+              <Graph
+                key={type}
+                type={type}
+                tab={name}
+                options={options}
+                onReady={onGraphReady}
+              />
+            ))}
+
+            {/* OPERAS Definition */}
+            {data.definition && (
+              <LinkWrapper href={data.definition}>
+                {t('other.operas')}
+              </LinkWrapper>
+            )}
+          </div>
         </>
       )}
     </div>

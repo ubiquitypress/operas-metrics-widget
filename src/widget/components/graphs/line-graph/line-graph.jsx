@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import loadScript from '../../../utils/load-script';
 import styles from './line-graph.module.scss';
 
-const LineGraph = ({ data }) => {
+const LineGraph = ({ data, onReady }) => {
   const { seriesData, seriesName, xAxisCategories } = data;
 
   const options = {
@@ -50,6 +50,7 @@ const LineGraph = ({ data }) => {
         options
       );
       chart.render();
+      if (onReady) onReady();
     });
   }, []);
 
@@ -63,7 +64,8 @@ LineGraph.propTypes = {
     seriesData: PropTypes.arrayOf(PropTypes.number),
     seriesName: PropTypes.string,
     xAxisCategories: PropTypes.arrayOf(PropTypes.string)
-  }).isRequired
+  }).isRequired,
+  onReady: PropTypes.func.isRequired
 };
 
 export default LineGraph;

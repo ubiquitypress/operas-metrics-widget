@@ -1,3 +1,4 @@
+import world_map from './world-map';
 import wordpress from './wordpress';
 import hypothesis from './hypothesis';
 import time_graph from './time-graph';
@@ -6,6 +7,7 @@ import wikipedia_articles from './wikipedia-articles';
 
 export default {
   wordpress,
+  world_map,
   hypothesis,
   time_graph,
   country_table,

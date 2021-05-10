@@ -10,6 +10,7 @@ import { useConfig } from '../../contexts/config';
 import KeyValueTable from '../graphs/key-value-table';
 import Hypothesis from '../graphs/hypothesis';
 import LineGraph from '../graphs/line-graph';
+import WorldMap from '../graphs/world-map';
 
 const Graph = ({ type, tab, options }) => {
   const [data, setData] = useState(null);
@@ -43,6 +44,9 @@ const Graph = ({ type, tab, options }) => {
   // Determine the graph to render
   let graph = null;
   switch (type) {
+    case 'world_map':
+      graph = <WorldMap {...data} />;
+      break;
     case 'time_graph':
       graph = <LineGraph {...data} />;
       break;

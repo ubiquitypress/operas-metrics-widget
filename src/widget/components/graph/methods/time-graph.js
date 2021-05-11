@@ -56,6 +56,7 @@ const timeGraph = ({ t, uris, tab }) => {
     }
   } catch (err) {
     // Something went wrong
+    // eslint-disable-next-line no-console
     console.error(err);
     sorted.forEach(item => allDates.push(item));
   }

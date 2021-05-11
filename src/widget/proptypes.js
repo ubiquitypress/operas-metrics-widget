@@ -11,7 +11,7 @@ export const configPropTypes = {
     base_url: PropTypes.string.isRequired,
     work_uri: PropTypes.string.isRequired,
     language: PropTypes.string,
-    default_tabs: PropTypes.arrayOf(PropTypes.string),
+    first_panel_open_on_ready: PropTypes.bool,
     localise_country_codes: PropTypes.bool,
     one_per_column_width: PropTypes.number
   }),

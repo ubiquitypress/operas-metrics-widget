@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useConfig } from '../../contexts/config';
 import { useTranslation } from '../../contexts/i18n';
 import { useMetrics } from '../../contexts/metrics';
+import deepFind from '../../utils/deep-find';
 import Loading from '../loading';
 import Navigation from '../navigation';
 import Panel from '../panel';
@@ -52,6 +53,13 @@ const Widget = () => {
 
     getTabs();
   }, []);
+
+  // Open the leftmost tab on ready, if specified
+  useEffect(() => {
+    if (!data.loading && data.tabs)
+      if (deepFind(config, 'settings.first_panel_open_on_ready'))
+        setTab(Object.keys(data.tabs)[0]);
+  }, [data.tabs]);
 
   if (data.loading) return <Loading message={t('loading.widget')} />;
   return (

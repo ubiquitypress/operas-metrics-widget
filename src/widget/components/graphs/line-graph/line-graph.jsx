@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import loadScript from '../../../utils/load-script';
 import { useTranslation } from '../../../contexts/i18n';
@@ -102,19 +103,21 @@ const LineGraph = ({ data, onReady }) => {
       {/* Graph */}
       <canvas id={`${graphName}-line-graph`} className={styles['line-graph']} />
 
-      {/* Tooltip */}
-      <div
-        id={`${graphName}-line-graph-tooltip`}
-        className={styles['line-graph-tooltip']}
-      >
-        <div className={styles['line-graph-tooltip-key']}>{seriesName}</div>
+      {ReactDOM.createPortal(
         <div
-          id={`${graphName}-line-graph-tooltip-val`}
-          className={styles['line-graph-tooltip-value']}
+          id={`${graphName}-line-graph-tooltip`}
+          className={styles['line-graph-tooltip']}
         >
-          0
-        </div>
-      </div>
+          <div className={styles['line-graph-tooltip-key']}>{seriesName}</div>
+          <div
+            id={`${graphName}-line-graph-tooltip-val`}
+            className={styles['line-graph-tooltip-value']}
+          >
+            0
+          </div>
+        </div>,
+        document.querySelector('body')
+      )}
     </div>
   );
 };

@@ -6,59 +6,116 @@ import styles from './line-graph.module.scss';
 
 const LineGraph = ({ data, onReady }) => {
   const { seriesData, seriesName, xAxisCategories } = data;
-  const { lang } = useTranslation();
+  const { t, lang } = useTranslation();
   const graphName = seriesName.toLowerCase().replace(/ /g, '-');
 
-  const options = {
-    series: [{ name: seriesName, data: seriesData }],
-    dataLabels: { enabled: false },
-    xaxis: { categories: xAxisCategories },
-    yaxis: {
-      tickAmount: 1,
-      labels: {
-        formatter: value => Math.round(value).toLocaleString(lang) // round to nearest whole number, and format with commas
-      }
-    },
-    chart: {
-      type: 'area',
-      height: 250,
-      animations: { enabled: false },
-      toolbar: { show: false },
-      selection: { enabled: false },
-      zoom: { enabled: false }
-    },
-    tooltip: { enabled: true },
-    fill: {
-      type: 'gradient',
-      colors: ['#dde1f4'],
-      gradient: {
-        gradientToColors: ['#ffffff'],
-        shadeIntensity: 1,
-        opacityFrom: 1,
-        opacityTo: 1,
-        stops: [0]
-      }
-    },
-    stroke: {
-      width: 1,
-      colors: ['#7b8cdd']
-    }
-  };
-
   useEffect(() => {
-    loadScript('apexcharts.min.js', () => {
+    if (seriesData.length === 0) return onReady();
+    return loadScript('chart.js', () => {
+      // Get the element context
+      const ctx = document
+        .getElementById(`${graphName}-line-graph`)
+        .getContext('2d');
+
+      // Declare the gradient fill colour
+      const gradientFill = ctx.createLinearGradient(0, 0, 0, 400);
+      gradientFill.addColorStop(0, 'rgba(80, 108, 211, 0.3)');
+      gradientFill.addColorStop(1, 'rgba(255, 255, 255, 0');
+
       // eslint-disable-next-line no-undef
-      const chart = new ApexCharts(
-        document.querySelector(`#${graphName}-line-graph`),
-        options
-      );
-      chart.render();
-      if (onReady) onReady();
+      const chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: xAxisCategories,
+          datasets: [
+            {
+              label: seriesName,
+              backgroundColor: gradientFill,
+              borderColor: '#506CD3',
+              data: seriesData,
+              fill: 'origin',
+              pointRadius: 0,
+              pointHitRadius: 0
+            }
+          ]
+        },
+        options: {
+          animation: false,
+          scales: {
+            x: { ticks: { maxTicksLimit: 10 } },
+            y: { ticks: { callback: value => value.toLocaleString(lang) } }
+          },
+          cubicInterpolationMode: 'monotone',
+          borderWidth: 1,
+          plugins: {
+            legend: { display: false },
+
+            // Custom tooltip
+            tooltip: {
+              enabled: false,
+              intersect: false,
+              external: context => {
+                const tooltipEl = document.getElementById(
+                  `${graphName}-line-graph-tooltip`
+                );
+
+                const tooltipModel = context.tooltip;
+
+                // Hide if should not be visible
+                if (tooltipModel.opacity === 0) {
+                  tooltipEl.style.opacity = 0;
+                  return;
+                }
+
+                // Render the tooltip
+                if (tooltipModel.body) {
+                  // Set the text
+                  const { raw } = tooltipModel.dataPoints[0];
+                  document.getElementById(
+                    `${graphName}-line-graph-tooltip-val`
+                  ).innerHTML = raw.toLocaleString(lang);
+
+                  // Set the posiiton
+                  const position = context.chart.canvas.getBoundingClientRect();
+                  tooltipEl.style.opacity = 1;
+                  tooltipEl.style.left = `${
+                    position.left + window.pageXOffset + tooltipModel.caretX
+                  }px`;
+                  tooltipEl.style.top = `${
+                    position.top + window.pageYOffset + tooltipModel.caretY
+                  }px`;
+                }
+              }
+            }
+          }
+        }
+      });
+
+      // Chart is ready
+      if (chart && onReady) onReady();
     });
   }, []);
 
+  if (seriesData.length === 0) return <p>{t('other.no_data')}</p>;
   return (
-    <div id={`${graphName}-line-graph`} className={styles['line-graph']} />
+    <div>
+      {/* Graph */}
+      <canvas id={`${graphName}-line-graph`} className={styles['line-graph']} />
+
+      {/* Tooltip */}
+      <div
+        id={`${graphName}-line-graph-tooltip`}
+        className={styles['line-graph-tooltip']}
+      >
+        <div className={styles['line-graph-tooltip-key']}>{seriesName}</div>
+        <div
+          id={`${graphName}-line-graph-tooltip-val`}
+          className={styles['line-graph-tooltip-value']}
+        >
+          0
+        </div>
+      </div>
+    </div>
   );
 };
 

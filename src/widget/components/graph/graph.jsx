@@ -67,7 +67,6 @@ const Graph = ({ type, tab, options, onReady }) => {
       console.error(
         `'${type}' does not have a matching graph -- please remove from '${tab}'.`
       );
-      graph = null;
       break;
   }
   return (

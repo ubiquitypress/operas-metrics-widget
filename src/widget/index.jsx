@@ -8,6 +8,9 @@ import { configPropTypes } from './proptypes';
 import './polyfills';
 
 const Main = ({ config }) => {
+  if (!config)
+    return <p>No configuration found - please check the documentation.</p>;
+
   return (
     <ConfigProvider config={config}>
       <MetricsProvider config={config}>

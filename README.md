@@ -52,8 +52,8 @@ When the widget is initialised, its HTML will be inserted into this container. I
 
 After adding the `#metrics-block` element to the HTML, the next step is to bring in the compiled JavaScript code which contains everything the widget needs to run, as well as its styling.
 
-The current production version of the widget is `0.1.7`, and it is 184KB in size. The JavaScript file is hosted on a CDN, and can be found here:<br />
-https://storage.googleapis.com/operas/metrics-widget-0.1.7/widget.js
+The current production version of the widget is `0.1.8`, and it is 184KB in size. The JavaScript file is hosted on a CDN, and can be found here:<br />
+https://storage.googleapis.com/operas/metrics-widget-0.1.8/widget.js
 
 To embed the widget onto the page, simply add a script tag before the closing `</body>` tag in the HTML:
 
@@ -62,7 +62,7 @@ To embed the widget onto the page, simply add a script tag before the closing `<
 ```
 
 As of version 0.1, CSS is now provided in a separate minified file, as opposed to being rendered inline automatically:<br />
-https://storage.googleapis.com/operas/metrics-widget-0.1.7/widget.css
+https://storage.googleapis.com/operas/metrics-widget-0.1.8/widget.css
 
 To embed the widget styling onto the page, simply add a link tag before the closing `</head>` tag in the HTML:
 
@@ -408,6 +408,6 @@ Next, you'll want to [build](#building) the widget.
 
 Once the widget has been built, copy all files in the _dist_ directory you just created in the storage bucket. You will need to create a folder for the _assets_ and copy those in as well.
 
-Lastly, you'll want to update this very README file to replace the URLs of the _widget.js_ and _widget.css_ in the [Getting Started](#getting-started) section with the new URL (just updating the version number is enough), and also update the file size number with the new size of the `widget.js` file that was just built.
+Lastly, you'll want to update this very README file to replace the three strings containing the previous version of the widget (two of which are URLs) to the new version in the [Getting Started](#getting-started) section, and also update the file size number with the new size of the `widget.js` file that was just built.
 
 Finally, commit the changes made to the readme and have some coffee.

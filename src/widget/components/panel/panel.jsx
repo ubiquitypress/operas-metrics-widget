@@ -4,9 +4,9 @@ import styles from './panel.module.scss';
 import { useConfig } from '../../contexts/config';
 import deepFind from '../../utils/deep-find';
 import Graph from '../graph';
-import LinkWrapper from '../link-wrapper';
 import { useTranslation } from '../../contexts/i18n';
 import Loading from '../loading';
+import OperasDefinition from '../operas-definition';
 
 const Panel = ({ name, active }) => {
   const config = useConfig();
@@ -43,7 +43,6 @@ const Panel = ({ name, active }) => {
           {!isLoaded && <Loading message={t('loading.graphs')} />}
 
           <div className={isLoaded ? '' : 'hidden'}>
-            {/* Render each graph for this panel */}
             {Object.entries(data.graphs).map(([type, options]) => (
               <Graph
                 key={type}
@@ -53,13 +52,7 @@ const Panel = ({ name, active }) => {
                 onReady={onGraphReady}
               />
             ))}
-
-            {/* OPERAS Definition */}
-            {data.definition && (
-              <LinkWrapper href={data.definition}>
-                {t('other.operas')}
-              </LinkWrapper>
-            )}
+            <OperasDefinition link={data.definition} />
           </div>
         </>
       )}

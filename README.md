@@ -50,10 +50,10 @@ The first step is to determine where the widget should be placed within the webp
 
 When the widget is initialised, its HTML will be inserted into this container. It is important that the exact _id_ attribute value is used as above, as this is what the widget will look for in the DOM.
 
-After adding the `#metrics-block` container to the HTML, the next step is to bring in the compiled JavaScript code which contains everything the widget needs to run.
+After adding the `#metrics-block` element to the HTML, the next step is to bring in the compiled JavaScript code which contains everything the widget needs to run, as well as its styling.
 
-The current production version of the widget is `0.0.25`, and it is 197KB in size. The JavaScript file is hosted on a CDN, and can be found here:<br />
-https://storage.googleapis.com/operas/metrics-widget-0.0.25/widget.js
+The current production version of the widget is `0.1.7`, and it is 184KB in size. The JavaScript file is hosted on a CDN, and can be found here:<br />
+https://storage.googleapis.com/operas/metrics-widget-0.1.7/widget.js
 
 To embed the widget onto the page, simply add a script tag before the closing `</body>` tag in the HTML:
 
@@ -61,7 +61,16 @@ To embed the widget onto the page, simply add a script tag before the closing `<
 <script src="./path/to/widget.js"></script>
 ```
 
-After adding this line, visit the webpage in which the widget is embedded. You should see the following message in the location you placed the `#metrics-block` div.
+As of version 0.1, CSS is now provided in a separate minified file, as opposed to being rendered inline automatically:<br />
+https://storage.googleapis.com/operas/metrics-widget-0.1.7/widget.css
+
+To embed the widget styling onto the page, simply add a link tag before the closing `</head>` tag in the HTML:
+
+```html
+<link rel="stylesheet" href="./path/to/styles.css" />
+```
+
+After adding both lines, visit the webpage in which the widget is embedded. You should see the following message in the location you placed the `#metrics-block` div.
 
 > No configuration found - please check the documentation.
 
@@ -69,21 +78,23 @@ This message means that the widget's code was successfully called and executed, 
 
 ## Configuration
 
-All configuration for the widget is handled within a JavaScript object that should be present on the same page as the container added in the [Getting Started](#getting-started) section. The name of this object should be `metrics_config`, and it can be declared anywhere on the webpage:
+All configuration for the widget is handled within a JavaScript object that should exist on the same page as the `#metrics-block` element. The name of this object should be `metrics_config`, and it can be declared anywhere on the webpage:
 
 ```html
 <script>
-  const metrics_config = {};
+  var metrics_config = {};
 </script>
 ```
 
 Within the _metrics_config_ object, certain fields are expected by the widget. Each field is explained in depth below, though it is also possible to view a complete example of a fully implemented HTML file [here](https://gitlab.com/ubiquitypress/metrics-widget/-/blob/master/dist/index.html).
 
-If using the file above as reference, please do note that it is primarily used during development as a test environment - and may not always be updated to provide a fully accurate depiction. Similarly, any CSS styling on the page should not be copied into a production build as this is purely used for testing.
+If using the file above as reference, please do note that it is primarily used during development as a test environment - and may not always be updated to provide a fully accurate depiction. Similarly, any CSS on the demo page should not be copied into production.
 
 ### Settings
 
-The most important field within the _metrics_config_ object is the `settings` object. This will contain all the key/value pairs to help the metrics widget understand which API to fetch data from, as well as to allow for more precise configuration.
+The `settings` object is a **required** property of the _metrics_config_ object, and contains all of the widget configuration.
+
+Example:
 
 ```javascript
 const metrics_config = {
@@ -91,33 +102,35 @@ const metrics_config = {
     base_url: 'https://metrics-api.operas-eu.org/events',
     work_uri: 'info:doi:10.5334/bbc',
     language: 'en',
-    default_tabs: ['annotations', 'citations', 'downloads'],
     localise_country_codes: true,
-    one_per_row_width: 450
+    one_per_row_width: 450,
+    first_panel_open_on_ready: true
   }
 };
 ```
 
-Above is an example setup of the _settings_ object within the _metrics_config_ object. Not all fields here are required, so please do refer to the table below for additional information.
+Definitions:
 
-| field                  | type    | required | description                                                                                                                                                                                                                    |
-| ---------------------- | ------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| base_url               | string  | yes      | the base URL of where the metrics are hosted.<br /> example: https://metrics-api.operas-eu.org/events                                                                                                                          |
-| work_uri               | string  | yes      | the URI scheme and URI to use.<br /> example: `info:doi:10.5334/bay`                                                                                                                                                           |
-| language               | string  | no       | the ISO 639-1 language code to display text in.<br /> if your [language is not supported](#supported-languages), please consider contributing.<br /> the default value for this field is `en`                                  |
-| default_tabs           | array   | no       | an array of tab names (see [Supported Measures](#supported-measures)).<br /> when the widget loads, the first matching measure in the array that has data will automatically open.<br /> example: `['downloads', 'citations']` |
-| localise_country_codes | boolean | no       | if `true`, graphs that display country codes will display their name instead.<br /> language names will be localised to the provided `language`.<br /> example: `fr` => `French`                                               |
-| one_per_row_width      | number  | no       | if provided, all graphs will occupy their own row if the window width is less than or equal to this value.                                                                                                                     |
+| field                     | type    | required | description                                                                                                                                                                                   |
+| ------------------------- | ------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| base_url                  | string  | yes      | the base URL of where the metrics are hosted.<br /> example: https://metrics-api.operas-eu.org/events                                                                                         |
+| work_uri                  | string  | yes      | the URI scheme and URI to use.<br /> example: `info:doi:10.5334/bay`                                                                                                                          |
+| language                  | string  | no       | the ISO 639-1 language code to display text in.<br /> if your [language is not supported](#supported-languages), please consider contributing.<br /> the default value for this field is `en` |
+| localise_country_codes    | boolean | no       | if `true`, graphs that display country codes will display their localised name instead.<br /> example: `fr` (if _false_), `French` (if \_true)                                                |
+| one_per_row_width         | number  | no       | if provided, all graphs will stretch to 100% width if the window width is less than or equal to this value.                                                                                   |
+| first_panel_open_on_ready | boolean | no       | if `true`, the first navigation panel will open automatically when ready.<br /> the default value for this field is `false`                                                                   |
 
-In order to have the correct settings, only two of the above fields are required. The `base_url` field in most cases will be the same as the example provided, unless you are hosting your own metrics service.
+The `base_url` field in most cases will be the same as the example provided, unless you are hosting your own metrics service.
 
-The `work_uri` field will depend on the page being viewed - and likely will need to be dynamically implemented. The data here will be used to fetch metrics for that specific work only.
+The `work_uri` field will depend on the page being viewed - and likely will need to be dynamically implemented. This tells the widget which resource the metrics are being requested for.
 
 ### Locales
 
-The `locales` object is an optional field within the _metrics_config_ object, and is used to override any strings that are localised within the application.
+The `locales` object is an **optional** field within the _metrics_config_ object, and is used to override any strings that are localised within the application.
 
-For instance, you may want to replace the word 'Sessions' with 'Visits,' or localise spellings from British English to American English without editing the source code.
+For instance, you may want to replace the word 'Sessions' with 'Abstract Views,' or localise spellings from British English to American English without editing the source code.
+
+Example:
 
 ```javascript
 const metrics_config = {
@@ -131,97 +144,100 @@ const metrics_config = {
 };
 ```
 
-The example above will override the English localisation for `tabs.sessions` to read as 'Abstract Views' instead of the hard-coded 'Sessions' string. This can be done for any amount of strings, and any amount of languages.
+The example above will override the English localisation for `tabs.sessions` to read as 'Abstract Views'. This can be done for any amount of strings, and any amount of languages.
 
-To override a language, you will need to first indicate the language code that you are overriding. A list of supported languages can be found [here](#supported-languages), or can be found in the list of filenames in the [GitLab repository](https://gitlab.com/ubiquitypress/metrics-widget/-/tree/master/src/localisation). In the example above, the language code _en_ is being overriden. Next, you will need to provide the exact same path structure used by the widget for that language. For example, to replace the phrase 'Sessions' with 'Abstract views', the path in the [en.json](https://gitlab.com/ubiquitypress/metrics-widget/-/blob/master/src/localisation/en.json) file is `tabs.sessions`, which is why the above code works.
+To override a language, you will need to first indicate the language code that you are overriding. A list of supported languages can be found [here](#supported-languages), or can be found in the list of filenames in the [GitLab repository](https://gitlab.com/ubiquitypress/metrics-widget/-/tree/master/src/widget/localisation).
 
-It is also possible to use this functionality to add your own language interpretation, such as adding a new `en-us` language code and setting the _language_ [setting](#settings) to be the same value.
+In the example above, the language code _en_ is being overriden. Next, you will need to provide the exact same path structure used by the widget for that language. For example, to replace the phrase 'Sessions' with 'Abstract Views', the path in the [en.json](https://gitlab.com/ubiquitypress/metrics-widget/-/blob/master/src/widget/localisation/en.json) file is `tabs.sessions`, so we replicate that above.
 
-The priority order for localisation on the widget is:
-
-1. Check to see if an overriden string exists in the in the _metrics_config.locales_ object for the widget's language (specified in _metrics_config.settings.language_)
-2. Check to see if the official language JSON file of the widget contains the string for the widget's language (specified in _metrics_config.settings.language_)
-3. Check to see if the string exists in the English JSON file, regardless of the widget's language
-4. Return the path as the string, as no localisation could be found
-
-When the first case above is met, that language will be returned. For example, if you add a new language override called `it`, but do not localise `tabs.sessions`, the string will be returned in English as it is the only case that matches.
+It is also possible to use this functionality to add your own language, such as adding a new `en-us` language override and setting the _language_ [setting](#settings) to be the same value - though please consider contributing if you are looking to add new languages!
 
 ### Tabs
 
-The `tabs` object is the third and final field expected by the _metrics_config_ object, and it is required in order for the widget to work as expected.
+The `tabs` object is a **required** property of the _metrics_config_ object, and contains information about which measures to display (such as downloads, citations, references), and which graphs to use.
 
-This object will contain additional key/value pairs that tell the widget which measures to display (such as downloads, citations, references), what metric URIs should count towards the figures, and what graphs to display for each.
-
-In order to know which measures are available, take a look at [this table](#supported-measures) to see which measures are officially supported. Depending on the API you are using for your metrics, additional measures may be available - though anything not listed on the table should not be considered as officially supported.
+Example:
 
 ```javascript
 const metrics_config = {
   tabs: {
-    sessions: {
-      nav_counts: ['https://metrics.operas-eu.org/up-ga/sessions/v1'],
+    citations: {
+      order: 0,
+      nav_counts: ['https://metrics.operas-eu.org/crossref/citations/v1'],
       graphs: {
         time_graph: {
           width: 100,
-          uris: ['https://metrics.operas-eu.org/up-ga/sessions/v1']
-        },
-        country_table: {
-          width: 30,
-          uris: ['https://metrics.operas-eu.org/up-ga/sessions/v1']
-        },
-        world_map: {
-          width: 70,
           hide_label: true,
-          uris: ['https://metrics.operas-eu.org/up-ga/sessions/v1']
+          uris: ['https://metrics.operas-eu.org/crossref/citations/v1']
         }
-      }
+      },
+      operas_definition: 'https://metrics.operas-eu.org/crossref/citations/v1'
+    },
+    references: {
+      order: 1,
+      nav_counts: [
+        'https://metrics.operas-eu.org/wordpress/references/v1',
+        'https://metrics.operas-eu.org/wikipedia/references/v1'
+      ],
+      graphs: {
+        wikipedia_articles: {
+          width: 50,
+          uris: ['https://metrics.operas-eu.org/wikipedia/references/v1']
+        },
+        wordpress: {
+          width: 50,
+          uris: ['https://metrics.operas-eu.org/wordpress/references/v1']
+        }
+      },
+      operas_definition: 'https://metrics.operas-eu.org/wikipedia/references/v1'
     }
   }
 };
 ```
 
-The above code seems quite complicated at first, though it can be quite intutive once broken down.
+Within the `tabs` object, the next child should always be named after a _measure_ (such as `citations` or `references` in the example above). Whilst the widget has been tested with several [Supported Measures](#supported-measures) (any of which can be plugged in above!), the API you are using may provide additional measures that the widget should support.
 
-The first thing to note is the `sessions` object, which is a direct child field of the _tabs_ object. Sessions is one of the [supported measures](#supported-measures) by the widget, along with many other data sources. The widget expects any child fields of the _tabs_ object to match one of the supported measures - so _sessions_ here could easily be something else, such as _downloads_, _tweets_, _annotations_, and so forth.
+#### order
 
-As we've defined a _sessions_ object, we have now told the widget that we want to be able to see the metrics available to us for the _sessions_ measure, making it appear on the navigation menu. Within the _sessions_ object are two more child fields - `nav_counts` and `graphs`.
+The first (and **optional**) field is `order`. This tells the widget what priority to give this measure on the navigation menu, with 0 being the highest priority. In the example above, _citations_ has an order of 0 so will appear before _references_ which has an order of 1.
 
 #### nav_counts
 
-The _nav_counts_ array is used to tell the widget which measures should be used to contribute to the number shown in the navigation menu. In many cases, multiple sources (Google Analytics, OPERAS, Ubiquity Press) will be used to collect analytics - though you may not want to use all of them to present your figures, as some may overlap and display inflated results when combined.
+The next (and **required**) field is `nav_counts`: an array which tells the navigation menu which URIs should contribute towards its figures.
 
-As a result, any Measure URIs provided in this array will contribute towards the total count shown in the navigation menu. For example, if Google Analytics has logged 500 Sessions and OPERAS has logged 200, we can choose whether to show only the Google Analytics measure (which would display 500), show only the OPERAS measure (which would display 200), or show both measures (which would display 700 - the sum of both values).
+In most cases, multiple sources (Google Analytics, OPERAS, Ubiquity Press) will be collecting data, though you may not want to include all of these sources in your figures. As such, you can provide an array of URIs which you _do_ wish to use here.
 
-If you are unsure about how to find the Measure URI(s) to put in this array, the easiest way is to read the JSON response from the metrics API. If you take the _base_url_ and _work_uri_ variables from your _metrics_config.settings_ object, you should be able to visit this URL:<br>
+If your array contains more than one URI, the data will be aggregated into one number. For example, if you use Google Analytics (500 views) and OPERAS (100 views) URIs, the value shown in the navigation would be 600 views, as it is the aggregation of both.
+
+If you are unsure about what measure URIs are available to you, you will be able to find a full list of available measures from the API. Replacing this link with the values from your _metrics_config_ object, you can find all of the URIs from the JSON response:
 
 > **{{base_url}}**?filter=**{{work_uri}}**/bbc&aggregation=measure_uri
 
-Assuming you have a browser extension which will format the JSON response, you should be able to see a list of available measures. From there, you can then filter by ones that match the `type` you're looking for. In this case, we would look for ones that have a _type_ of 'sessions' - as that's the metric we're currently adding. From there, you will just need to copy the value of the `measure_uri` field (which should be a URL!) and paste it into the array. Every Measure URI pasted into the array will be used to count towards the total count in the navigation menu, as explained above.
-
-If you do wish to display the sum of all possible measures, it is possible to replace this field with a wildcard array instead:
-
-```javascript
-{
-  nav_counts: ['*'];
-}
-```
-
-This will tell the widget to include every recorded metric value when displaying the total number of (in this case) Sessions on the navigation menu. In order to prevent data from being inflated, it is recommended to only use this method if you are sure that your metrics sources do not provide the same data (such as if Google Analytics only provided EU metrics, and OPERAS only provided non-EU metrics).
+The `nav_counts` array also supports use of a wildcard item (`['*']`) which will tell the navigation menu to use _all available_ URIs when calculating the totals. It is recommended to only use this if you are completely sure that there will not be any overlap in your data that could cause inflated numbers.
 
 #### graphs
 
-The _graphs_ object is slightly more complex than the _nav_counts_ array, though the Measure URIs and principles are exactly the same.
+The next (and **required**) field is `graphs`: an object containing all of the graphs you wish to show for this metric.
 
-In the example above, the first thing to note is that there are three direct children of the _graphs_ object: `time_graph`, `country_table`, and `world_map`. These are not arbritrary values, but instead tell the widget exactly what graphs should appear when the user clicks on (in this case) the Sessions button on the navigation menu; we want to see a time graph, a country table, and a world map. There are many more graph options available, and they can all be found in [this table](#supported-graphs).
+In the example above, the _citations_ metric is showing one graph (_time_graph_), and the _references_ metric is showing two graphs (_wikipedia_articles_ and _wordpress_). These graphs are all valid because they are named after the [Supported Graphs](#supported-graphs).
 
-Within each object you will see the required fields of `width` and `uris`, as well as a `hide_label` field present on the _world_map_ object - which is optional and does not need to be present.
+Each graph can be configured with three properties:
 
-The _width_ field does exactly what it suggests - it tells the widget the **percentage width** of space that this graph should take up on the page. You may notice that the first graph is already set to occupy 100% of the space, but this is absolutely fine; the widget allows graphs to overflow onto as many rows as you'd like. Based on the values provided in the example above, there will be two rows - one row which contains only the time graph, and another row beneath where the space is unevenly shared between the country table and world map. The value of the _width_ field supports a number `100`, a string `"100"`, or a complete string `"100%"`. In order to prevent any whitespace, ensure that the total widths of your graphs is divisible by 100.
+| field      | type          | required | description                                                                                                                                |
+| ---------- | ------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| width      | number        | yes      | the % width of the graph (max. `100`)<br /> graphs will be rendered inline, so two graphs with a 50 width will display next to each other. |
+| hide_label | boolean       | no       | if `true`, the label for this graph will be hidden<br /> the label can still be seen by assistive technologies for accessibility purposes  |
+| uris       | array[string] | yes      | an array of all URIs that contribute towards the data of this graph                                                                        |
 
-The _uris_ array is exactly the same as witnessed when setting up the [nav_counts](#nav_counts) array in the previous section - it is an array of Measure URIs that will contribute towards the graph. The reason that this must be re-defined is to allow full control over which URIs should contribute towards each graph. Some users may want to display the total number of (in this case) Sessions in the navigation menu, but may only want to display a world map graph when that menu item is clicked -- and this graph may not provide the full summary of Sessions.
+The `width` field does exactly what it suggests - it tells the widget the **percentage width** of space that this graph should take up on the page. A graph can have _any width_ up to `100`, which means it will take up an entire row to itself. If you wish to have two graphs sharing the same row, you would set both of their widths to `50` (or any other combination of numbers that equal `100`, like `30`+`70`).
 
-With the _uris_ array, specifying additional URIs will NOT cause additional graphs to be rendered, but instead will simply merge the results from all URIs into the same graph. For example, if you are rendering the country table graph with data from Google Analytics (USA: 50) and OPERAS (USA: 20), you would only see one table - but the count for USA Would be 70. This is the same across all graphs.
+The `uris` array is exactly the same as witnessed when setting up the [nav_counts](#nav_counts) array in the previous section - it is an array of measure URIs that will contribute towards the graph. In the majority of cases, the values here should simply be set to the same values as the _nav_counts_ array, though the use of a wildcard (`['*']`) is **not** supported here.
 
-Lastly, the _hide_label_ field is a simple boolean that will tell the widget whether or not the label above the graph should be displayed. In the example above, we are displaying country data side by side, both in table form and in vector form. Because we already have labelled the former, it may not be necessary to label the vector graph as well. This is completely up to preference and will only hide the label from the view - but it will still be visible to screen readers and assistive technologies.
+Similarly, specifying additional URIs in the `uris` array will **not** cause additional data to be rendered (such as a second or third line on the line graph). The data is instead aggregated into a single source of truth before the graph is rendered.
+
+#### operas_definition
+
+The final (and **optional**) field is `operas_definition`: a string containing a link to the OPERAS definition for this particular graph. This will render text below the graphs that will link to whatever this value is. If the value is not provided, the text will not render.
 
 ## Supported Languages
 
@@ -268,7 +284,7 @@ This section contains information for developers interested in continuing to enh
 
 ### Running the source
 
-Once cloning the repository, you will firstly need to install all dependencies that the widget uses. In order to reduce the overall size of the widget, the majority of dependencies are either hosted externally and only called when needed, or are installed as devDependencies meaning that they are not required in the production build.
+Once cloning the repository, you will firstly need to install all dependencies that the widget uses. In order to reduce the overall size of the widget, the majority of dependencies are either hosted externally and only called when needed, or are installed as _devDependencies_: meaning that they are not required in the production build.
 
 To install all dependencies, run:
 
@@ -279,60 +295,70 @@ npm ci
 After all dependencies are installed, you can run:
 
 ```javascript
-npm run start
+npm run dev
 ```
 
 This will launch the application on `localhost:8080`. Any changes made to files will automatically update the application, and the browser page should automatically reload.
 
 To stop the application from running, enter the key combination `CTRL`+`C` on the terminal window, and the process will exit.
 
-### Graph vs Card
+### Flow
 
-Within the widget, there are two distinct definitions used within the source code. Whilst the _metrics_config_ object uses the word _graphs_ to define which graphs will be visible for each tab, the widget is built in such a way that the [Supported Graphs](#supported-graphs) are actually referred to internally as 'cards'.
+The best way to understand the widget is understanding the full flow from page load to final render.
 
-A `graph`, located in the _components/graphs_ directory, is a mostly stateless component which has no connection to the API, or any knowledge about the context it is being used in. It receives all of its necessary information as component props, and simply renders what it receives.
+Once the page loads, the `metrics_config` object is pulled from the environment and ReactDOM attempts to render the widget inside the _src/index.js_ file.
 
-A `card`, located in the _components/cards_ directory, represents every single possible type of display shown in the [Supported Graphs](#supported-graphs) section. Each card will make its own API request, parse its response data, and then pass all the formatted data along to the appropriate `graph` to be rendered accordingly.
+Following through this, the next file called is _src/widget/index.jsx_, which contains all of our context providers. There are three main context providers used in the application:
 
-The reason for this is due to the fact that, in many cases, there can be a many-to-one relationship between cards and graphs. For instance, the list of Wikipedia Articles and the list of Countries both are rendered as identical tables - with the only difference between them being the actual content of the table. However, because each will need to make its own API calls, parse the data its own way, and then display the graph, it makes more sense to have all of this handled within one component, and then have another, stateless, component handle the displaying of the graph. This way, two cards (_country-table_ and _wikipedia-articles_) only need to rely on one graph existing, the _key-value-table_. This makes updating the styling or format of each graph much easier to maintain.
+- `ConfigProvider`: stores the configuration settings which can be retrieved at any time by using `useConfig()`
+- `MetricsProvider`: stores all metrics-based API responses in memory to speed up request times if the same URI is used more than once.
+- `I18nProvider`: a simply-written provider which allows us to localise strings on the widget by using `t()`
 
-### Adding Cards
+After all providers are loaded, we render _src/widget/components/widget_. This is the heart of the widget, and is responsible for rendering the navigation and panels. The `useEffect` hook in this component is responsible for loading all of the initial metrics data used by the navigation menu. This data is then formatted and stored in the state, and the Navigation component simply iterates over this data.
 
-Cards are the components defined by the user when setting up the widget, and represent which graph(s) should be shown for each tab in the navigation menu. Card components need to take a variety of different props, though the logic within them only varies slightly.
+Every tab rendered by the Navigation component also has a corresponding Panel component (_src/widget/components/panel_). Not only does this improve accessibility, but it also means we don't need to constantly re-render previously loaded content if the user keeps closing/re-opening tabs. The Panel component is primarily responsible for housing each individual graph, as well as keeping track of how many have loaded. To keep the widget feeling more fluid, the Panel content will only display once all of its children have declared themselves loaded.
 
-Because most of the code within cards are so similar, a file - `__template.jsx` has been created within the root directory of _components/cards_ to provide further explanations towards the main components of the card. There are also `CHANGEME` comments scattered around, which indicate which parts of the code should be changed for a specific card. This will hopefully be further optimised at some point in the future.
+Within the Panel component, we then render a Graph component for each graph that is part of this tab (_src/widget/components/graph_). In this component, the `useEffect` hook firstly fetches all URIs that were specified in the _metrics_config_ object for this graph, and reduces them into a single array.
 
-Once you have all the data you need from a card, it simply needs to call the graph associated with it. Remember that it is a many-to-one mapping with graphs, so many different types of card can map to the same graph component; so do use an already existing graph if one already exists to match your needs.
+It then calls on the `methods` object, which contains a list of functions. The object itself simply exports other files, but the most important thing to note is that the names of the exports _directly match_ the list of [Supported Graphs](#supported-graphs). If a user has specified that they wish to show the _world_map_ graph, the `useEffect` hook in the Graph component will call `methods[world_map]`, which exists.
+
+The goal of each `method` function is to parse the data received into a format that would best suit its graph. Every method is expected to return an object called `data`, though the contents of that object will depend on what graph is being rendered -- more on that in a moment.
+
+Back inside our Graph component, we then update the state to store the parsed data returned by our `method` function. Now that we have data, let's look at the massive `switch` statement towards the bottom of the component. Each `type` listed represents each of the [Supported Graphs](#supported-graphs).
+
+Notice how `wikipedia_articles` and `wordpress` both are calling the same `<List />` component? The idea behind the graphs is to make them as modular as possible: they should have no context as to what tab they are part of or who they are rendering for, but instead have just enough information to render their data.
+
+Let's take a look at the List component in more detail (_src/widget/components/graphs/list_). Any component inside of the `graphs` folder is an actual graph: something that will be rendered. The components inside of this folder are the ones that we want to keep as modular as possible. All graphs should receive two props: `data` (an object which can contain _anything_ it needs), and `onReady`.
+
+In the case of the List component, it doesn't actually need to make any additional API requests (like the Hypothesis component) or load an external script (like the Tweets component), so our `useEffect` hook immediately runs and tells the parent component that we're ready to go. The rest of the data is simply rendered.
+
+To take a step back, let's look at the Wordpress `method` (_src/widget/components/graph/methods/wordpress.js_). The purpose of this method is to take the massive array of data our Graph component received from the URIs and parse it into a format that our graph will understand. Well, we know that we're rendering a List graph for the Wordpress data, so we'll need to format our response to match what it is expecting. As such, the Wordpress `method` does just that: it formats the data down into an object which returns exactly what our Line graph expects.
 
 ### Adding Graphs
 
-As graphs are purely the visual aspect of the widget, they are fairly straightforward to implement. The first step is to determine what graph is being added.
+As graphs should be as modular as possible, they don't require any additional knowledge and are therefore rather straightforward to implement.
 
-In some cases, you may wish to use a JavaScript library for the graph you are implementing. If this is the case, it is recommended _not_ to install the NPM package for the library, but instead to download the files and host them externally, as this will keep the widget's file size low. See [External Files](#external-files) for further information on this.
+Simply create the graph in _src/widget/components/graphs_ to accept a `data` and `onReady` prop (the `data` can then contain anything it requires) and add the graph to the `switch` statement in the Graph component (_src/widget/components/graph_). In order to format the data for the graph, the value you provide in the `case` will also need to exist as a `method` (_src/widget/components/graph/methods_), and the _index.js_ file for the methods will need to exactly match the name of the `case`.
 
-The graph itself does not need to have any special properties, and only needs to render the data it receives. The graph should be called only by a _card_ component once it is completed.
+In some cases, you may need to use a JavaScript library for the graph you are implementing. If this is the case, it is recommended to **not install** the library as a dependency, but instead download the minified source and store it in the _dist/assets_ directory.
 
 ### External Files
 
-In order to ensure that the main widget file size remains as low as possible, some files (such as the country graph and line graph) are hosted externally, and only imported if they are needed.
+In order to ensure that the main widget file size remains as low as possible, some files (such as the country graph and line graph) are hosted in the storage bucket and only loaded when required. Not all websites will want to display all graphs, so forcing the user to download files they do not need would be a waste.
 
-To add external JavaScript files to the widget, a few steps need to be taken. The first is to upload the files to the `-dev` directory of the storage bucket, found [here](<https://console.cloud.google.com/storage/browser/operas/metrics-widget-dev?project=hirmeos-257513&pageState=(%22StorageObjectListTable%22:(%22f%22:%22%255B%255D%22))&prefix=&forceOnObjectsSortingFiltering=false>). Whenever the application is running locally (the _process.env.NODE_ENV_ variable is set to _development_), this is the storage bucket that will be used to pull files from.
+To add external JavaScript files to the widget, simply download the (preferably minified) file and place it in the _dist/assets_ directory. The file can be named anything, but should be representative of what it does, and should not contain any `.` characters other than for the filename.
 
-Once the file is uploaded, the next step is to add a type definition to the _loadExternalScript_ JSON file, found in _utils/load-external-script/ids.json_. The key here should be a quick name referencing the file, and the value should be the link to the file in the storage bucket. Note that you should replace the word `dev` with `version` here, so that the widget can properly route to the correct location when in development/production mode.
-
-Once this has been set up, you should now be able to call the _loadExternalScript()_ function from within the file you are calling this script (which likely will be a `graph`). To see an example of how this is acheived, take a look at _components/graphs/map-graph_. This component relies on three external files to be loaded before it returns.
-
-Because of how the _loadExternalScript()_ function has been implemented, you do not need to worry about checking that a script is loaded, or already exists. The function has validation built in to ensure that a script is only loaded into the DOM once - no matter how many times it is called, and that callbacks are only executed once the script is actually loaded and ready to go.
+Inside of the graph that wishes to use this script, you'll simply want to call the `loadScript` function, passing in the name of the graph and a callback function which will be called once the script has been loaded. The name provided should match the name of the file _without_ the `.js` extension, such as `loadGraph('twitter', () => ...)` for the _dist/assets/twitter.js_ file.
 
 ### Localisation
 
-Adding new languages to the widget is designed to be as straightforward as possible. All localisations are stored in the _localisation_ directory as JSON files. When adding a new language, it is recommended to copy the `en.json` file, as this will the the most up-to-date template.
+Adding new languages to the widget is designed to be as straightforward as possible. All localisations are stored in the _src/widget/localisation_ directory as JSON files. When adding a new language, it is recommended to copy the `en.json` file, as this will the the most up-to-date template.
 
-The file name should follow the ISO 639-1 language format, which essentially means a two-character code. A [Wikipedia Article](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) lists all codes, and you should make sure to refer to the `639-1` column.
+The file name should follow the ISO 639-1 language format, which essentially means a two-character code, though there is no harm in using region based codes either (such as `en-us`).
 
-Within the localisation file, there is a field titled `countries`, which contains localisations for every country code. Thankfully, a GitHub repository provides these localisations for almost every language. Simply visit<br>
-https://github.com/umpirsky/country-list/blob/master/data/{CODE}/country.json<br>
-(replacing `{CODE}` with the country code, such as `en`) and paste the JSON data into your new localisation template.
+Within the localisation file, there is a property titled `countries`, which contains localisations for every country code. Thankfully, a GitHub repository provides these localisations for almost every language. Simply visit<br>
+https://github.com/umpirsky/country-list/blob/master/data/CODE/country.json<br>
+(replacing `CODE` with the country code of your language, such as `en`) and paste the JSON data into your new localisation template.
 
 Once the file is complete, the widget should automatically support the new language. You can test this at any time by changing the widget language in _dist/index.html_ to the new language code, though please do change it back to `'en'` prior to committing any changes.
 
@@ -345,6 +371,8 @@ npm run build
 ```
 
 This will override the file (if it exists) in _dist/widget.js_ with a compressed JavaScript file representing all the widget code.
+
+It will also compile all CSS modules into a separate file, _dist/widget.css_.
 
 ### Testing
 
@@ -366,7 +394,7 @@ The code above will run the test program and keep it running until closed (`CTRL
 
 Whilst there is currently a CI pipeline for new versions, the deployments themselves are currently performed manually.
 
-The first step is to increase the widget's version by running _bumpversion_. In the vast majority of updates, you'll want to tag the update as a `patch`:
+The first step is to increase the widget's version by running _bumpversion_:
 
 ```javascript
 bumpversion[major | minor | patch];
@@ -374,8 +402,12 @@ bumpversion[major | minor | patch];
 
 Once this is done, you will then need to push the changes and separately push the new version tag that was created. This will then start the CI pipeline.
 
-Once the pipeline tests have passed, create a new directory in the [Storage Bucket](https://console.cloud.google.com/storage/browser/operas;tab=objects?forceOnBucketsSortingFiltering=false&project=hirmeos-257513&prefix=) called `metrics-widget-{VERSION}` - where `{VERSION}` is the current version of the widget based on the _bumpversion_. For example, if the version was _1.2.3_, the file would be called _metrics-widget-1.2.3_.
+Once the pipeline tests have passed, create a new directory in the [Storage Bucket](https://console.cloud.google.com/storage/browser/operas;tab=objects?forceOnBucketsSortingFiltering=false&project=hirmeos-257513&prefix=) called `metrics-widget-{VERSION}` - where `{VERSION}` is the current version of the widget based on the _bumpversion_. For example, if the version was _1.2.3_, the directory would be called _metrics-widget-1.2.3_.
 
-The next thing to do is to copy all the files from `metrics-widget-dev` into this new directory. Once done, you'll then want to [build](#building) the widget and upload the `widget.js` file (without renaming it!) to the new directory in the storage bucket.
+Next, you'll want to [build](#building) the widget.
 
-Lastly, you'll want to update this very README file to replace the URL in the [Getting Started](#getting-started) section with the new URL (just updating the version number will be enough), and also updating the file size number with the new size of the `widget.js` file that was just built.
+Once the widget has been built, copy all files in the _dist_ directory you just created in the storage bucket. You will need to create a folder for the _assets_ and copy those in as well.
+
+Lastly, you'll want to update this very README file to replace the URLs of the _widget.js_ and _widget.css_ in the [Getting Started](#getting-started) section with the new URL (just updating the version number is enough), and also update the file size number with the new size of the `widget.js` file that was just built.
+
+Finally, commit the changes made to the readme and have some coffee.

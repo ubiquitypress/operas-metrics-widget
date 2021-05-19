@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import Widget from './widget';
 
 // Pull the config from the environment
-
 const config =
   typeof metrics_config !== 'undefined'
     ? // eslint-disable-next-line no-undef

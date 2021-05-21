@@ -21,18 +21,10 @@ const timeGraph = ({ t, tab, uris }) => {
   });
 
   if (data.length > 0) {
-    // If there is only one item, add a zero value for the previous month
-    if (data.length === 1) {
-      const prevMonth = dayjs(new Date(data[0].key))
-        .subtract(1, 'month')
-        .toISOString();
-      data.push({ key: prevMonth, value: 0 });
-    }
-
     // Determine the number of months between the first metric and today
     const initialDate = new Date(data[0].key);
     const monthsDiff = dayjs(new Date()).diff(initialDate, 'month', true);
-    const countDays = monthsDiff <= 0.25; // show days instead of months if data is only 1 week old
+    const countDays = monthsDiff <= 0.3; // show days instead of months if data is only 1 week old
 
     // Make a dictionary of each month between
     const months = {};
@@ -63,6 +55,14 @@ const timeGraph = ({ t, tab, uris }) => {
       if (a.key > b.key) return 1;
       return 0;
     });
+
+    // If there is only one item, add a zero value for the previous month
+    if (data.length === 1) {
+      const prevMonth = dayjs(new Date(data[0].key))
+        .subtract(1, countDays ? 'day' : 'month')
+        .toISOString();
+      data.splice(0, 0, { key: prevMonth, value: 0 });
+    }
 
     // Aggregate the data
     data.forEach((item, index) => {

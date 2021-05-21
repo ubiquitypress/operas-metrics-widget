@@ -106,7 +106,7 @@ const LineGraph = ({ data, onReady }) => {
     });
   }, []);
 
-  if (seriesData.length === 0) return <p>{t('other.no_data')}</p>;
+  if (seriesData.length === 0) return <div>{t('other.no_data')}</div>;
   return (
     <div className={styles['line-graph']}>
       {/* Graph */}

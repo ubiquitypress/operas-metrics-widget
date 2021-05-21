@@ -10,7 +10,7 @@ const List = ({ data, onReady }) => {
     if (onReady) onReady();
   }, []);
 
-  if (data.length === 0) return <p>{t('other.no_data')}</p>;
+  if (data.length === 0) return <div>{t('other.no_data')}</div>;
   return (
     <ul className={styles.list} data-testid='list'>
       {data.map(item => (

@@ -56,7 +56,7 @@ const WorldMap = ({ data, onReady }) => {
     else if (onReady) onReady();
   }, []);
 
-  if (Object.keys(values).length === 0) return <p>{t('other.no_data')}</p>;
+  if (Object.keys(values).length === 0) return <div>{t('other.no_data')}</div>;
   return (
     <div
       id={`${tab}-world-map`}

@@ -23,7 +23,7 @@ const Tweets = ({ data, onReady }) => {
       });
   }, []);
 
-  if (data.length === 0) return <p>{t('other.no_data')}</p>;
+  if (data.length === 0) return <div>{t('other.no_data')}</div>;
   if (!ready) return null;
   return (
     <div className={styles.tweets} data-testid='tweets'>

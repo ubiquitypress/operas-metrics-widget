@@ -11,7 +11,7 @@ const KeyValueTable = ({ data, onReady }) => {
     if (onReady) onReady();
   }, []);
 
-  if (data.length === 0) return <p>{t('other.no_data')}</p>;
+  if (data.length === 0) return <div>{t('other.no_data')}</div>;
   return (
     <ul className={styles['key-value-table']} data-testid='key-value-table'>
       {data.map(item => (

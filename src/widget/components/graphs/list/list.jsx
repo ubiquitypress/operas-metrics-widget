@@ -10,11 +10,9 @@ const List = ({ data, onReady }) => {
     if (onReady) onReady();
   }, []);
 
+  if (data.length === 0) return <div>{t('other.no_data')}</div>;
   return (
     <ul className={styles.list} data-testid='list'>
-      {data.length === 0 && (
-        <li className={styles['list-item']}>{t('other.no_data')}</li>
-      )}
       {data.map(item => (
         <li key={item.name} className={styles['list-item']}>
           <LinkWrapper href={item.link}>{item.name}</LinkWrapper>

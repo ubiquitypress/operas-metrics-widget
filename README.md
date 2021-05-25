@@ -52,8 +52,8 @@ When the widget is initialised, its HTML will be inserted into this container. I
 
 After adding the `#metrics-block` element to the HTML, the next step is to bring in the compiled JavaScript code which contains everything the widget needs to run, as well as its styling.
 
-The current production version of the widget is `0.1.12`, and it is 184KB in size. The JavaScript file is hosted on a CDN, and can be found here:<br />
-https://storage.googleapis.com/operas/metrics-widget-0.1.12/widget.js
+The current production version of the widget is `0.1.13`, and it is 184KB in size. The JavaScript file is hosted on a CDN, and can be found here:<br />
+https://storage.googleapis.com/operas/metrics-widget-0.1.13/widget.js
 
 To embed the widget onto the page, simply add a script tag before the closing `</body>` tag in the HTML:
 
@@ -62,7 +62,7 @@ To embed the widget onto the page, simply add a script tag before the closing `<
 ```
 
 As of version 0.1, CSS is now provided in a separate minified file, as opposed to being rendered inline automatically:<br />
-https://storage.googleapis.com/operas/metrics-widget-0.1.12/widget.css
+https://storage.googleapis.com/operas/metrics-widget-0.1.13/widget.css
 
 To embed the widget styling onto the page, simply add a link tag before the closing `</head>` tag in the HTML:
 

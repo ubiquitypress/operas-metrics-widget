@@ -1,11 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import LinkWrapper from '../link-wrapper';
-import { useTranslation } from '../../contexts/i18n';
+import Trans from '../../contexts/i18n/trans';
 import styles from './operas-definition.module.scss';
 
 const OperasDefinition = ({ link }) => {
-  const { t } = useTranslation();
   if (!link) return null;
 
   return (
@@ -13,7 +12,10 @@ const OperasDefinition = ({ link }) => {
       className={styles['operas-definition']}
       data-testid='operas-definition'
     >
-      <LinkWrapper href={link}>{t('other.operas')}</LinkWrapper>
+      <Trans
+        i18nKey='other.operas'
+        components={[<LinkWrapper href={link} />]}
+      />
     </div>
   );
 };

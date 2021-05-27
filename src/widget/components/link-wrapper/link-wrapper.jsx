@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const LinkWrapper = ({ href, children }) => {
+const LinkWrapper = ({ href, children = <></> } = {}) => {
   if (!href) return children;
 
   return (
@@ -13,10 +13,11 @@ const LinkWrapper = ({ href, children }) => {
 
 LinkWrapper.propTypes = {
   href: PropTypes.string,
-  children: PropTypes.node.isRequired
+  children: PropTypes.node
 };
 LinkWrapper.defaultProps = {
-  href: null
+  href: null,
+  children: null
 };
 
 export default LinkWrapper;

@@ -16,10 +16,7 @@ test('renders if `link` is not null', () => {
   getByTestId('operas-definition');
 });
 
-test('renders link', () => {
-  const href = 'https://my-definition-website.org';
-  const { getByRole } = render({ link: href });
-
-  const link = getByRole('link');
-  expect(link).toHaveAttribute('href', href);
+test('renders Trans component with text', () => {
+  const { getByText } = render({ link: 'https://google.com' });
+  getByText('other.operas');
 });

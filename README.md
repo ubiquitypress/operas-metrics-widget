@@ -211,7 +211,7 @@ If your array contains more than one URI, the data will be aggregated into one n
 
 If you are unsure about what measure URIs are available to you, you will be able to find a full list of available measures from the API. Replacing this link with the values from your _metrics_config_ object, you can find all of the URIs from the JSON response:
 
-> **{{base_url}}**?filter=**{{work_uri}}**/bbc&aggregation=measure_uri
+> **{{base_url}}**?filter=**{{work_uri}}**&aggregation=measure_uri
 
 The `nav_counts` array also supports use of a wildcard item (`['*']`) which will tell the navigation menu to use _all available_ URIs when calculating the totals. It is recommended to only use this if you are completely sure that there will not be any overlap in your data that could cause inflated numbers.
 

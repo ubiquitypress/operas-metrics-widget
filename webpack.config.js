@@ -6,7 +6,7 @@ module.exports = {
     filename: 'widget.js'
   },
   devServer: {
-    contentBase: './dist'
+    static: './dist'
   },
   resolve: {
     extensions: ['.js', '.jsx']

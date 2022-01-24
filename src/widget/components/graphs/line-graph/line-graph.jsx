@@ -90,13 +90,8 @@ const LineGraph = ({ data, onReady }) => {
 
                     // Set the position
                     const { offsetTop, offsetLeft } = context.chart.canvas;
-
-                    tooltipEl.style.top = `${
-                      offsetTop + tooltipModel.caretY
-                    }px`;
-                    tooltipEl.style.left = `${
-                      offsetLeft + tooltipModel.caretX
-                    }px`;
+                    tooltipEl.style.top = `${offsetTop + tooltipModel.y}px`;
+                    tooltipEl.style.left = `${offsetLeft + tooltipModel.x}px`;
                   }
                 }
               }
@@ -134,9 +129,7 @@ const LineGraph = ({ data, onReady }) => {
             <div
               id={`${graphName}-line-graph-tooltip-value`}
               className={styles['line-graph-tooltip-value']}
-            >
-              0
-            </div>
+            />
           </div>
         </div>
       </div>

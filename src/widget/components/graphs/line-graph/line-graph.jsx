@@ -89,12 +89,11 @@ const LineGraph = ({ data, onReady }) => {
                     tooltipEl.style.opacity = '1';
 
                     // Set the position
-                    const { offsetTop } = context.chart.canvas;
+                    const { offsetTop, offsetLeft } = context.chart.canvas;
                     const position = context.chart.canvas.getBoundingClientRect();
-                    const left =
-                      position.left + window.pageXOffset + tooltipModel.caretX;
+                    const left = offsetLeft + tooltipModel.caretX;
                     const right =
-                      position.right - window.pageXOffset - tooltipModel.caretX;
+                      offsetLeft + (position.width - tooltipModel.caretX);
                     const top = offsetTop + 5 + tooltipModel.caretY;
 
                     tooltipEl.style.top = `${top}px`;

@@ -77,9 +77,12 @@ const LineGraph = ({ data, onReady }) => {
                   // Render the tooltip
                   if (tooltipModel.body) {
                     // Set the text
-                    const { raw } = tooltipModel.dataPoints[0];
+                    const { raw, label } = tooltipModel.dataPoints[0];
                     document.getElementById(
-                      `${graphName}-line-graph-tooltip-val`
+                      `${graphName}-line-graph-tooltip-date`
+                    ).innerHTML = label;
+                    document.getElementById(
+                      `${graphName}-line-graph-tooltip-value`
                     ).innerHTML = raw.toLocaleString(lang);
 
                     // Set the opacity
@@ -87,6 +90,7 @@ const LineGraph = ({ data, onReady }) => {
 
                     // Set the position
                     const { offsetTop, offsetLeft } = context.chart.canvas;
+
                     tooltipEl.style.top = `${
                       offsetTop + tooltipModel.caretY
                     }px`;
@@ -118,12 +122,22 @@ const LineGraph = ({ data, onReady }) => {
         className={styles['line-graph-tooltip']}
         data-testid='line-graph'
       >
-        <div className={styles['line-graph-tooltip-key']}>{seriesName}</div>
-        <div
-          id={`${graphName}-line-graph-tooltip-val`}
-          className={styles['line-graph-tooltip-value']}
-        >
-          0
+        <div className={styles['line-graph-tooltip-content']}>
+          <div
+            id={`${graphName}-line-graph-tooltip-date`}
+            className={styles['line-graph-tooltip-date']}
+          />
+          <div className={styles['line-graph-tooltip-data']}>
+            <div className={styles['line-graph-tooltip-name']}>
+              {seriesName}
+            </div>
+            <div
+              id={`${graphName}-line-graph-tooltip-value`}
+              className={styles['line-graph-tooltip-value']}
+            >
+              0
+            </div>
+          </div>
         </div>
       </div>
     </div>

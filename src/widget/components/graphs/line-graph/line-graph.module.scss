@@ -4,18 +4,35 @@
 
 .line-graph-tooltip {
   opacity: 0;
-  display: flex;
-  align-items: center;
   position: absolute;
-  background: #fff;
   border: 1px solid #ccc;
   box-shadow: rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
   padding: 1.1em;
   pointer-events: none;
+  background-color: #fff;
   border-radius: 0.5em;
-  color: #3c4043;
   font-size: smaller;
   transition: all 0.1s ease;
+  color: #3c4043;
+}
+
+.line-graph-tooltip-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.line-graph-tooltip-date {
+  color: #5f6368;
+  margin-bottom: 0.5em;
+}
+
+.line-graph-tooltip-data {
+  display: flex;
+  justify-content: space-between;
+}
+
+.line-graph-tooltip-name {
+  padding-right: 0.5em;
 }
 
 .line-graph-tooltip-value {

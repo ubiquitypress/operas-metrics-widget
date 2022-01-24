@@ -65,7 +65,6 @@ const LineGraph = ({ data, onReady }) => {
                   const tooltipEl = document.getElementById(
                     `${graphName}-line-graph-tooltip`
                   );
-
                   const tooltipModel = context.tooltip;
 
                   // Hide if should not be visible
@@ -75,6 +74,7 @@ const LineGraph = ({ data, onReady }) => {
                   }
 
                   // Render the tooltip
+                  // (the HTML is rendered at the bottom of this component; we just change the content here)
                   if (tooltipModel.body) {
                     // Set the text
                     const { raw, label } = tooltipModel.dataPoints[0];
@@ -89,13 +89,22 @@ const LineGraph = ({ data, onReady }) => {
                     tooltipEl.style.opacity = '1';
 
                     // Set the position
-                    const { offsetTop, offsetLeft } = context.chart.canvas;
-                    tooltipEl.style.top = `${
-                      offsetTop + tooltipModel.caretY
-                    }px`;
-                    tooltipEl.style.left = `${
-                      offsetLeft + tooltipModel.caretX
-                    }px`;
+                    const { offsetTop } = context.chart.canvas;
+                    const position = context.chart.canvas.getBoundingClientRect();
+                    const left =
+                      position.left + window.pageXOffset + tooltipModel.caretX;
+                    const right =
+                      position.right - window.pageXOffset - tooltipModel.caretX;
+                    const top = offsetTop + 5 + tooltipModel.caretY;
+
+                    tooltipEl.style.top = `${top}px`;
+                    if (left > position.width / 1.5) {
+                      tooltipEl.style.left = 'unset';
+                      tooltipEl.style.right = `${right}px`;
+                    } else {
+                      tooltipEl.style.left = `${left}px`;
+                      tooltipEl.style.right = 'unset';
+                    }
                   }
                 }
               }

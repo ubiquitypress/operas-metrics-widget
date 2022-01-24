@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import styles from './panel.module.scss';
 import { useConfig } from '../../contexts/config';
@@ -32,7 +33,7 @@ const Panel = ({ name, active }) => {
 
   return (
     <div
-      className={`${styles.panel}${!active ? ' hidden' : ''}`}
+      className={classNames(styles.panel, { hidden: !active })}
       tabIndex='0'
       role='tabpanel'
       id={`mw-tabpanel-${name}`}
@@ -42,7 +43,10 @@ const Panel = ({ name, active }) => {
         <>
           {!isLoaded && <Loading message={t('loading.graphs')} />}
 
-          <div className={isLoaded ? '' : 'hidden'}>
+          <div
+            className={classNames(styles.graphs, { hidden: !isLoaded })}
+            data-name={name}
+          >
             {Object.entries(data.graphs).map(([type, options]) => (
               <Graph
                 key={type}

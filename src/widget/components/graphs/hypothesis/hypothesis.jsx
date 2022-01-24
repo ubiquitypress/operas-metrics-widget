@@ -29,7 +29,7 @@ const Hypothesis = ({ data, onReady }) => {
         <TableBody>
           {data.map(item => (
             <TableRow key={item.id}>
-              <TableCell>
+              <TableCell className={styles['hypothesis-table-cell-date']}>
                 {item.created ? formatTimestamp(t, item.created, 'long') : '-'}
               </TableCell>
               <TableCell>

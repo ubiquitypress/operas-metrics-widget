@@ -21,10 +21,10 @@ test('renders loading component on load', async () => {
   await waitFor(() => expect(MockLoading).toHaveBeenCalledTimes(1));
 });
 
-test('does not render loading message if `settings.hide_loading_message` is true', async () => {
+test('does not render loading message if `settings.hide_initial_loading_screen` is true', async () => {
   MockLoading.mockImplementation(() => null);
   mockConfig.mockImplementation(() => ({
-    settings: { hide_loading_message: true }
+    settings: { hide_initial_loading_screen: true }
   }));
   render();
 

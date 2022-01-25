@@ -86,7 +86,7 @@ const Widget = () => {
   }, [data.tabs]);
 
   if (data.loading) {
-    if (deepFind(config, 'settings.hide_loading_message')) return null;
+    if (deepFind(config, 'settings.hide_initial_loading_screen')) return null;
     return <Loading message={t('loading.widget')} />;
   }
   return (

@@ -22,40 +22,57 @@ const Widget = () => {
   // Fetch the tabs on component mount
   useEffect(() => {
     const getTabs = async () => {
-      // Fetch all of the possible measures available to us
-      const measures = await fetchMetric('&aggregation=measure_uri');
+      try {
+        //  Call the loading callback
+        if (deepFind(config, 'callbacks.on_load_start'))
+          config.callbacks.on_load_start();
 
-      // Fetch and sort the tabs by their order
-      let tabs = Object.entries(config.tabs || {}).map(([key, vals]) => {
-        return {
-          name: key,
-          nav_counts: vals.nav_counts,
-          order: vals.order,
-          count: 0
-        };
-      });
-      tabs.sort((a, b) => a.order - b.order);
+        // Fetch all of the possible measures available to us
+        const measures = await fetchMetric('&aggregation=measure_uri');
 
-      // Update the tabs with every measure
-      tabs = tabs.map(tab => {
-        // Set the count to be the total number of matching `nav_counts` metrics
-        const count = measures.reduce((acc, curr) => {
-          if (curr.type === tab.name)
-            if (
-              tab.nav_counts.indexOf('*') !== -1 ||
-              tab.nav_counts.indexOf(curr.measure_uri) !== -1
-            )
-              return acc + curr.value;
-          return acc;
-        }, 0);
-        return { ...tab, count };
-      });
+        // Fetch and sort the tabs by their order
+        let tabs = Object.entries(config.tabs || {}).map(([key, vals]) => {
+          return {
+            name: key,
+            nav_counts: vals.nav_counts,
+            order: vals.order,
+            count: 0
+          };
+        });
+        tabs.sort((a, b) => a.order - b.order);
 
-      // Remove empty tabs
-      tabs = tabs.filter(tab => tab.count > 0);
+        // Update the tabs with every measure
+        tabs = tabs.map(tab => {
+          // Set the count to be the total number of matching `nav_counts` metrics
+          const count = measures.reduce((acc, curr) => {
+            if (curr.type === tab.name)
+              if (
+                tab.nav_counts.indexOf('*') !== -1 ||
+                tab.nav_counts.indexOf(curr.measure_uri) !== -1
+              )
+                return acc + curr.value;
+            return acc;
+          }, 0);
+          return { ...tab, count };
+        });
 
-      // Return the data
-      setData({ ...data, loading: false, tabs });
+        // Remove empty tabs
+        tabs = tabs.filter(tab => tab.count > 0);
+
+        // Return the data
+        setData({ ...data, loading: false, tabs });
+
+        // Call the callback
+        if (deepFind(config, 'callbacks.on_load_success'))
+          config.callbacks.on_load_success(tabs);
+      } catch (err) {
+        // Log the error
+        console.error(err);
+
+        // Call the callback
+        if (deepFind(config, 'callbacks.on_load_fail'))
+          config.callbacks.on_load_fail(err);
+      }
     };
 
     getTabs();

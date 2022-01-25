@@ -37,6 +37,13 @@
           start_graphs_from_zero: true,
           hide_loading_message: true
         },
+        callbacks: {
+          on_load_start: () => console.log('Widget loading'),
+          on_load_success: tabs => {
+            if (tabs.length > 0) console.log('Widget ready!');
+          },
+          on_load_fail: err => console.log(err)
+        },
         locales: {
           en: {
             tabs: {

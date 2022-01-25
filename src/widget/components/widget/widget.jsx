@@ -26,7 +26,7 @@ const Widget = () => {
       const measures = await fetchMetric('&aggregation=measure_uri');
 
       // Fetch and sort the tabs by their order
-      let tabs = Object.entries(config.tabs).map(([key, vals]) => {
+      let tabs = Object.entries(config.tabs || {}).map(([key, vals]) => {
         return {
           name: key,
           nav_counts: vals.nav_counts,
@@ -68,7 +68,10 @@ const Widget = () => {
         setTab(data.tabs[0].name);
   }, [data.tabs]);
 
-  if (data.loading) return <Loading message={t('loading.widget')} />;
+  if (data.loading) {
+    if (deepFind(config, 'settings.hide_loading_message')) return null;
+    return <Loading message={t('loading.widget')} />;
+  }
   return (
     <div className={styles.widget}>
       <Navigation tabs={data.tabs} active={data.active} setTab={setTab} />

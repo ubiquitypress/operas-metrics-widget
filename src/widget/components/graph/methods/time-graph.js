@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import deepFind from '../../../utils/deep-find';
 import formatTimestamp from '../../../utils/format-timestamp';
 
 const timeGraph = ({ t, tab, uris, config }) => {
@@ -57,7 +58,10 @@ const timeGraph = ({ t, tab, uris, config }) => {
     });
 
     // Add a zero value for the previous [day/month] (if enabled in the config, or if there is only one item)
-    if (data.length === 1 || config.settings.start_graphs_from_zero) {
+    if (
+      data.length === 1 ||
+      deepFind(config, 'settings.start_graphs_from_zero')
+    ) {
       const prevMonth = dayjs(new Date(data[0].key))
         .subtract(1, countDays ? 'day' : 'month')
         .toISOString();

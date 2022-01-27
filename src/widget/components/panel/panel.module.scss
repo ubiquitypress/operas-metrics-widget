@@ -4,6 +4,7 @@
 
   &:global(.hidden),
   :global(.hidden) {
+    display: block; // fixes jvectormap not rendering
     opacity: 0;
     height: 0;
     overflow: hidden;

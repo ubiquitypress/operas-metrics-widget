@@ -56,7 +56,7 @@ const Graph = ({ type, tab, options, onReady }) => {
     case 'country_table':
       graph = <KeyValueTable {...props} withBorder />;
       break;
-    case 'wikipedia_articles':
+    case 'wikipedia':
     case 'wordpress':
       graph = <List {...props} />;
       break;
@@ -67,7 +67,7 @@ const Graph = ({ type, tab, options, onReady }) => {
       graph = <Tweets {...props} />;
       break;
     default:
-      process.env.NODE_ENV !== 'test' &&
+      if (process.env.NODE_ENV !== 'test')
         console.error(
           `'${type}' does not have a matching graph -- please remove from '${tab}'.`
         );

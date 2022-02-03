@@ -282,7 +282,7 @@ Example:
           "https://metrics.operas-eu.org/wikipedia/references/v1"
         ],
         "graphs": {
-          "wikipedia_articles": {
+          "wikipedia": {
             "width": 50,
             "uris": ["https://metrics.operas-eu.org/wikipedia/references/v1"],
             "operas_definition": "https://metrics.operas-eu.org/wikipedia/references/v1"
@@ -329,7 +329,7 @@ The `nav_counts` array also supports use of a wildcard item (`['*']`) which will
 
 The next (and **required**) field is `graphs`: an object containing all of the graphs you wish to show for this metric.
 
-In the example above, the _citations_ metric is showing one graph (_time_graph_), and the _references_ metric is showing two graphs (_wikipedia_articles_ and _wordpress_). These graphs are all valid because they are named after the [Supported Graphs](#supported-graphs).
+In the example above, the _citations_ metric is showing one graph (_time_graph_), and the _references_ metric is showing two graphs (_wikipedia_ and _wordpress_). These graphs are all valid because they are named after the [Supported Graphs](#supported-graphs).
 
 Each graph can be configured with additional properties:
 
@@ -368,7 +368,7 @@ references: {
   order: 7,
   nav_counts: [ ... ],
   graphs: {
-    wikipedia_articles: {
+    wikipedia: {
       width: 100,
       uris: [ ... ],
       operas_definition: 'https://metrics.operas-eu.org/wikipedia/references/v1'
@@ -382,7 +382,7 @@ references: {
 }
 ```
 
-Above, both the `wikipedia_articles` and `wordpress` graphs will have their own definition labels, linking to different locations. The labels will appear below each graph as a child of its wrapper.
+Above, both the `wikipedia` and `wordpress` graphs will have their own definition labels, linking to different locations. The labels will appear below each graph as a child of its wrapper.
 
 ## Events
 
@@ -468,16 +468,16 @@ The following measures are currently supported:
 
 The following graphs are currently supported:
 
-| name               | label                                            | required URI fields    | description                                                                                                                                                                          | version |
-| ------------------ | ------------------------------------------------ | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------- |
-| country_table      | {metric} By Country                              | `country_uri`, `value` | a table containing a list of countries and their metric values, descending the `world_map` graph represents the same data, but as a map of the world                                 | 0.0.1+  |
-| time_graph         | {metric} Over Time                               | `timestamp`, `value`   | a line graph which shows the total metric values over time                                                                                                                           | 0.0.1+  |
-| wikipedia_articles | Wikipedia Articles                               | `event_uri`            | a list of Wikipedia articles where this item is referenced                                                                                                                           | 0.0.1+  |
-| world_map          | {metric} By Country                              | `country_uri`, `value` | a heatmap of the world, with countries having the most metric values being warmest the `country_table` graph represents the same data, but as a table                                | 0.0.1+  |
-| tweets             | Tweets                                           | `event_uri`            | a list of embedded Twitter tweets as iframes                                                                                                                                         | 0.0.6+  |
-| wordpress          | Wordpress                                        | `event_uri`            | a list of Wordpress posts where this item is referenced                                                                                                                              | 0.0.14+ |
-| hypothesis         | Hypothesis                                       | `event_uri`            | a list of Hypothesis titles where this item is referenced                                                                                                                            | 0.0.17+ |
-| operas_definition  | Definition for this metric on the OPERAS website | `event_uri`            | a link to this metric's definition on the OPERAS website.<br />The `event_uri` should be the link to the definition (a single-length array).<br />The `width` is always set to 100%. | 0.0.20+ |
+| name              | label                                            | required URI fields    | description                                                                                                                                                                          | version |
+| ----------------- | ------------------------------------------------ | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------- |
+| country_table     | {metric} By Country                              | `country_uri`, `value` | a table containing a list of countries and their metric values, descending the `world_map` graph represents the same data, but as a map of the world                                 | 0.0.1+  |
+| time_graph        | {metric} Over Time                               | `timestamp`, `value`   | a line graph which shows the total metric values over time                                                                                                                           | 0.0.1+  |
+| wikipedia         | Wikipedia                                        | `event_uri`            | a list of Wikipedia entries where this item is referenced                                                                                                                            | 0.0.1+  |
+| world_map         | {metric} By Country                              | `country_uri`, `value` | a heatmap of the world, with countries having the most metric values being warmest the `country_table` graph represents the same data, but as a table                                | 0.0.1+  |
+| tweets            | Tweets                                           | `event_uri`            | a list of embedded Twitter tweets as iframes                                                                                                                                         | 0.0.6+  |
+| wordpress         | Wordpress                                        | `event_uri`            | a list of Wordpress posts where this item is referenced                                                                                                                              | 0.0.14+ |
+| hypothesis        | Hypothesis                                       | `event_uri`            | a list of Hypothesis titles where this item is referenced                                                                                                                            | 0.0.17+ |
+| operas_definition | Definition for this metric on the OPERAS website | `event_uri`            | a link to this metric's definition on the OPERAS website.<br />The `event_uri` should be the link to the definition (a single-length array).<br />The `width` is always set to 100%. | 0.0.20+ |
 
 ## Developer Information
 
@@ -527,7 +527,7 @@ The goal of each `method` function is to parse the data received into a format t
 
 Back inside our Graph component, we then update the state to store the parsed data returned by our `method` function. Now that we have data, let's look at the massive `switch` statement towards the bottom of the component. Each `type` listed represents each of the [Supported Graphs](#supported-graphs).
 
-Notice how `wikipedia_articles` and `wordpress` both are calling the same `<List />` component? The idea behind the graphs is to make them as modular as possible: they should have no context as to what tab they are part of or who they are rendering for, but instead have just enough information to render their data.
+Notice how `wikipedia` and `wordpress` both are calling the same `<List />` component? The idea behind the graphs is to make them as modular as possible: they should have no context as to what tab they are part of or who they are rendering for, but instead have just enough information to render their data.
 
 Let's take a look at the List component in more detail (_src/widget/components/graphs/list_). Any component inside of the `graphs` folder is an actual graph: something that will be rendered. The components inside of this folder are the ones that we want to keep as modular as possible. All graphs should receive two props: `data` (an object which can contain _anything_ it needs), and `onReady`.
 

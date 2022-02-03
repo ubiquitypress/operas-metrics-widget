@@ -19,7 +19,9 @@ module.exports = {
     'no-console': [
       'warn',
       { allow: ['clear', 'info', 'error', 'dir', 'trace'] }
-    ]
+    ],
+    'react/function-component-definition': 'off',
+    'react/jsx-props-no-spreading': 'off'
   },
   overrides: [
     {

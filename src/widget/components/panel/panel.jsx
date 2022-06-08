@@ -9,6 +9,7 @@ import widgetEvent from '../../events/widget-event';
 import { useTranslation } from '../../contexts/i18n';
 import Loading from '../loading';
 import OperasDefinition from '../operas-definition';
+import GoogleScholarCitation from '../google-scholar-citation';
 
 const Panel = ({ name, active }) => {
   const config = useConfig();
@@ -68,6 +69,7 @@ const Panel = ({ name, active }) => {
                 onReady={onGraphReady}
               />
             ))}
+            <GoogleScholarCitation />
             <OperasDefinition link={data.definition} />
           </div>
         </>

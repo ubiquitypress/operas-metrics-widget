@@ -37,7 +37,8 @@
     "view_more_amount": "View {{amount}} more",
     "trimmed_string": "{{string}}...",
     "no_data": "None",
-    "operas": "Definition for this metric on the <0>OPERAS</0> website"
+    "operas": "Definition for this metric on the <0>OPERAS</0> website",
+    "google_scholar_citation": "Search on <0>Google Scholar</0>"
   },
   "dates": {
     "months": "Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec",

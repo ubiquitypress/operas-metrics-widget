@@ -8,7 +8,8 @@ const defaultConfig = {
     language: 'en',
     start_graphs_from_zero: false,
     hide_initial_loading_screen: false,
-    base_y_axis_always_zero: true
+    base_y_axis_always_zero: true,
+    show_citation_link: false
   },
   theme: {
     graph_primary: '#506cd3'

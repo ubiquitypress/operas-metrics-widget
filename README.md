@@ -59,7 +59,7 @@ The next step is to embed a `<script>` tag onto the page which which will fetch 
     const s = d.createElement(t);
     s.id = id;
     s.src =
-      'https://storage.googleapis.com/operas/metrics-widget-0.3.0/widget.js';
+      'https://storage.googleapis.com/operas/metrics-widget-0.3.1/widget.js';
     n.parentNode.insertBefore(s, n);
     i.eventQueue = [];
     i.ready = ev => i.eventQueue.push(ev);
@@ -75,11 +75,11 @@ The final step is to import the widget's CSS into the page by adding a `<link>` 
 ```html
 <link
   rel="stylesheet"
-  href="https://storage.googleapis.com/operas/metrics-widget-0.3.0/widget.css"
+  href="https://storage.googleapis.com/operas/metrics-widget-0.3.1/widget.css"
 />
 ```
 
-The `0.3.0` version number included in the JS and CSS snippets above is currently the latest version.
+The `0.3.1` version number included in the JS and CSS snippets above is currently the latest version.
 
 Refreshing the page should now show the following message within the `#metrics-block` container:
 
@@ -110,7 +110,7 @@ export const MetricsWidget = ({ config }) => {
       // Embed the CSS
       const widgetCSS = document.createElement('link');
       widgetCSS.rel = 'stylesheet';
-      widgetCSS.href = `https://storage.googleapis.com/operas/metrics-widget-0.3.0/widget.css`;
+      widgetCSS.href = `https://storage.googleapis.com/operas/metrics-widget-0.3.1/widget.css`;
       document.head.appendChild(widgetCSS);
 
       // Embed the widget script
@@ -121,7 +121,7 @@ export const MetricsWidget = ({ config }) => {
         const s = d.createElement(t);
         s.id = id;
         s.src =
-          'https://storage.googleapis.com/operas/metrics-widget-0.3.0/widget.js';
+          'https://storage.googleapis.com/operas/metrics-widget-0.3.1/widget.js';
         n.parentNode.insertBefore(s, n);
         i.eventQueue = [];
         i.ready = ev => i.eventQueue.push(ev);
@@ -648,6 +648,6 @@ Next, you'll want to [build](#building) the widget.
 
 Once the widget has been built, copy all files in the _dist_ directory you just created in the storage bucket. You will need to create a folder for the _assets_ and copy those in as well.
 
-Lastly, you'll want to update this very README file, query for all strings containing `0.3.0` (including this one) and replace with the brand new version of the widget.
+Lastly, you'll want to update this very README file, query for all strings containing `0.3.1` (including this one) and replace with the brand new version of the widget.
 
 Finally, commit the changes made to the readme and have some coffee.

@@ -39,16 +39,28 @@ const Widget = () => {
 
         // Update the tabs with every measure
         tabs = tabs.map(tab => {
-          // Set the count to be the total number of matching `nav_counts` metrics
-          const count = measures.reduce((acc, curr) => {
-            if (curr.type === tab.name)
-              if (
-                tab.nav_counts.indexOf('*') !== -1 ||
-                tab.nav_counts.indexOf(curr.measure_uri) !== -1
-              )
-                return acc + curr.value;
-            return acc;
-          }, 0);
+          let { count } = tab;
+
+          // No measures for this tab, skip it
+          if (!tab.nav_counts || !tab.nav_counts.length) {
+            return tab;
+          }
+
+          // A wildcard is used, meaning we include all metrics of the given tab name
+          // We don't return here incase other values are included too.
+          if (tab.nav_counts.indexOf('*') !== -1) {
+            const matches = measures.filter(m => m.type === tab.name);
+            count += matches.reduce((a, b) => a + b.value, 0);
+          }
+
+          // The sources have been listed manually
+          tab.nav_counts.forEach(uri => {
+            if (uri !== '*') {
+              const [match] = measures.filter(m => m.measure_uri === uri);
+              count += match.value;
+            }
+          });
+
           return { ...tab, count };
         });
 

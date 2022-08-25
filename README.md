@@ -358,6 +358,12 @@ _(It's recommended to have a browser extension that formats JSON responses)_.
 
 The `nav_counts` array also supports use of a wildcard item (`['*']`) which will tell the navigation menu to use _all available_ URIs when calculating the totals. It is recommended to only use this if you are completely sure that there will not be any overlap in your data that could cause inflated numbers.
 
+> **Note!** Prior to _version 0.3.0_, the navigation count was based on the `type` of the measure, meaning that a URI linked to "downloads" wouldn't be added to "tweets", even if the URIs were explicitly defined.
+>
+> This restriction has since been lifted and all explicitly defined URIs will now be included in the total navigation count.
+>
+> Wildcard URIs will still fetch all counts of the same type, though can now be used _in conjunction_ with the changes above.
+
 #### graphs
 
 The next (and **required**) field is `graphs`: an object containing all of the graphs you wish to show for this metric.

@@ -89,7 +89,5 @@ export const loadData = async (tab: Tab, graph: Graph, config: Config) => {
     })
   );
 
-  console.log(data);
-
   return data;
 };

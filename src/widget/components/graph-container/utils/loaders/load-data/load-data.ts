@@ -24,8 +24,11 @@ export const loadData = async (tab: Tab, graph: Graph, config: Config) => {
         return;
       }
 
-      // If there are no works, skip this metric (since otherwise it will return all events)
+      // If there are no works, add an empty object to the data and then skip it since otherwise it will return all events)
       if (works.filter(work => !!work).length === 0) {
+        data.data = {
+          [scope]: { total: 0, data: [] }
+        };
         return;
       }
 
@@ -85,6 +88,8 @@ export const loadData = async (tab: Tab, graph: Graph, config: Config) => {
       data.merged = [...data.merged, ...filtered];
     })
   );
+
+  console.log(data);
 
   return data;
 };

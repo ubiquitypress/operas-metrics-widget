@@ -1,6 +1,7 @@
 import React from 'react';
 import { cx } from '@/utils';
-import { Cell, TableCellProps } from '../cell';
+import type { TableCellProps } from '../cell';
+import { Cell } from '../cell';
 import styles from './row.module.scss';
 
 export interface TableRowProps {
@@ -13,14 +14,13 @@ export const Row = (props: TableRowProps) => {
   const { children, isHeader, className, ...rest } = props;
 
   // Pass `isHeader` through to any `Cell` children
+  // eslint-disable-next-line sonarjs/function-return-type
   const childrenWithProps = React.Children.map(children, child => {
-    if (isHeader && React.isValidElement(child)) {
-      if (child.type === Cell) {
-        return React.cloneElement(child, {
-          ...child.props,
-          isHeader: true
-        } as TableCellProps);
-      }
+    if (isHeader && React.isValidElement(child) && child.type === Cell) {
+      return React.cloneElement(child, {
+        ...(typeof child.props === 'object' ? child.props : {}),
+        isHeader: true
+      } as TableCellProps);
     }
     return child;
   });

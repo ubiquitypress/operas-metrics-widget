@@ -1,5 +1,5 @@
 import { cache } from '../cache';
 
 export const isCached = (url: string) => {
-  return cache[url];
+  return url in cache;
 };

@@ -1,5 +1,5 @@
-import { useIntl } from '@/i18n';
 import React from 'react';
+import { useIntl } from '@/i18n';
 import styles from './loading.module.scss';
 
 export const Loading = () => {

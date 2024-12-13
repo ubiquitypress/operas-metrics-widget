@@ -1,5 +1,5 @@
-import { Config } from '@/types';
 import { parseToRgb } from 'polished';
+import type { Config } from '@/types';
 import { getRootElement } from '../get-root-element';
 import { log } from '../log';
 
@@ -27,7 +27,7 @@ export const getWidgetStyle = (
 
   // If the widget is not found, return undefined
   if (!widget) {
-    return undefined;
+    return;
   }
 
   // Get the computed style of the widget
@@ -59,7 +59,4 @@ export const getWidgetStyle = (
       return color;
     }
   }
-
-  // If no style was found, return undefined
-  return undefined;
 };

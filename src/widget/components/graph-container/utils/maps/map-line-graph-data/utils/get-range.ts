@@ -1,5 +1,5 @@
-import { DatasetRange, LineGraph } from '@/types';
-import { Timestamp } from './get-timestamps';
+import type { DatasetRange, LineGraph } from '@/types';
+import type { Timestamp } from './get-timestamps';
 
 export const getRange = (
   graph: LineGraph,

@@ -1,4 +1,4 @@
-import { APIEvent } from '@/types';
+import type { APIEvent } from '@/types';
 
 export interface APIResponse {
   status: string;

@@ -1,4 +1,4 @@
-import { UserConfig } from '@/types';
+import type { UserConfig } from '@/types';
 
 /**
  * Looks for `operas-metrics-config` in the `window` object and returns it.
@@ -11,12 +11,12 @@ import { UserConfig } from '@/types';
  */
 export const getConfigFromWindow = (): UserConfig => {
   try {
-    if (typeof window !== 'undefined') {
+    if (typeof globalThis !== 'undefined') {
       const config = window['operas-metrics-config'];
       if (config) {
         try {
           return JSON.parse(config.textContent || '');
-        } catch (err) {
+        } catch {
           throw new Error(
             'Found `operas-metrics-config`, but its content could not be parsed.'
           );

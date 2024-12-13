@@ -1,5 +1,5 @@
 import React from 'react';
-import { TextGraph, GraphData } from '@/types';
+import type { TextGraph, GraphData } from '@/types';
 import { formatNumber, getAppVersion, sanitizeHTML } from '@/utils';
 import { useConfig } from '@/config';
 import styles from './text.module.scss';
@@ -10,6 +10,7 @@ interface TextProps {
   data: GraphData;
 }
 
+// eslint-disable-next-line sonarjs/slow-regex
 const DEFAULT_REGEX = /{(.*?)}/;
 
 export const Text = (props: TextProps) => {
@@ -34,7 +35,7 @@ export const Text = (props: TextProps) => {
   };
 
   // Replace the placeholders with the actual values
-  const message = content.replace(
+  const message = content.replaceAll(
     new RegExp(variable_regex, 'g'),
     (match, variable) => {
       if (variable in replacements) {

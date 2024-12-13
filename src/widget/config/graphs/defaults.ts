@@ -1,5 +1,5 @@
-import { Graphs } from '@/types';
-import { Property } from 'csstype';
+import type { Property } from 'csstype';
+import type { Graphs } from '@/types';
 
 interface Data {
   height?: string;

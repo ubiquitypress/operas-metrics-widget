@@ -1,4 +1,4 @@
-import { GraphData, Config, LineGraph, Dataset, Tab } from '@/types';
+import type { GraphData, Config, LineGraph, Dataset, Tab } from '@/types';
 import {
   formatDate,
   generateCompleteTimestamps,
@@ -31,13 +31,13 @@ export const mapLineGraphData = (
   // Determine the date range based on the graph and timestamps
   const range = getRange(graph, timestamps);
   const rawTimestampsRange = timestamps.raw[range];
-  if (!rawTimestampsRange || !rawTimestampsRange.length) {
+  if (rawTimestampsRange.length === 0) {
     return { labels: [], datasets: [] };
   }
 
   // Calculate start and end dates from the timestamps
   const startDate = new Date(rawTimestampsRange[0]);
-  const endDate = new Date(rawTimestampsRange[rawTimestampsRange.length - 1]);
+  const endDate = new Date(rawTimestampsRange.at(-1) || '');
   const now = new Date();
 
   // Adjust the end date based on the current date and the chosen range
@@ -60,10 +60,8 @@ export const mapLineGraphData = (
   // Convert each scope into a dataset
   const datasets: Dataset[] = graph.scopes.map(scope => {
     // Extract relevant data for the scope and generate a lookup object
-    const scopeData = data.data[scope]?.data;
-    const scopeDataLookup = scopeData
-      ? processScopeData(scopeData, range, config)
-      : {};
+    const scopeData = data.data[scope].data;
+    const scopeDataLookup = processScopeData(scopeData, range, config);
 
     // Map each timestamp to its respective data value (or 0 if not present)
     let datasetData = completeTimestamps.map(
@@ -93,8 +91,10 @@ export const mapLineGraphData = (
   if (artificialZeroNeeded || someHaveSingleData) {
     const first = new Date(completeTimestamps[0]);
     const formatted = formatDate(incrementDate(first, range), range, config);
-    completeTimestamps.unshift(formatted as string);
-    datasets.forEach(dataset => dataset.data.unshift(0));
+    completeTimestamps.unshift(formatted);
+    for (const dataset of datasets) {
+      dataset.data.unshift(0);
+    }
   }
 
   // If the graph is stacked, filter out datasets with no data and return

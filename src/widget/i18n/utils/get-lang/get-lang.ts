@@ -1,6 +1,7 @@
-import { Config } from '@/types';
+import type { Config } from '@/types';
 import { log } from '@/utils';
-import { IntlDictionary, locales } from '../create-dictionary';
+import type { IntlDictionary } from '../create-dictionary';
+import { locales } from '../create-dictionary';
 
 // This is a function that logs a warning message to the console if
 // the preferred language is not found in the dictionary.
@@ -9,7 +10,9 @@ const logFallback = (
   fallback: string,
   config: Config
 ) => {
-  if (!preferred) return;
+  if (!preferred) {
+    return;
+  }
 
   let message = `Language "${preferred}" not found in config.locales, falling back to "${fallback}".`;
   if (config.options.locale_fallback_type === 'mixed') {
@@ -25,7 +28,7 @@ export const getLang = (dictionary: IntlDictionary, config: Config) => {
   const configLang = config.settings.locale;
 
   // If the widget has specified a language, use that if it exists
-  if (configLang && dictionary[configLang]) {
+  if (configLang && configLang in dictionary) {
     return configLang;
   }
 
@@ -34,13 +37,13 @@ export const getLang = (dictionary: IntlDictionary, config: Config) => {
     // If so, try the two-character version
     const shortLang = configLang.slice(0, 2);
 
-    if (dictionary[shortLang]) {
+    if (shortLang in dictionary) {
       return shortLang;
     }
   }
 
   // If the user's language is supported, use that
-  if (dictionary[navigator.language]) {
+  if (navigator.language in dictionary) {
     logFallback(configLang, navigator.language, config);
     return navigator.language;
   }

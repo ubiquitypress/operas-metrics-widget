@@ -1,4 +1,4 @@
-import { Tab } from './tab';
+import type { Tab } from './tab';
 
 // We have two Config types -- one is `Config`, which should be used throughout the widget codebase
 // so that you don't need to worry about any properties being undefined.

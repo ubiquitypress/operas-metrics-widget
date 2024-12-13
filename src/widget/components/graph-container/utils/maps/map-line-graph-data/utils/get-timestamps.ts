@@ -1,5 +1,5 @@
-import { APIEvent, Config, DatasetRange, GraphData } from '@/types';
 import { format, eachDayOfInterval } from 'date-fns';
+import type { APIEvent, Config, DatasetRange, GraphData } from '@/types';
 
 export interface Timestamp {
   raw: RawData;
@@ -14,15 +14,15 @@ interface RawData {
 
 /** 
   Returns an object of all unique timestamps in the given data
-  @param data The GraphData object to get the timestamps from
-  @param config The widget Config object to get the locale from
+  @param data - The GraphData object to get the timestamps from
+  @param config - The widget Config object to get the locale from
 */
 export const getTimestamps = (
   data: GraphData,
   config: Config
 ): Timestamp | null => {
   // Guard clause: if there is no data, return null
-  if (!data.merged.length) {
+  if (data.merged.length === 0) {
     return null;
   }
 
@@ -35,7 +35,7 @@ export const getTimestamps = (
   let timestamps: string[] = [];
 
   // Loop through each event
-  data.merged.forEach(event => {
+  for (const event of data.merged) {
     // Get the timestamp
     const { timestamp } = event;
 
@@ -46,13 +46,13 @@ export const getTimestamps = (
       // Push the timestamp to the array
       timestamps.push(timestamp);
     }
-  });
+  }
 
   // Sort the timestamps by date
   timestamps.sort((a, b) => new Date(a).getTime() - new Date(b).getTime());
 
   // After sorting the timestamps, get the latest timestamp
-  const latestTimestamp = new Date(timestamps[timestamps.length - 1]);
+  const latestTimestamp = new Date(timestamps.at(-1) || '');
 
   // Get today's date
   const currentDate = new Date();
@@ -66,7 +66,7 @@ export const getTimestamps = (
     }).map(date => format(date, 'yyyy-MM-dd'));
 
     // Concatenate the additional timestamps to the timestamps array
-    timestamps = timestamps.concat(additionalTimestamps);
+    timestamps = [...timestamps, ...additionalTimestamps];
   }
 
   // We now have an array of every possible timestamp. In order to optimise this,
@@ -80,7 +80,7 @@ export const getTimestamps = (
     years: []
   };
   const prev = { month: -1, year: -1 }; // 0 is a valid month/year
-  timestamps.forEach(timestamp => {
+  for (const timestamp of timestamps) {
     const date = new Date(timestamp);
     date.setUTCMinutes(60);
     date.setUTCDate(1);
@@ -103,7 +103,7 @@ export const getTimestamps = (
     // Update the `prev` object
     prev.month = month;
     prev.year = year;
-  });
+  }
 
   // Return the timestamps, localised both with and without the day
   return {

@@ -3,7 +3,7 @@ import { NavigationProvider } from './components';
 import { ConfigProvider } from './config';
 import { EventsProvider } from './events';
 import { IntlProvider } from './i18n';
-import { UserConfig } from './types';
+import type { UserConfig } from './types';
 import { Widget } from './widget';
 
 interface MainProps {

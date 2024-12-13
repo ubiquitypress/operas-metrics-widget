@@ -8,10 +8,8 @@ export const timeBetweenDates = (
 ) => {
   if (unit === 'months') {
     return monthsBetweenDates(date1, date2);
-  } else if (unit === 'days') {
-    return daysBetweenDates(date1, date2);
   } else {
-    throw new Error('Invalid unit');
+    return daysBetweenDates(date1, date2);
   }
 };
 

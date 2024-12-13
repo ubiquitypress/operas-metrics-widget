@@ -1,7 +1,7 @@
-import { HypothesisData } from '@/components/graphs';
-import { Config, GraphData } from '@/types';
+import type { HypothesisData } from '@/components/graphs';
+import type { Config, GraphData } from '@/types';
 import { HTTPRequest } from '@/utils';
-import { HypothesisAPIResponse } from './types';
+import type { HypothesisAPIResponse } from './types';
 
 export const mapHypothesisData = async (
   data: GraphData,
@@ -14,13 +14,17 @@ export const mapHypothesisData = async (
       const { event_uri } = event;
 
       // Make sure the URI is valid
-      if (!event_uri) return;
+      if (!event_uri) {
+        return;
+      }
 
       // Get the ID from the URI
       const id = event_uri.split('/').pop();
 
       // Make sure the ID is valid
-      if (!id) return;
+      if (!id) {
+        return;
+      }
 
       // Fetch the hypothesis data from the API
       const res = await HTTPRequest<HypothesisAPIResponse>({

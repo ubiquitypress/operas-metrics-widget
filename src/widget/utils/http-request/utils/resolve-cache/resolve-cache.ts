@@ -1,7 +1,9 @@
 import { cache } from '../cache';
 
 export const resolveCache = (url: string, data: any) => {
-  cache[url].onLoad.forEach(callback => callback(data));
+  for (const callback of cache[url].onLoad) {
+    callback(data);
+  }
 
   // Update the cache
   cache[url].data = data;

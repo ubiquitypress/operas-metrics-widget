@@ -9,7 +9,7 @@ export const toDotNotation = (
 ): Record<string, string> => {
   const result: Record<string, string> = {};
 
-  Object.keys(object).forEach(key => {
+  for (const key of Object.keys(object)) {
     const newPrefix = prefix ? `${prefix}.${key}` : key;
     const value = object[key];
     if (typeof value === 'object') {
@@ -20,7 +20,7 @@ export const toDotNotation = (
     } else {
       result[newPrefix] = value;
     }
-  });
+  }
 
   return result;
 };

@@ -1,4 +1,4 @@
-import { Event, EventsMap } from '@/events';
+import type { Event, EventsMap } from '@/events';
 
 declare global {
   interface Window {

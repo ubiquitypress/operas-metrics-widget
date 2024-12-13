@@ -1,4 +1,4 @@
-import { Config, LineGraph } from '@/types';
+import type { Config, LineGraph } from '@/types';
 import { formatNumber } from '@/utils';
 
 interface TooltipElements {
@@ -17,11 +17,13 @@ export const tooltipConfig = (
 ) => {
   const { tooltipId, tooltipDateId, tooltipValueId, tooltipScopeId } = elements;
 
-  const tooltipEl = document.getElementById(tooltipId);
+  const tooltipEl = document.querySelector(`#${tooltipId}`);
   const tooltipModel = context.tooltip;
 
   // Make sure we have the tooltip element
-  if (!tooltipEl) return;
+  if (!tooltipEl || !(tooltipEl instanceof HTMLElement)) {
+    return;
+  }
 
   // Hide if should not be visible
   if (tooltipModel.opacity === 0) {
@@ -35,19 +37,19 @@ export const tooltipConfig = (
     const { raw, label, dataset } = tooltipModel.dataPoints[0];
 
     // Set the date text
-    const dateEl = document.getElementById(tooltipDateId);
+    const dateEl = document.querySelector(`#${tooltipDateId}`);
     if (dateEl) {
       dateEl.innerHTML = label;
     }
 
     // Set the value text
-    const valueEl = document.getElementById(tooltipValueId);
+    const valueEl = document.querySelector(`#${tooltipValueId}`);
     if (valueEl) {
       valueEl.innerHTML = formatNumber(raw, config.settings.locale);
     }
 
     // Set the scope text
-    const scopeEl = document.getElementById(tooltipScopeId);
+    const scopeEl = document.querySelector(`#${tooltipScopeId}`);
     if (scopeEl && graph.config?.stacked) {
       scopeEl.innerHTML = dataset.label;
     }

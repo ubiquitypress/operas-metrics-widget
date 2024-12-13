@@ -1,4 +1,4 @@
-import { Config, DatasetRange } from '@/types';
+import type { Config, DatasetRange } from '@/types';
 import { formatDate } from './format-date';
 import { incrementDate } from './increment-date';
 

@@ -1,30 +1,32 @@
-import { ListData } from '@/components';
-import { GraphData, List } from '@/types';
+import type { ListData } from '@/components';
+import type { GraphData, List } from '@/types';
 
 export const mapListData = (data: GraphData, graph: List): ListData[] => {
   const { name_regex, name_replacements } = graph.config || {};
   const map: ListData[] = [];
 
-  data.merged.forEach(event => {
-    if (event.event_uri == null) return;
+  for (const event of data.merged) {
+    if (!event.event_uri) {
+      continue;
+    }
 
     // Get the name based on the regex
     let name = event.event_uri;
     if (name_regex) {
       const regex = new RegExp(name_regex);
-      const match = event.event_uri.match(regex);
+      const match = RegExp(regex).exec(event.event_uri);
       if (match) {
         // Set the name
-        name = match[match.length - 1];
+        name = match.at(-1) || name;
 
         // Decode the name
         name = decodeURIComponent(name);
 
         // Replace the name
         if (name_replacements) {
-          Object.entries(name_replacements).forEach(([key, value]) => {
+          for (const [key, value] of Object.entries(name_replacements)) {
             name = name.replaceAll(key, value);
-          });
+          }
         }
       }
     }
@@ -35,7 +37,7 @@ export const mapListData = (data: GraphData, graph: List): ListData[] => {
       name,
       link: event.event_uri
     });
-  });
+  }
 
   return map;
 };

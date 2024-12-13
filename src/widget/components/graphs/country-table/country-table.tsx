@@ -2,8 +2,8 @@ import React from 'react';
 import { GraphEmptyMessage } from '@/components/common';
 import { useConfig } from '@/config';
 import { formatNumber } from '@/utils';
-import styles from './country-table.module.scss';
 import { useIntl } from '@/i18n';
+import styles from './country-table.module.scss';
 
 interface CountryTableProps {
   id?: string;
@@ -18,7 +18,9 @@ export const CountryTable = (props: CountryTableProps) => {
   const { config } = useConfig();
   const { t } = useIntl();
 
-  if (!data.length) return <GraphEmptyMessage />;
+  if (data.length === 0) {
+    return <GraphEmptyMessage />;
+  }
   return (
     <ul id={id} className={styles['country-table']}>
       {data.map(item => (

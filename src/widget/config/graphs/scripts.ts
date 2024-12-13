@@ -1,4 +1,4 @@
-import { Graphs, Config } from '@/types';
+import type { Graphs, Config } from '@/types';
 import { getAssetPath } from '@/utils';
 
 export interface ExternalScript {

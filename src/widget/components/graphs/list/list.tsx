@@ -1,5 +1,5 @@
-import { GraphEmptyMessage, Link } from '@/components/common';
 import React from 'react';
+import { GraphEmptyMessage, Link } from '@/components/common';
 
 export interface ListData {
   id: string;
@@ -15,7 +15,9 @@ interface ListProps {
 export const List = (props: ListProps) => {
   const { id, data } = props;
 
-  if (!data.length) return <GraphEmptyMessage />;
+  if (data.length === 0) {
+    return <GraphEmptyMessage />;
+  }
   return (
     <ul id={id}>
       {data.map(item => {

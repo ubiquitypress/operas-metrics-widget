@@ -1,6 +1,6 @@
-import { Graph, GraphData, Tab, Config } from '@/types';
+import type { Graph, GraphData, Tab, Config } from '@/types';
 import { HTTPRequest } from '@/utils';
-import { APIResponse } from './types';
+import type { APIResponse } from './types';
 
 export const loadData = async (tab: Tab, graph: Graph, config: Config) => {
   // Get the list of sources, which will tell us which data to load
@@ -48,18 +48,14 @@ export const loadData = async (tab: Tab, graph: Graph, config: Config) => {
           if (event.measure_uri.includes(measure)) {
             // Make sure the `timestamp` is past the `startDate`
             const startDate = tab.scopes[scope].startDate;
-            if (startDate) {
-              if (new Date(event.timestamp) < new Date(startDate)) {
-                return false;
-              }
+            if (startDate && new Date(event.timestamp) < new Date(startDate)) {
+              return false;
             }
 
             // Make sure the `timestamp` is before the `endDate`
             const endDate = tab.scopes[scope].endDate;
-            if (endDate) {
-              if (new Date(event.timestamp) >= new Date(endDate)) {
-                return false;
-              }
+            if (endDate && new Date(event.timestamp) >= new Date(endDate)) {
+              return false;
             }
 
             // Increase the local total by the event value

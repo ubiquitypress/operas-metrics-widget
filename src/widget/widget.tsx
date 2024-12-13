@@ -12,14 +12,14 @@ export const Widget = () => {
   // Emit widget_loading event when the widget is mounted
   useEffect(() => {
     events.emit('widget_loading');
-  }, []);
+  }, [events]);
 
   // Emit widget_ready event when the widget is ready
   useEffect(() => {
     if (!loading) {
       events.emit('widget_ready', tabs);
     }
-  }, [loading]);
+  }, [events, loading, tabs]);
 
   // Show loading indicator if data is not ready
   if (loading) {

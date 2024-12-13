@@ -1,15 +1,12 @@
-import { ExternalScript } from '@/config';
+import type { ExternalScript } from '@/config';
 import { loadExternalScript } from '@/utils';
 
 /**
  * Loads each script in the array of scripts, in order.
+ * @param scripts - The array of scripts to load.
  */
 export const loadScripts = async (scripts: ExternalScript[]) => {
-  if (scripts) {
-    for (let i = 0; i < scripts.length; i++) {
-      await loadExternalScript(scripts[i]);
-    }
+  for (const script of scripts) {
+    await loadExternalScript(script);
   }
-
-  return Promise.resolve();
 };

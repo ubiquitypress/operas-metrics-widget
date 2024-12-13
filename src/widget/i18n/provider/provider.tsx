@@ -33,13 +33,14 @@ export const IntlProvider = (props: IntlProviderProps) => {
   // The `locale_fallback_type` config option determines which of these two options is used
   useEffect(() => {
     const { locale_fallback_type } = config.options;
-    if (lang !== config.settings.locale) {
-      if (locale_fallback_type === 'supported') {
-        setConfig({
-          ...config,
-          settings: { ...config.settings, locale: lang }
-        });
-      }
+    if (
+      lang !== config.settings.locale &&
+      locale_fallback_type === 'supported'
+    ) {
+      setConfig({
+        ...config,
+        settings: { ...config.settings, locale: lang }
+      });
     }
   }, [lang, config, setConfig]);
 

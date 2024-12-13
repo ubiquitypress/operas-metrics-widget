@@ -1,4 +1,4 @@
-import { GraphTab } from './graphs';
+import type { GraphTab } from './graphs';
 
 export interface Scope {
   title?: string;

@@ -1,8 +1,13 @@
 import { DEFAULT_ELEMENT_ID } from '@/config';
-import { Config, UserConfig } from '@/types';
+import type { Config, UserConfig } from '@/types';
 
-export const getRootElement = (config: UserConfig | Config) => {
+/**
+ * Get the root element of the widget.
+ * @param config - The user config.
+ * @returns The root element of the widget.
+ */
+export const getRootElement = (config: UserConfig | Config): Element | null => {
   const id = config.settings?.element_id || DEFAULT_ELEMENT_ID;
 
-  return document.getElementById(id);
+  return document.querySelector(`#${id}`);
 };

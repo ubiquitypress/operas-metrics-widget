@@ -1,5 +1,6 @@
-import { Config } from '@/types';
-import { EncapsulatedStringObject, toDotNotation } from '../to-dot-notation';
+import type { Config } from '@/types';
+import type { EncapsulatedStringObject } from '../to-dot-notation';
+import { toDotNotation } from '../to-dot-notation';
 
 export interface IntlDictionary {
   [key: string]: Record<string, string>;
@@ -22,9 +23,9 @@ export const createDictionary = (config: Config): IntlDictionary => {
   const dictionary: IntlDictionary = {};
 
   // Loop through every `locales` file and add it to the dictionary
-  locales.forEach(locale => {
+  for (const locale of locales) {
     // Import the locale file
-    const data = require(`../../locales/${locale}.json`); // eslint-disable-line @typescript-eslint/no-var-requires
+    const data = require(`../../locales/${locale}.json`);
 
     // Convert the object to dot notation for much quicker lookups
     const dotNotation = toDotNotation(data);
@@ -37,19 +38,17 @@ export const createDictionary = (config: Config): IntlDictionary => {
     if (locale.length === 5) {
       const shortLocale = locale.slice(0, 2);
 
-      if (!dictionary[shortLocale]) {
+      if (!(shortLocale in dictionary)) {
         dictionary[shortLocale] = dotNotation;
       }
     }
-  });
+  }
 
   // Add in any custom locales or overrides
-  if (config.locales) {
-    Object.keys(config.locales).forEach(locale => {
-      dictionary[locale] = toDotNotation(
-        config.locales![locale] as EncapsulatedStringObject
-      );
-    });
+  for (const locale of Object.keys(config.locales)) {
+    dictionary[locale] = toDotNotation(
+      config.locales[locale] as EncapsulatedStringObject
+    );
   }
 
   return dictionary;

@@ -1,12 +1,10 @@
 /**
  * A utility function to join class names, similar to the `classnames` package.
- * @example cx(['class1', 'class2', {'class3': true, 'class4': false}]) => 'class1 class2 class3'
  */
 export const cx = (...args: unknown[]) => {
   const classes = [];
 
-  for (let i = 0; i < args.length; i++) {
-    const arg = args[i];
+  for (const arg of args) {
     const argType = typeof arg;
 
     if (!arg) {
@@ -18,8 +16,8 @@ export const cx = (...args: unknown[]) => {
     } else if (Array.isArray(arg)) {
       classes.push(...arg);
     } else if (argType === 'object') {
-      for (const key in arg) {
-        if (arg[key as keyof typeof arg]) {
+      for (const key in arg as Record<string, unknown>) {
+        if ((arg as Record<string, unknown>)[key]) {
           classes.push(key);
         }
       }

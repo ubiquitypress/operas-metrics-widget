@@ -1,4 +1,4 @@
-import { GraphData } from '@/types';
+import type { GraphData } from '@/types';
 import { getCountryCodeFromUri } from '@/utils';
 
 export const mapWorldMapData = (data: GraphData) => {
@@ -6,7 +6,7 @@ export const mapWorldMapData = (data: GraphData) => {
   const countries: Record<string, number> = {};
 
   // Loop through each event
-  data.merged.forEach(event => {
+  for (const event of data.merged) {
     // Get the country from the event
     const { country_uri } = event;
 
@@ -21,7 +21,7 @@ export const mapWorldMapData = (data: GraphData) => {
         }
       }
     }
-  });
+  }
 
   // Return the data
   return countries;

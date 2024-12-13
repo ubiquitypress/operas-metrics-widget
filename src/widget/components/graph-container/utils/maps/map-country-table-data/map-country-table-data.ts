@@ -1,4 +1,4 @@
-import { Config, GraphData } from '@/types';
+import type { Config, GraphData } from '@/types';
 import { getCountryCodeFromUri } from '@/utils';
 
 export const mapCountryTableData = (data: GraphData, config: Config) => {
@@ -7,7 +7,7 @@ export const mapCountryTableData = (data: GraphData, config: Config) => {
   let unknown = 0;
 
   // Loop through each country
-  data.merged.forEach(event => {
+  for (const event of data.merged) {
     // Get the country from the event
     const { country_uri } = event;
 
@@ -24,7 +24,7 @@ export const mapCountryTableData = (data: GraphData, config: Config) => {
     } else {
       unknown += event.value;
     }
-  });
+  }
 
   // Make a new Intl object to localise the country names
   const { locale } = config.settings;

@@ -1,4 +1,4 @@
-import { GraphData } from '@/types';
+import type { GraphData } from '@/types';
 
 export const mapTweetsData = (data: GraphData): string[] => {
   // Get the tweet IDs from the data
@@ -7,7 +7,7 @@ export const mapTweetsData = (data: GraphData): string[] => {
   });
 
   // Filter out any undefined IDs
-  const filtered = ids.filter(id => Boolean(id));
+  const filtered = ids.filter(Boolean);
 
   // Return the tweet IDs
   return filtered as string[];

@@ -6,6 +6,7 @@
   "graphs": {
     "empty": "No data available",
     "hypothesis": {
+      "title": "Hypothesis",
       "date": "Date",
       "author": "Author",
       "summary": "Summary"

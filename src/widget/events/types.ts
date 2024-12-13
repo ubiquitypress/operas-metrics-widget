@@ -1,4 +1,4 @@
-import { Graph, NavCount, Tab } from '@/types';
+import type { Graph, NavCount, Tab } from '@/types';
 
 // Contains the arguments each event receives and passes to its callbacks
 // This is the only part of this file that needs to be modified when adding a new event

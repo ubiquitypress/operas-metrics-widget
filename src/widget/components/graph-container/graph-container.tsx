@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { cx, log } from '@/utils';
-import { Graph, Tab } from '@/types';
+import type { Graph, Tab } from '@/types';
+import { graphDefaults, graphScripts, useConfig } from '@/config';
+import { useEvents } from '@/events';
 import { useNavigation } from '../navigation';
 import { GraphTitle } from './components';
-import { graphDefaults, graphScripts, useConfig } from '@/config';
-import { ComponentData, loadData, loadScripts } from './utils';
-import { loadComponentData } from './utils';
-import { useEvents } from '@/events';
+import type { ComponentData } from './utils';
+import { loadData, loadScripts, loadComponentData } from './utils';
 import styles from './graph-container.module.scss';
 
 interface GraphContainerProps {
@@ -36,11 +36,15 @@ export const GraphContainer = (props: GraphContainerProps) => {
     const prepare = async () => {
       try {
         // Don't load if the data is already loaded
-        if (state.loading || state.ready) return;
+        if (state.loading || state.ready) {
+          return;
+        }
 
         // Don't load if the tab is not active, unless the option is enabled
         const { load_graph_data_immediately } = config.options;
-        if (!load_graph_data_immediately && activeTab !== tab.id) return;
+        if (!load_graph_data_immediately && activeTab !== tab.id) {
+          return;
+        }
 
         // Set the loading state
         setState({ ...state, loading: true });
@@ -76,15 +80,28 @@ export const GraphContainer = (props: GraphContainerProps) => {
         // Set the ready state and pass in the graph
         setState({ ...state, loading: false, ready: true, componentData });
       } catch (err) {
-        log.warn(`${graph.id} failed to load: ${err}`);
+        log.warn(`${graph.id} failed to load:`, err);
       }
     };
 
-    prepare();
-  }, [activeTab, state.loading, state.ready, tab.id]);
+    prepare().catch(log.error);
+  }, [
+    activeTab,
+    config,
+    events,
+    graph,
+    onGraphLoaded,
+    state,
+    state.loading,
+    state.ready,
+    tab,
+    tab.id
+  ]);
 
   // This component won't be rendered until the data is ready
-  if (!state.ready || !state.componentData) return null;
+  if (!state.ready || !state.componentData) {
+    return null;
+  }
 
   // We have the data, render the graph
   return (
@@ -92,7 +109,7 @@ export const GraphContainer = (props: GraphContainerProps) => {
       className={cx(styles['graph-container'], graph.id, graph.options?.class)}
       style={{
         width: `${graph.options?.width || config.options.default_graph_width}%`,
-        height: state.componentData?.hasData
+        height: state.componentData.hasData
           ? graph.options?.height || graphDefaults[graph.type].height
           : undefined, // no data, so don't set a height
         maxHeight:

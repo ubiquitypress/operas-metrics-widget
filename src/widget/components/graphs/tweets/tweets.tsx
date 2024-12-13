@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useIntl } from '@/i18n';
-import { Graph } from '@/types';
+import type { Graph } from '@/types';
+import { GraphEmptyMessage } from '@/components/common';
 import { Tweet } from './components';
 import styles from './tweets.module.scss';
-import { GraphEmptyMessage } from '@/components/common';
 
 export interface TweetsProps {
   id: string;
@@ -18,7 +18,9 @@ export const Tweets = (props: TweetsProps) => {
   const [limit, setLimit] = useState(LIMIT);
   const { t } = useIntl();
 
-  if (!data.length) return <GraphEmptyMessage />;
+  if (data.length === 0) {
+    return <GraphEmptyMessage />;
+  }
   return (
     <div id={id} className={styles['tweets']}>
       {data.map((id, i) => {
@@ -41,8 +43,8 @@ export const Tweets = (props: TweetsProps) => {
       {data.length > limit && (
         <button
           type='button'
-          onClick={() => setLimit(limit + LIMIT)}
           className={styles['more-tweets-button']}
+          onClick={() => setLimit(limit + LIMIT)}
         >
           {t('graphs.tweets.load_more')}
         </button>

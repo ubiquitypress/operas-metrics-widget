@@ -1,6 +1,11 @@
-import { ExternalScript } from '@/config';
+import type { ExternalScript } from '@/config';
 import { getState, setState } from './utils';
 
+/**
+ * Load an external script and resolve the promise when it's loaded.
+ * @param script - The external script to load.
+ * @returns A promise that resolves when the script is loaded.
+ */
 export const loadExternalScript = async (
   script: ExternalScript
 ): Promise<void> => {
@@ -8,36 +13,35 @@ export const loadExternalScript = async (
     const { id, url } = script;
 
     // Check if the script has already been loaded before
-    let element = document.getElementById(id) as HTMLScriptElement;
-
-    // If the script has already been loaded, resolve the promise
-    if (element && getState(element) === 'loaded') {
+    const existing = document.querySelector(`#${id}`);
+    if (existing && getState(existing) === 'loaded') {
       resolve();
       return;
     }
 
     // Create a new script element if it doesn't exist
-    if (!element) {
-      element = document.createElement('script');
-      element.id = id;
-      element.type = 'text/javascript';
-      element.src = url;
-      element.referrerPolicy = 'no-referrer';
-      document.head.appendChild(element);
+    let el: HTMLScriptElement = existing as HTMLScriptElement;
+    if (!existing) {
+      el = document.createElement('script');
+      el.id = id;
+      el.type = 'text/javascript';
+      el.src = url;
+      el.referrerPolicy = 'no-referrer';
+      document.head.append(el);
     }
 
     // Set the script state to loading
-    setState(element, 'loading');
+    setState(el, 'loading');
 
     // Wait for the script to load before resolving the promise
-    element.addEventListener('load', () => {
-      setState(element, 'loaded');
+    el.addEventListener('load', () => {
+      setState(el, 'loaded');
       resolve();
     });
 
     // If the script fails to load, reject the promise
-    element.addEventListener('error', error => {
-      reject(error);
+    el.addEventListener('error', () => {
+      reject(new Error(`Failed to load script: ${url}`));
     });
   });
 };

@@ -1,9 +1,9 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { Main } from './widget';
-import { getConfigFromWindow } from './utils';
 import { getRootElement, log } from '@/utils';
 import { initWindowEvents } from '@/events/utils';
+import { Main } from './widget';
+import { getConfigFromWindow } from './utils';
 
 try {
   // Pull the widget configuration from the DOM
@@ -21,6 +21,6 @@ try {
   } else {
     throw new Error('No root element found.');
   }
-} catch (error) {
-  log.error(`Error loading widget: ${(error as Error).message}`);
+} catch (err) {
+  log.error(`Error loading widget: ${(err as Error).message}`);
 }

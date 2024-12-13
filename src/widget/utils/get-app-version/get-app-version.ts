@@ -20,9 +20,9 @@ export const getAppVersion = (): Version => {
   const preRelease = version.split('-')[1];
 
   return {
-    major: parseInt(major, 10),
-    minor: parseInt(minor, 10),
-    patch: parseInt(patch, 10),
+    major: Number.parseInt(major, 10),
+    minor: Number.parseInt(minor, 10),
+    patch: Number.parseInt(patch, 10),
     preRelease,
     version
   };

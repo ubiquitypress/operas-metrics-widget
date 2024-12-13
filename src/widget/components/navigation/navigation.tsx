@@ -1,8 +1,8 @@
+import React from 'react';
 import { useConfig } from '@/config';
 import { useIntl } from '@/i18n';
-import { NavCount } from '@/types';
+import type { NavCount } from '@/types';
 import { cx, formatNumber } from '@/utils';
-import React from 'react';
 import styles from './navigation.module.scss';
 import { useNavigation } from './provider';
 
@@ -24,10 +24,10 @@ export const Navigation = (props: NavigationProps) => {
     >
       {counts.map(tab => (
         <button
+          key={tab.id}
           className={cx(styles['navigation-button'], {
             active: tab.id === activeTab
           })}
-          key={tab.id}
           type='button'
           role='tab'
           aria-selected={false}

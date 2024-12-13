@@ -32,11 +32,21 @@ module.exports = {
             loader: 'css-loader',
             options: {
               modules: {
-                localIdentName: 'mw__[local]'
+                localIdentName: 'mw__[local]',
+                namedExport: false,
+                exportLocalsConvention: 'as-is'
               }
             }
           },
-          'sass-loader'
+          {
+            loader: 'sass-loader',
+            options: {
+              implementation: require('sass'),
+              sassOptions: {
+                outputStyle: 'compressed'
+              }
+            }
+          }
         ]
       }
     ]

@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
-import { formatNumber, getWidgetStyle } from '@/utils';
 import { transparentize } from 'polished';
-import { tooltipConfig } from './utils';
+import { formatNumber, getWidgetStyle } from '@/utils';
 import { useConfig } from '@/config';
-import styles from './line-graph.module.scss';
 import { GraphEmptyMessage } from '@/components/common';
-import { Dataset, LineGraph as ILineGraph } from '@/types';
+import type { Dataset, LineGraph as ILineGraph } from '@/types';
+import { tooltipConfig } from './utils';
+import styles from './line-graph.module.scss';
 
 interface LineGraphProps {
   id: string;
@@ -33,55 +33,61 @@ export const LineGraph = (props: LineGraphProps) => {
   });
 
   useEffect(() => {
-    if (!datasets.length) return;
+    if (datasets.length === 0) {
+      return;
+    }
 
-    // Get the element context
-    const canvas = document.getElementById(canvasId) as HTMLCanvasElement;
+    // Get the canvas element
+    const canvas = document.querySelector(`#${canvasId}`);
+    if (!canvas || !(canvas instanceof HTMLCanvasElement)) {
+      return;
+    }
+
+    // Get the canvas context
     const ctx = canvas.getContext('2d');
-
-    // Make sure we have the context
-    if (!ctx) return;
+    if (!ctx) {
+      return;
+    }
 
     // Create the chart
-    new (window.Chart as any)(ctx, {
+    // eslint-disable-next-line sonarjs/constructor-for-side-effects
+    new globalThis.Chart(ctx, {
       type: 'line',
       data: {
         // Labels for the x-axis
         labels: labels,
 
         // Data for the graph
-        datasets: [
-          ...datasets.map((dataset, index) => {
-            // Get the colour for the dataset
-            const color = colors[index];
+        datasets: datasets.map((dataset, index) => {
+          // Get the colour for the dataset
+          const color = colors[index];
 
-            // Get the various config options
-            const { background = 'fill', border_width } = graph.config || {};
+          // Get the various config options
+          const { background = 'fill', border_width } = graph.config || {};
 
-            // Determine the background colour
-            let fill: 'origin' | 'start' | 'end' | boolean = false;
-            let backgroundColor: string | CanvasGradient = 'transparent';
-            if (background === 'fill') {
-              fill = 'origin';
-              backgroundColor = color;
-            } else if (background === 'gradient') {
-              fill = 'origin';
-              backgroundColor = ctx.createLinearGradient(0, 0, 0, 400);
-              backgroundColor.addColorStop(0, transparentize(0.6, color));
-              backgroundColor.addColorStop(1, 'rgba(255, 255, 255, 0');
-            }
+          // Determine the background colour
+          let fill: 'origin' | 'start' | 'end' | boolean = false;
+          let backgroundColor: string | CanvasGradient = 'transparent';
+          if (background === 'fill') {
+            fill = 'origin';
+            backgroundColor = color;
+          } else if (background === 'gradient') {
+            fill = 'origin';
+            backgroundColor = ctx.createLinearGradient(0, 0, 0, 400);
+            backgroundColor.addColorStop(0, transparentize(0.6, color));
+            backgroundColor.addColorStop(1, 'rgba(255, 255, 255, 0');
+          }
 
-            return {
-              ...dataset,
-              pointRadius: 0,
-              pointHitRadius: 0,
-              borderWidth: border_width ?? 1,
-              borderColor: color,
-              backgroundColor,
-              fill
-            };
-          })
-        ]
+          return {
+            ...dataset,
+            pointRadius: 0,
+            pointHitRadius: 0,
+            borderWidth: border_width ?? 1,
+            borderColor: color,
+            backgroundColor,
+            fill
+          };
+        })
       },
 
       // Customise the legend
@@ -130,9 +136,23 @@ export const LineGraph = (props: LineGraphProps) => {
         }
       }
     });
-  }, []);
+  }, [
+    canvasId,
+    colors,
+    config,
+    datasets,
+    graph,
+    labels,
+    tooltipContainerId,
+    tooltipDateId,
+    tooltipId,
+    tooltipScopeId,
+    tooltipValueId
+  ]);
 
-  if (!datasets.length) return <GraphEmptyMessage />;
+  if (datasets.length === 0) {
+    return <GraphEmptyMessage />;
+  }
   return (
     <div className={styles['line-graph-container']}>
       <canvas id={canvasId} className={styles['line-graph']} />

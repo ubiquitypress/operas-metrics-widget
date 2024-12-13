@@ -1,4 +1,4 @@
-import { APIEvent } from './api';
+import type { APIEvent } from './api';
 
 // Union type of all graph types
 export type Graphs = Graph['type'];

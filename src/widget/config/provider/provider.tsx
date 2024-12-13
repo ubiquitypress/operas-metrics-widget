@@ -1,5 +1,5 @@
 import React, { useState, createContext, useContext } from 'react';
-import { Config, UserConfig } from '@/types';
+import type { Config, UserConfig } from '@/types';
 import { deepMerge } from '@/utils';
 import { defaultConfig } from '../default-config';
 

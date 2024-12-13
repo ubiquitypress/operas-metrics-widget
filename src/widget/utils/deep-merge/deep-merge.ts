@@ -1,3 +1,1 @@
-import merge from 'ts-deepmerge';
-
-export const deepMerge = merge;
+export { merge as deepMerge } from 'ts-deepmerge';

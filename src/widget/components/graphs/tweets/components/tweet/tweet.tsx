@@ -1,6 +1,6 @@
-import { Graph } from '@/types';
-import { cx } from '@/utils';
 import React, { useEffect } from 'react';
+import type { Graph } from '@/types';
+import { cx } from '@/utils';
 import styles from './tweet.module.scss';
 
 interface TweetProps {
@@ -14,12 +14,14 @@ export const Tweet = (props: TweetProps) => {
   const elId = `${graphId}-tweet-${id}`;
 
   useEffect(() => {
-    const el = document.getElementById(elId);
-    if (!el) return;
+    const el = document.querySelector(`#${elId}`);
+    if (!el) {
+      return;
+    }
 
     // Load the tweet
-    window.twttr.widgets.createTweet(id, el);
-  }, []);
+    globalThis.twttr.widgets.createTweet(id, el);
+  }, [elId, id]);
 
   return <div id={elId} className={cx(styles['twitter-tweet'], { hidden })} />;
 };

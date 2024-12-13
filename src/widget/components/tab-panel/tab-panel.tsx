@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useConfig } from '@/config';
 import { useEvents } from '@/events';
 import { useIntl } from '@/i18n';
-import { Graph, GraphRowObject, Tab } from '@/types';
+import type { Graph, GraphRowObject, Tab } from '@/types';
 import { cx } from '@/utils';
 import { GraphContainer } from '../graph-container';
 import { useNavigation } from '../navigation';
@@ -26,8 +26,8 @@ export const TabPanel = (props: TabPanelProps) => {
   const { config } = useConfig();
   const { activeTab } = useNavigation();
   const [state, setState] = useState({
-    loading: tab.graphs?.length > 0,
-    remaining: tab.graphs?.length || 0
+    loading: tab.graphs.length > 0,
+    remaining: tab.graphs.length || 0
   });
 
   const isActive = activeTab === tab.id;
@@ -46,7 +46,7 @@ export const TabPanel = (props: TabPanelProps) => {
     const data: GraphRow[] = [];
     let currRow: GraphRow = { width: 0, graphs: [] };
 
-    tab.graphs.forEach(graph => {
+    for (const graph of tab.graphs) {
       // Are we rendering a row instead?
       if ('graphs' in graph) {
         // First push any unfinished rows, if there are any
@@ -62,7 +62,7 @@ export const TabPanel = (props: TabPanelProps) => {
           graphs: graph.graphs,
           width: 100 // it's a row, so will always be 100% width
         });
-        return;
+        continue;
       }
 
       // Get the width of the graph
@@ -72,13 +72,13 @@ export const TabPanel = (props: TabPanelProps) => {
       if (currRow.width + width <= 100) {
         currRow.width += width;
         currRow.graphs.push(graph);
-        return;
+        continue;
       }
 
       // Start a new row
       data.push(currRow);
       currRow = { width, graphs: [graph] };
-    });
+    }
 
     // Add the last row
     if (currRow.width > 0) {
@@ -87,7 +87,7 @@ export const TabPanel = (props: TabPanelProps) => {
 
     // Return the data
     return data;
-  }, [tab.graphs]);
+  }, [config.options.default_graph_width, tab.graphs]);
 
   // Send an event when the tab is loading
   useEffect(() => {
@@ -95,14 +95,14 @@ export const TabPanel = (props: TabPanelProps) => {
     if (state.loading && (isActive || load_graph_data_immediately)) {
       events.emit('tab_panel_loading', tab);
     }
-  }, [tab, state.loading, isActive, config.options]);
+  }, [tab, state.loading, isActive, config.options, events]);
 
   // Send an event when the tab is ready
   useEffect(() => {
     if (!state.loading) {
       events.emit('tab_panel_ready', tab);
     }
-  }, [tab, state.loading]);
+  }, [tab, state.loading, events]);
 
   return (
     <div

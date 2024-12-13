@@ -1,12 +1,12 @@
 /**
  * Logs a message to the console
- * @param {unknown} message
+ * @param message - The message to log
  */
 export const log = {
-  warn: (message: unknown) => {
+  warn: (...message: unknown[]) => {
     console.warn(message);
   },
-  error: (message: unknown) => {
+  error: (...message: unknown[]) => {
     console.error(message);
   }
 };

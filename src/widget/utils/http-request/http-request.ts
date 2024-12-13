@@ -38,11 +38,11 @@ export const HTTPRequest = async <T>(
 
     // Return the data
     return data;
-  } catch (err) {
+  } catch {
     // We must resolve the cache, to allow functions waiting for the data to continue
     resolveCache(url, { data: [] });
 
     // Return a rejected promise
-    return Promise.reject();
+    throw new Error('HTTP request failed');
   }
 };

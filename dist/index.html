@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
     <meta charset="utf-8" />
@@ -9,37 +9,210 @@
   <body>
     <script type="application/json" id="operas-metrics-config">
       {
-        "settings": {
-          "base_url": "https://metrics-api.operas-eu.org/events",
-          "element_id": "metrics-widget",
-          "locale": "en-US",
-          "cdn_scripts_url": "https://storage.googleapis.com/operas/metrics-widget/v{major}/{version}/scripts",
-          "cdn_images_url": "https://storage.googleapis.com/operas/metrics-widget/v{major}/{version}/images"
-        },
-        "options": {
-          "default_graph_width": 100,
-          "hide_initial_loading_screen": false,
-          "load_graph_data_immediately": true,
-          "open_first_tab_by_default": false,
-          "locale_fallback_type": "mixed",
-          "text_graph_variable_regex": "{(.*?)}",
-          "text_graph_html_support": "safe"
-        },
+        "settings": { "locale": "en" },
+        "options": { "hide_initial_loading_screen": true },
         "tabs": [
+          {
+            "id": "sessions",
+            "name": "Abstract Views",
+            "order": 1,
+            "scopes": {
+              "book_sessions_ga": {
+                "title": "Book views (press: GA)",
+                "works": ["info:doi:10.1525/luminos.150"],
+                "measures": ["up-ga/sessions"]
+              },
+              "book_sessions_up": {
+                "title": "Book views (press: logs)",
+                "works": ["info:doi:10.1525/luminos.150"],
+                "measures": ["up-logs/sessions"],
+                "startDate": "2023-07-01"
+              },
+              "book_sessions_figshare": {
+                "title": "Book views (Figshare)",
+                "works": ["info:doi:10.1525/luminos.150"],
+                "measures": ["figshare/views"]
+              },
+              "book_sessions_uplo": {
+                "title": "Book views (UPLO)",
+                "works": ["info:doi:10.1525/luminos.150"],
+                "measures": ["uplo/sessions"]
+              },
+              "chapter_sessions": {
+                "title": "Chapter views (press: logs)",
+                "works": [
+                  "info:doi:10.1525/luminos.150.a",
+                  "info:doi:10.1525/luminos.150.b",
+                  "info:doi:10.1525/luminos.150.c",
+                  "info:doi:10.1525/luminos.150.d",
+                  "info:doi:10.1525/luminos.150.e",
+                  "info:doi:10.1525/luminos.150.f",
+                  "info:doi:10.1525/luminos.150.g",
+                  "info:doi:10.1525/luminos.150.h"
+                ],
+                "measures": ["up-logs/sessions"]
+              },
+              "chapter_sessions_figshare": {
+                "title": "Chapter views (Figshare)",
+                "works": [
+                  "info:doi:10.1525/luminos.150.a",
+                  "info:doi:10.1525/luminos.150.b",
+                  "info:doi:10.1525/luminos.150.c",
+                  "info:doi:10.1525/luminos.150.d",
+                  "info:doi:10.1525/luminos.150.e",
+                  "info:doi:10.1525/luminos.150.f",
+                  "info:doi:10.1525/luminos.150.g",
+                  "info:doi:10.1525/luminos.150.h"
+                ],
+                "measures": ["figshare/views"]
+              },
+              "chapter_sessions_uplo": {
+                "title": "Chapter views (UPLO)",
+                "works": [
+                  "info:doi:10.1525/luminos.150.a",
+                  "info:doi:10.1525/luminos.150.b",
+                  "info:doi:10.1525/luminos.150.c",
+                  "info:doi:10.1525/luminos.150.d",
+                  "info:doi:10.1525/luminos.150.e",
+                  "info:doi:10.1525/luminos.150.f",
+                  "info:doi:10.1525/luminos.150.g",
+                  "info:doi:10.1525/luminos.150.h"
+                ],
+                "measures": ["uplo/sessions"]
+              }
+            },
+            "graphs": [
+              {
+                "id": "line_graph",
+                "type": "line",
+                "title": "Views over time",
+                "scopes": [
+                  "book_sessions_ga",
+                  "book_sessions_up",
+                  "book_sessions_figshare",
+                  "book_sessions_uplo",
+                  "chapter_sessions",
+                  "chapter_sessions_figshare",
+                  "chapter_sessions_uplo"
+                ],
+                "options": { "width": 100 },
+                "config": { "stacked": true, "begin_at_zero": true }
+              },
+              {
+                "id": "table",
+                "type": "country_table",
+                "scopes": [
+                  "book_sessions_ga",
+                  "book_sessions_up",
+                  "book_sessions_figshare",
+                  "book_sessions_uplo",
+                  "chapter_sessions",
+                  "chapter_sessions_figshare",
+                  "chapter_sessions_uplo"
+                ],
+                "options": { "width": 50 }
+              },
+              {
+                "id": "map",
+                "type": "world_map",
+                "scopes": [
+                  "book_sessions_ga",
+                  "book_sessions_up",
+                  "book_sessions_figshare",
+                  "book_sessions_uplo",
+                  "chapter_sessions",
+                  "chapter_sessions_figshare",
+                  "chapter_sessions_uplo"
+                ],
+                "options": { "width": 50 }
+              },
+              {
+                "class": "operas-definition-with-version",
+                "graphs": [
+                  {
+                    "id": "operas_definition",
+                    "type": "text",
+                    "config": {
+                      "content": "OPERAS Definitions: <a href=\"https://metrics.operas-eu.org/up-ga/sessions/v1\">Views (press: GA)</a>, <a href=\"https://metrics.operas-eu.org/up-logs/sessions/v1\">Views (press: logs)</a>, <a href=\"https://metrics.operas-eu.org/figshare/sessions/v1\">Views (Figshare)</a>, <a href=\"https://metrics.operas-eu.org/uplo/sessions/v1\">Views (UPLO)</a>"
+                    },
+                    "options": { "width": 100, "class": "subtext" }
+                  }
+                ]
+              }
+            ]
+          },
           {
             "id": "downloads",
             "name": "Downloads",
             "order": 2,
             "scopes": {
-              "book_downloads_up_ga": {
-                "title": "Book downloads (UP-GA)",
-                "works": ["info:doi:10.5334/bct"],
+              "book_downloads": {
+                "title": "Book downloads (press: GA)",
+                "works": ["info:doi:10.1525/luminos.150"],
                 "measures": ["up-ga/downloads"]
+              },
+              "book_downloads_up": {
+                "title": "Book downloads (press: logs)",
+                "works": ["info:doi:10.1525/luminos.150"],
+                "measures": ["up-logs/downloads"],
+                "startDate": "2023-07-01"
               },
               "book_downloads_oapen": {
                 "title": "Book downloads (OAPEN)",
-                "works": ["info:doi:10.5334/bct"],
+                "works": ["info:doi:10.1525/luminos.150"],
                 "measures": ["oapen/downloads"]
+              },
+              "book_downloads_figshare": {
+                "title": "Book downloads (Figshare)",
+                "works": ["info:doi:10.1525/luminos.150"],
+                "measures": ["figshare/downloads"]
+              },
+              "book_downloads_uplo": {
+                "title": "Book downloads (UPLO)",
+                "works": ["info:doi:10.1525/luminos.150"],
+                "measures": ["uplo/downloads"]
+              },
+              "chapter_downloads": {
+                "title": "Chapter downloads (press: logs)",
+                "works": [
+                  "info:doi:10.1525/luminos.150.a",
+                  "info:doi:10.1525/luminos.150.b",
+                  "info:doi:10.1525/luminos.150.c",
+                  "info:doi:10.1525/luminos.150.d",
+                  "info:doi:10.1525/luminos.150.e",
+                  "info:doi:10.1525/luminos.150.f",
+                  "info:doi:10.1525/luminos.150.g",
+                  "info:doi:10.1525/luminos.150.h"
+                ],
+                "measures": ["up-logs/downloads"]
+              },
+              "chapter_downloads_figshare": {
+                "title": "Chapter downloads (Figshare)",
+                "works": [
+                  "info:doi:10.1525/luminos.150.a",
+                  "info:doi:10.1525/luminos.150.b",
+                  "info:doi:10.1525/luminos.150.c",
+                  "info:doi:10.1525/luminos.150.d",
+                  "info:doi:10.1525/luminos.150.e",
+                  "info:doi:10.1525/luminos.150.f",
+                  "info:doi:10.1525/luminos.150.g",
+                  "info:doi:10.1525/luminos.150.h"
+                ],
+                "measures": ["figshare/downloads"]
+              },
+              "chapter_downloads_uplo": {
+                "title": "Chapter downloads (UPLO)",
+                "works": [
+                  "info:doi:10.1525/luminos.150.a",
+                  "info:doi:10.1525/luminos.150.b",
+                  "info:doi:10.1525/luminos.150.c",
+                  "info:doi:10.1525/luminos.150.d",
+                  "info:doi:10.1525/luminos.150.e",
+                  "info:doi:10.1525/luminos.150.f",
+                  "info:doi:10.1525/luminos.150.g",
+                  "info:doi:10.1525/luminos.150.h"
+                ],
+                "measures": ["uplo/downloads"]
               }
             },
             "graphs": [
@@ -47,44 +220,357 @@
                 "id": "line_graph",
                 "type": "line",
                 "title": "Downloads over time",
-                "scopes": ["book_downloads_oapen", "book_downloads_up_ga"],
-                "options": {
-                  "width": 100
-                },
-                "config": {
-                  "stacked": true,
-                  "range": "auto",
-                  "artificial_zero": false,
-                  "begin_at_zero": false
-                }
+                "scopes": [
+                  "book_downloads",
+                  "book_downloads_oapen",
+                  "book_downloads_up",
+                  "book_downloads_figshare",
+                  "book_downloads_uplo",
+                  "chapter_downloads",
+                  "chapter_downloads_figshare",
+                  "chapter_downloads_uplo"
+                ],
+                "options": { "width": 100 },
+                "config": { "stacked": true, "begin_at_zero": true }
               },
               {
-                "id": "country_table",
+                "id": "table",
                 "type": "country_table",
-                "title": "Downloads by country",
-                "scopes": ["book_downloads", "chapter_downloads"],
-                "options": {
-                  "width": 45
+                "scopes": [
+                  "book_downloads",
+                  "book_downloads_oapen",
+                  "book_downloads_up",
+                  "book_downloads_figshare",
+                  "book_downloads_uplo",
+                  "chapter_downloads",
+                  "chapter_downloads_figshare",
+                  "chapter_downloads_uplo"
+                ],
+                "options": { "width": 50 }
+              },
+              {
+                "id": "map",
+                "type": "world_map",
+                "scopes": [
+                  "book_downloads",
+                  "book_downloads_oapen",
+                  "book_downloads_up",
+                  "book_downloads_figshare",
+                  "book_downloads_uplo",
+                  "chapter_downloads",
+                  "chapter_downloads_figshare",
+                  "chapter_downloads_uplo"
+                ],
+                "options": { "width": 50 }
+              },
+              {
+                "id": "operas_definition",
+                "type": "text",
+                "config": {
+                  "content": "OPERAS Definitions: <a href=\"https://metrics.operas-eu.org/up-ga/downloads/v1\">Downloads (press: GA)</a>, <a href=\"https://metrics.operas-eu.org/up-logs/downloads/v1\">Downloads (press: logs)</a>, <a href=\"https://metrics.operas-eu.org/oapen/downloads/v1\">Downloads (OAPEN)</a>, <a href=\"https://metrics.operas-eu.org/figshare/downloads/v1\">Downloads (Figshare)</a>, <a href=\"https://metrics.operas-eu.org/uplo/downloads/v1\">Downloads (UPLO)</a>"
+                },
+                "options": { "width": 100, "class": "subtext" }
+              }
+            ]
+          },
+          {
+            "id": "reads",
+            "name": "Reads",
+            "order": 3,
+            "scopes": {
+              "reads_ga": {
+                "title": "Book reads (press: GA)",
+                "works": ["info:doi:10.1525/luminos.150"],
+                "measures": ["up-ga/reads"]
+              },
+              "reads_up": {
+                "title": "Book reads (press: logs)",
+                "works": ["info:doi:10.1525/luminos.150"],
+                "measures": ["up-logs/reads"],
+                "startDate": "2023-07-01"
+              },
+              "reads_uplo": {
+                "title": "Book reads (UPLO)",
+                "works": ["info:doi:10.1525/luminos.150"],
+                "measures": ["uplo/reads"]
+              }
+            },
+            "graphs": [
+              {
+                "id": "line_graph",
+                "type": "line",
+                "title": "Reads over time",
+                "scopes": ["reads_ga", "reads_up", "reads_uplo"],
+                "options": { "width": 100 },
+                "config": { "stacked": true, "begin_at_zero": true }
+              },
+              {
+                "id": "table",
+                "type": "country_table",
+                "scopes": ["reads_ga", "reads_up", "reads_uplo"],
+                "options": { "width": 50 }
+              },
+              {
+                "id": "map",
+                "type": "world_map",
+                "scopes": ["reads_ga", "reads_up", "reads_uplo"],
+                "options": { "width": 50 }
+              },
+              {
+                "id": "operas_definition",
+                "type": "text",
+                "config": {
+                  "content": "OPERAS Definitions: <a href=\"https://metrics.operas-eu.org/up-logs/reads/v1\">Reads (press: logs)</a>, <a href=\"https://metrics.operas-eu.org/up-ga/reads/v1\">Reads (press: GA)</a>, <a href=\"https://metrics.operas-eu.org/uplo/reads/v1\">Reads (UPLO)</a>"
+                },
+                "options": { "width": 100, "class": "subtext" }
+              }
+            ]
+          },
+          {
+            "id": "annotations",
+            "name": "Annotations",
+            "order": 4,
+            "scopes": {
+              "hypothesis": {
+                "title": "Hypothesis",
+                "works": ["info:doi:10.1525/luminos.150"],
+                "measures": ["hypothesis/annotations"]
+              }
+            },
+            "graphs": [
+              {
+                "id": "line_graph",
+                "type": "line",
+                "title": "Annotations over time",
+                "scopes": ["hypothesis"],
+                "options": { "width": 100 },
+                "config": { "stacked": true, "begin_at_zero": true }
+              },
+              {
+                "id": "hypothesis_table",
+                "type": "hypothesis_table",
+                "title": "Hypothesis annotations",
+                "scopes": ["annotations"],
+                "options": { "width": 100 }
+              },
+              {
+                "id": "operas_definition",
+                "type": "text",
+                "config": {
+                  "content": "OPERAS Definitions: <a href=\"https://metrics.operas-eu.org/hypothesis/annotations/v1\">Annotations</a>"
+                },
+                "options": { "width": 100, "class": "subtext" }
+              }
+            ]
+          },
+          {
+            "id": "citations",
+            "name": "Citations",
+            "order": 5,
+            "scopes": {
+              "book_citations": {
+                "title": "Book citations",
+                "works": ["info:doi:10.1525/luminos.150"],
+                "measures": ["crossref/citations"]
+              },
+              "chapter_citations": {
+                "title": "Chapter citations",
+                "works": [
+                  "info:doi:10.1525/luminos.150.a",
+                  "info:doi:10.1525/luminos.150.b",
+                  "info:doi:10.1525/luminos.150.c",
+                  "info:doi:10.1525/luminos.150.d",
+                  "info:doi:10.1525/luminos.150.e",
+                  "info:doi:10.1525/luminos.150.f",
+                  "info:doi:10.1525/luminos.150.g",
+                  "info:doi:10.1525/luminos.150.h"
+                ],
+                "measures": ["crossref/citations"]
+              }
+            },
+            "graphs": [
+              {
+                "id": "book_count",
+                "type": "text",
+                "scopes": ["book_citations"],
+                "config": {
+                  "content": "<b>Book citations:</b> {book_citations}"
+                },
+                "options": { "width": 20, "class": "individual-source-label" }
+              },
+              {
+                "id": "chapter_count",
+                "type": "text",
+                "scopes": ["chapter_citations"],
+                "config": {
+                  "content": "<b>Chapter citations:</b> {chapter_citations}"
+                },
+                "options": { "width": 20, "class": "individual-source-label" }
+              },
+              {
+                "id": "line_graph",
+                "type": "line",
+                "title": "Citations over time",
+                "scopes": ["book_citations", "chapter_citations"],
+                "options": { "width": 100 },
+                "config": { "stacked": true, "begin_at_zero": true }
+              },
+              {
+                "id": "operas_definition",
+                "type": "text",
+                "config": { "content": "" },
+                "options": { "width": 100, "class": "subtext" }
+              }
+            ]
+          },
+          {
+            "id": "tweets",
+            "name": "Tweets",
+            "order": 6,
+            "scopes": {
+              "book_tweets": {
+                "title": "Book tweets",
+                "works": ["info:doi:10.1525/luminos.150"],
+                "measures": ["twitter/tweets"]
+              },
+              "chapter_tweets": {
+                "title": "Chapter tweets",
+                "works": [
+                  "info:doi:10.1525/luminos.150.a",
+                  "info:doi:10.1525/luminos.150.b",
+                  "info:doi:10.1525/luminos.150.c",
+                  "info:doi:10.1525/luminos.150.d",
+                  "info:doi:10.1525/luminos.150.e",
+                  "info:doi:10.1525/luminos.150.f",
+                  "info:doi:10.1525/luminos.150.g",
+                  "info:doi:10.1525/luminos.150.h"
+                ],
+                "measures": ["twitter/tweets"]
+              }
+            },
+            "graphs": [
+              {
+                "id": "tweets-counts",
+                "class": "class1 class2",
+                "graphs": [
+                  {
+                    "id": "book_count",
+                    "type": "text",
+                    "scopes": ["book_tweets"],
+                    "config": {
+                      "content": "<b>Book tweets:</b> {book_tweets}"
+                    },
+                    "options": { "class": "individual-source-label" }
+                  },
+                  {
+                    "id": "chapter_count",
+                    "type": "text",
+                    "scopes": ["chapter_tweets"],
+                    "config": {
+                      "content": "<b>Chapter tweets:</b> {chapter_tweets}"
+                    },
+                    "options": { "class": "individual-source-label" }
+                  }
+                ]
+              },
+              {
+                "id": "line_graph",
+                "type": "line",
+                "title": "Tweets over time",
+                "scopes": ["book_tweets", "chapter_tweets"],
+                "options": { "width": 100 },
+                "config": { "stacked": true, "begin_at_zero": true }
+              },
+              {
+                "id": "operas_definition",
+                "type": "text",
+                "config": {
+                  "content": "OPERAS Definitions: <a href=\"https://metrics.operas-eu.org/twitter/tweets/v1\">Tweets</a>"
+                },
+                "options": { "width": 100, "class": "subtext" }
+              }
+            ]
+          },
+          {
+            "id": "references",
+            "name": "Online Media",
+            "order": 7,
+            "scopes": {
+              "book_references_wordpress": {
+                "title": "Book references (Wordpress)",
+                "works": ["info:doi:10.1525/luminos.150"],
+                "measures": ["wordpress/references"]
+              },
+              "book_references_wikipedia": {
+                "title": "Book references (Wikipedia)",
+                "works": ["info:doi:10.1525/luminos.150"],
+                "measures": ["wikipedia/references"]
+              },
+              "chapter_references_wordpress": {
+                "title": "Chapter references (Wordpress)",
+                "works": [
+                  "info:doi:10.1525/luminos.150.a",
+                  "info:doi:10.1525/luminos.150.b",
+                  "info:doi:10.1525/luminos.150.c",
+                  "info:doi:10.1525/luminos.150.d",
+                  "info:doi:10.1525/luminos.150.e",
+                  "info:doi:10.1525/luminos.150.f",
+                  "info:doi:10.1525/luminos.150.g",
+                  "info:doi:10.1525/luminos.150.h"
+                ],
+                "measures": ["wordpress/references"]
+              },
+              "chapter_references_wikipedia": {
+                "title": "Chapter references (Wikipedia)",
+                "works": [
+                  "info:doi:10.1525/luminos.150.a",
+                  "info:doi:10.1525/luminos.150.b",
+                  "info:doi:10.1525/luminos.150.c",
+                  "info:doi:10.1525/luminos.150.d",
+                  "info:doi:10.1525/luminos.150.e",
+                  "info:doi:10.1525/luminos.150.f",
+                  "info:doi:10.1525/luminos.150.g",
+                  "info:doi:10.1525/luminos.150.h"
+                ],
+                "measures": ["wikipedia/references"]
+              }
+            },
+            "graphs": [
+              {
+                "id": "wikipedia_articles",
+                "type": "list",
+                "title": "Wikipedia Articles",
+                "scopes": [
+                  "book_references_wikipedia",
+                  "chapter_references_wikipedia"
+                ],
+                "options": { "width": 50 },
+                "config": {
+                  "name_regex": "([^/]+$)",
+                  "name_replacements": { "_": " " }
                 }
               },
               {
-                "id": "world_map",
-                "type": "world_map",
-                "scopes": ["book_downloads", "chapter_downloads"],
-                "options": {
-                  "width": 55
+                "id": "wordpress",
+                "type": "list",
+                "title": "Wordpress",
+                "scopes": [
+                  "book_references_wordpress",
+                  "chapter_references_wordpress"
+                ],
+                "options": { "width": 50 },
+                "config": {
+                  "name_regex": "([^/]+).$",
+                  "name_replacements": { "-": " " }
                 }
               },
               {
                 "id": "operas_definition",
                 "type": "text",
                 "config": {
-                  "content": "Definition for this metric on the <a href=\"https://metrics.operas-eu.org/up-ga/downloads/v1\">OPERAS</a> website"
+                  "content": "OPERAS Definitions: <a href=\"https://metrics.operas-eu.org/wikipedia/references/v1\">Wikipedia References</a>, <a href=\"https://metrics.operas-eu.org/wordpress/references/v1\">Wordpress References</a>"
                 },
-                "options": {
-                  "width": 100,
-                  "class": "subtext"
-                }
+                "options": { "width": 100, "class": "subtext" }
               }
             ]
           }

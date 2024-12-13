@@ -1,4 +1,4 @@
-import { Config } from '@/types';
+import type { Config } from '@/types';
 import { getAppVersion } from '../get-app-version';
 
 type AssetType = 'script' | 'image';
@@ -32,11 +32,11 @@ export const getAssetPath = (type: AssetType, path: string, config: Config) => {
 
   // Replace all object keys with the version
   let url = directory.cdn;
-  Object.keys(version).forEach(key => {
+  for (const key of Object.keys(version)) {
     const value = version[key as keyof typeof version];
     url = url.replaceAll(`{${key}}`, (value || '').toString());
-  });
+  }
 
   // Return the full URL
-  return `${url}/${path}`;
+  return new URL(path, url).toString();
 };

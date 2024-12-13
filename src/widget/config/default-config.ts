@@ -1,4 +1,4 @@
-import { Config } from '@/types';
+import type { Config } from '@/types';
 import { DEFAULT_ELEMENT_ID } from './consts';
 
 export const defaultConfig: Config = {

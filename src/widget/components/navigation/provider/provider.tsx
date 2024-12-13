@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
+import { log } from '@/utils';
 import { useConfig } from '@/config';
-import { NavCount } from '@/types';
+import type { NavCount } from '@/types';
 import { getNavCounts } from '../utils';
 
 interface NavigationProviderProps {
@@ -48,12 +49,12 @@ export const NavigationProvider = (props: NavigationProviderProps) => {
       setState(s => ({ ...s, tabs, loading: false }));
 
       // Open the first tab by default
-      if (tabs.length > 0 && config.options?.open_first_tab_by_default) {
+      if (tabs.length > 0 && config.options.open_first_tab_by_default) {
         setTab(tabs[0].id);
       }
     };
-    getTabs();
-  }, []);
+    getTabs().catch(log.error);
+  }, [config]);
 
   return (
     <NavigationContext.Provider

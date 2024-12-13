@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState } from 'react';
-import { Event, EventArgs, EventsMap, EventState } from '../types';
+import type { Event, EventArgs, EventsMap, EventState } from '../types';
 import { getWindowEvents } from '../utils';
 
 interface EventsProviderProps {
@@ -25,10 +25,17 @@ export const EventsProvider = (props: EventsProviderProps) => {
   // Trigger an event
   const emit = <T extends Event>(event: T, ...args: EventArgs[T]) => {
     // Run events stored in the state
-    (events[event] || []).forEach(callback => callback(...args));
+    for (const callback of events[event] || []) {
+      callback(...args);
+    }
 
     // Run events stored in the window
-    getWindowEvents<T>(event)?.forEach(callback => callback(...args));
+    const windowEvents = getWindowEvents<T>(event);
+    if (windowEvents) {
+      for (const callback of windowEvents) {
+        callback(...args);
+      }
+    }
   };
 
   // Subscribe to an event

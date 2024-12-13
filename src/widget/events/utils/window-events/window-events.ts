@@ -1,5 +1,5 @@
 import { WINDOW_WIDGET_NAME } from '@/config';
-import { Event, EventState } from '@/events';
+import type { Event, EventState } from '@/events';
 
 // Stores a cache of all events set in the window object
 let events: EventState | null = null;
@@ -16,7 +16,9 @@ export const getWindowEvents = <T extends Event>(
 
 export const initWindowEvents = () => {
   const widget = window[WINDOW_WIDGET_NAME];
-  if (!widget) return;
+  if (!widget) {
+    return;
+  }
 
   // Initialise the events object
   events = {};
@@ -24,21 +26,27 @@ export const initWindowEvents = () => {
   // Add the events object to the window object
   widget.events = {
     on: (event, callback) => {
-      if (!events) return;
-      if (!events[event]) {
-        events[event] = [callback] as any;
+      if (!events) {
+        return;
+      }
+      if (events[event]) {
+        events[event].push(callback);
       } else {
-        events[event]!.push(callback);
+        events[event] = [callback] as any;
       }
     },
     off: (event, callback) => {
-      if (!events || !events[event]) return;
-      events[event] = events[event]!.filter(
+      if (!events || !events[event]) {
+        return;
+      }
+      events[event] = events[event].filter(
         cb => cb.toString() !== callback.toString()
       ) as any;
     }
   };
 
   // Run any queued events
-  widget.eventQueue.forEach(event => event(widget));
+  for (const event of widget.eventQueue) {
+    event(widget);
+  }
 };

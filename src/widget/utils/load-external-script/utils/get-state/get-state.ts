@@ -1,6 +1,7 @@
-import { State, StateMap, STATE_ATTRIBUTE } from '../../types';
+import type { State } from '../../types';
+import { StateMap, STATE_ATTRIBUTE } from '../../types';
 
-export const getState = (element: HTMLScriptElement): State | undefined => {
+export const getState = (element: Element): State | undefined => {
   // Get the data state of the script element
   const state = element.getAttribute(STATE_ATTRIBUTE);
 

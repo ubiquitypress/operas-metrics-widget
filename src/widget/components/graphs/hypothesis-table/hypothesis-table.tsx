@@ -1,8 +1,8 @@
 import React from 'react';
 import { GraphEmptyMessage, Link, Table } from '@/components/common';
+import { useIntl } from '@/i18n';
 import { Logo } from './components';
 import styles from './hypothesis-table.module.scss';
-import { useIntl } from '@/i18n';
 
 export interface HypothesisData {
   id: string;
@@ -23,7 +23,9 @@ export const HypothesisTable = (props: HypothesisTableProps) => {
   const { t } = useIntl();
   const { id, data } = props;
 
-  if (!data.length) return <GraphEmptyMessage />;
+  if (data.length === 0) {
+    return <GraphEmptyMessage />;
+  }
   return (
     <div id={id} className={styles['hypothesis-table']}>
       <Table.Root>

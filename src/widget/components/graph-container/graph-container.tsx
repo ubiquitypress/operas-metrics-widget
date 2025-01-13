@@ -52,6 +52,11 @@ export const GraphContainer = (props: GraphContainerProps) => {
         // Trigger the loading event
         events.emit('graph_loading', graph, tab);
 
+        // Make sure the graph type is valid
+        if (!(graph.type in graphDefaults)) {
+          throw new Error(`Graph of type "${graph.type}" is not supported`);
+        }
+
         // Fetch and load any external scripts needed to load this graph
         const scripts = graphScripts(config)[graph.type];
         await loadScripts(scripts);
@@ -80,7 +85,7 @@ export const GraphContainer = (props: GraphContainerProps) => {
         // Set the ready state and pass in the graph
         setState({ ...state, loading: false, ready: true, componentData });
       } catch (err) {
-        log.warn(`${graph.id} failed to load:`, err);
+        log.error(err instanceof Error ? err.message : err);
       }
     };
 

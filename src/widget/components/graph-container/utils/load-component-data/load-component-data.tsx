@@ -122,8 +122,8 @@ export const loadComponentData = async (
 ): Promise<ComponentData> => {
   try {
     return loader[graph.type]({ id, graph, data, tab, config });
-  } catch {
-    log.warn(`Graph of type "${graph.type}" is not supported`);
+  } catch (err) {
+    log.error(`Failed to load data for "${graph.type}" graph`, err);
     return {
       Component: null,
       hasData: false

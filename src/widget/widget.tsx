@@ -32,9 +32,15 @@ export const Widget = () => {
   return (
     <div className={styles.widget}>
       <Navigation counts={tabs} />
-      {config.tabs.map(tab => (
-        <TabPanel key={tab.id} tab={tab} />
-      ))}
+      {config.tabs.map(tab => {
+        // Only render the tab if it has counts
+        const data = tabs.find(t => t.id === tab.id);
+        if (!data?.counts) {
+          return null;
+        }
+
+        return <TabPanel key={tab.id} tab={tab} />;
+      })}
     </div>
   );
 };

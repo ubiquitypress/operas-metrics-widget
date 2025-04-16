@@ -1,7 +1,6 @@
-import React from 'react';
-import type { TextGraph, GraphData } from '@/types';
-import { formatNumber, getAppVersion, sanitizeHTML } from '@/utils';
 import { useConfig } from '@/config';
+import type { GraphData, TextGraph } from '@/types';
+import { formatNumber, getAppVersion, sanitizeHTML } from '@/utils';
 import styles from './text.module.scss';
 
 interface TextProps {
@@ -10,7 +9,6 @@ interface TextProps {
   data: GraphData;
 }
 
-// eslint-disable-next-line sonarjs/slow-regex
 const DEFAULT_REGEX = /{(.*?)}/;
 
 export const Text = (props: TextProps) => {
@@ -30,7 +28,7 @@ export const Text = (props: TextProps) => {
 
     // get the `total` from each `data.data` object
     ...Object.fromEntries(
-      Object.entries(data.data).map(([key, value]) => [key, value.total || 0])
+      Object.entries(data.data).map(([key, value]) => [key, value?.total || 0])
     )
   };
 
@@ -51,13 +49,14 @@ export const Text = (props: TextProps) => {
 
   // Make a component to render the text
   const Component = (props: any) => {
-    return <div id={id} className={styles['text']} {...props} />;
+    return <div id={id} className={styles.text} {...props} />;
   };
 
   // If HTML support is enabled, render the text as HTML
   if (html_support === 'unsafe' || html_support === 'safe') {
     return (
       <Component
+        // biome-ignore lint/security/noDangerouslySetInnerHtml: HTML is sanitized
         dangerouslySetInnerHTML={{
           __html: html_support === 'safe' ? sanitizeHTML(message) : message
         }}

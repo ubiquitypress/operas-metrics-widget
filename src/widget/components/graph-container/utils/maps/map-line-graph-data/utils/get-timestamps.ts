@@ -1,5 +1,5 @@
-import { format, eachDayOfInterval } from 'date-fns';
 import type { APIEvent, Config, DatasetRange, GraphData } from '@/types';
+import { eachDayOfInterval, format } from 'date-fns';
 
 export interface Timestamp {
   raw: RawData;

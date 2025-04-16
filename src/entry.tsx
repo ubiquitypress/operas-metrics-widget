@@ -1,9 +1,8 @@
-import React from 'react';
-import { createRoot } from 'react-dom/client';
-import { getRootElement, log } from '@/utils';
 import { initWindowEvents } from '@/events/utils';
-import { Main } from './widget';
+import { getRootElement, log } from '@/utils';
+import { createRoot } from 'react-dom/client';
 import { getConfigFromWindow } from './utils';
+import { Main } from './widget';
 
 try {
   // Pull the widget configuration from the DOM

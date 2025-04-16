@@ -1,7 +1,14 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import { log } from '@/utils';
 import { useConfig } from '@/config';
 import type { NavCount } from '@/types';
+import { log } from '@/utils';
+import type React from 'react';
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState
+} from 'react';
 import { getNavCounts } from '../utils';
 
 interface NavigationProviderProps {
@@ -38,9 +45,9 @@ export const NavigationProvider = (props: NavigationProviderProps) => {
   });
 
   // Set/toggle the active tab
-  const setTab = (tab: string | null) => {
+  const setTab = useCallback((tab: string | null) => {
     setState(s => ({ ...s, activeTab: s.activeTab === tab ? null : tab }));
-  };
+  }, []);
 
   // Fetch the tabs
   useEffect(() => {
@@ -54,7 +61,7 @@ export const NavigationProvider = (props: NavigationProviderProps) => {
       }
     };
     getTabs().catch(log.error);
-  }, [config]);
+  }, [config, setTab]);
 
   return (
     <NavigationContext.Provider

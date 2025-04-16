@@ -1,1 +1,1 @@
-export interface GraphComponentData {}
+export type GraphComponentData = object;

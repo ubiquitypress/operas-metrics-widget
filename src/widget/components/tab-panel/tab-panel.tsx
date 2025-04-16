@@ -1,9 +1,9 @@
-import React, { useEffect, useMemo, useState } from 'react';
 import { useConfig } from '@/config';
 import { useEvents } from '@/events';
 import { useIntl } from '@/i18n';
 import type { Graph, GraphRowObject, Tab } from '@/types';
 import { cx } from '@/utils';
+import { useEffect, useMemo, useState } from 'react';
 import { GraphContainer } from '../graph-container';
 import { useNavigation } from '../navigation';
 import styles from './tab-panel.module.scss';
@@ -125,10 +125,10 @@ export const TabPanel = (props: TabPanelProps) => {
         data-hidden={!isActive || state.loading || undefined}
         aria-hidden={!isActive || state.loading || undefined}
       >
-        {rows.map((row, index) => {
+        {rows.map(row => {
           return (
             <div
-              key={index}
+              key={row.id}
               id={row.id}
               className={cx(styles['tab-panel-row'], row.class)}
             >

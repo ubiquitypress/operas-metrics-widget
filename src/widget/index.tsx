@@ -1,4 +1,3 @@
-import React from 'react';
 import { NavigationProvider } from './components';
 import { ConfigProvider } from './config';
 import { EventsProvider } from './events';

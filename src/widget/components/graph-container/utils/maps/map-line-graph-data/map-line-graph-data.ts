@@ -1,4 +1,4 @@
-import type { GraphData, Config, LineGraph, Dataset, Tab } from '@/types';
+import type { Config, Dataset, GraphData, LineGraph, Tab } from '@/types';
 import {
   formatDate,
   generateCompleteTimestamps,
@@ -24,7 +24,7 @@ export const mapLineGraphData = (
   const timestamps = getTimestamps(data, config);
 
   // If there are no timestamps or scopes, return an empty dataset
-  if (!timestamps || !graph.scopes?.length) {
+  if (!timestamps || !graph.scopes || graph.scopes.length === 0) {
     return { labels: [], datasets: [] };
   }
 
@@ -75,7 +75,10 @@ export const mapLineGraphData = (
     // If the graph is cumulative, accumulate the data values
     if (isGraphCumulative) {
       let accumulated = 0;
-      datasetData = datasetData.map(value => (accumulated += value));
+      datasetData = datasetData.map(value => {
+        accumulated += value;
+        return accumulated;
+      });
     }
 
     // Determine the label for the dataset

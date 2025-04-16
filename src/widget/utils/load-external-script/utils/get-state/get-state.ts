@@ -1,5 +1,5 @@
 import type { State } from '../../types';
-import { StateMap, STATE_ATTRIBUTE } from '../../types';
+import { STATE_ATTRIBUTE, StateMap } from '../../types';
 
 export const getState = (element: Element): State | undefined => {
   // Get the data state of the script element

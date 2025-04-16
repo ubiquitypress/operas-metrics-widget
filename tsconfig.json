@@ -3,7 +3,7 @@
     "target": "ESNext",
     "module": "CommonJS",
     "lib": ["ESNext", "dom"],
-    "jsx": "react",
+    "jsx": "react-jsx",
     "noEmit": true,
     "sourceMap": true,
     /* Strict Type-Checking Options */
@@ -22,10 +22,7 @@
     "paths": {
       "@": ["src/widget"],
       "@/*": ["src/widget/*"]
-    },
-
-    /* Type Checking */
-    "typeRoots": ["./node_modules/@types", "./src/types"]
+    }
   },
   "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.d.ts"]
 }

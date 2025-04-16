@@ -1,5 +1,5 @@
-import React from 'react';
 import { cx } from '@/utils';
+import type React from 'react';
 import styles from './cell.module.scss';
 
 export interface TableCellProps {

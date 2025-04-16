@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react';
-import { transparentize } from 'polished';
-import { formatNumber, getWidgetStyle } from '@/utils';
-import { useConfig } from '@/config';
 import { GraphEmptyMessage } from '@/components/common';
+import { useConfig } from '@/config';
 import type { Dataset, LineGraph as ILineGraph } from '@/types';
-import { tooltipConfig } from './utils';
+import { formatNumber, getWidgetStyle } from '@/utils';
+import { transparentize } from 'polished';
+import { useEffect } from 'react';
 import styles from './line-graph.module.scss';
+import { tooltipConfig } from './utils';
 
 interface LineGraphProps {
   id: string;
@@ -50,7 +50,6 @@ export const LineGraph = (props: LineGraphProps) => {
     }
 
     // Create the chart
-    // eslint-disable-next-line sonarjs/constructor-for-side-effects
     new globalThis.Chart(ctx, {
       type: 'line',
       data: {

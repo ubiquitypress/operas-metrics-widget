@@ -1,8 +1,8 @@
-import { Root } from './root';
-import { Head } from './head';
-import { Row } from './row';
-import { Cell } from './cell';
 import { Body } from './body';
+import { Cell } from './cell';
+import { Head } from './head';
+import { Root } from './root';
+import { Row } from './row';
 
 export const Table = {
   Root,

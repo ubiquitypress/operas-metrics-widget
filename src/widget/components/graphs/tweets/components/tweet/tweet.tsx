@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
 import type { Graph } from '@/types';
 import { cx } from '@/utils';
+import { useEffect } from 'react';
 import styles from './tweet.module.scss';
 
 interface TweetProps {

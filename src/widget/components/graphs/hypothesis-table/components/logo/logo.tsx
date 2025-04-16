@@ -1,4 +1,3 @@
-import React from 'react';
 import { useConfig } from '@/config';
 import { useIntl } from '@/i18n';
 import { getAssetPath } from '@/utils';

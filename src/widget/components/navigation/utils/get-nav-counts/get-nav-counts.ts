@@ -1,4 +1,4 @@
-import type { NavCount, Config } from '@/types';
+import type { Config, NavCount } from '@/types';
 import { HTTPRequest, log } from '@/utils';
 import type { APIResponse } from './types';
 
@@ -82,12 +82,10 @@ export const getNavCounts = async (config: Config): Promise<NavCount[]> => {
     // Add the count to the array, in the preferred order
     if (tab.order === undefined) {
       counts.push(data);
+    } else if (counts[tab.order]) {
+      counts.splice(tab.order + 1, 0, data);
     } else {
-      if (counts[tab.order]) {
-        counts.splice(tab.order + 1, 0, data);
-      } else {
-        counts[tab.order] = data;
-      }
+      counts[tab.order] = data;
     }
   }
 

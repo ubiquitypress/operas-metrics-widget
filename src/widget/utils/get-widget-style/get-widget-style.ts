@@ -1,5 +1,5 @@
-import { parseToRgb } from 'polished';
 import type { Config } from '@/types';
+import { parseToRgb } from 'polished';
 import { getRootElement } from '../get-root-element';
 import { log } from '../log';
 

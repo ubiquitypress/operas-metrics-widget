@@ -1,4 +1,3 @@
-import React from 'react';
 import { GraphEmptyMessage, Link, Table } from '@/components/common';
 import { useIntl } from '@/i18n';
 import { Logo } from './components';

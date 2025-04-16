@@ -1,5 +1,5 @@
-import React from 'react';
 import { cx } from '@/utils';
+import React from 'react';
 import type { TableCellProps } from '../cell';
 import { Cell } from '../cell';
 import styles from './row.module.scss';
@@ -14,7 +14,6 @@ export const Row = (props: TableRowProps) => {
   const { children, isHeader, className, ...rest } = props;
 
   // Pass `isHeader` through to any `Cell` children
-  // eslint-disable-next-line sonarjs/function-return-type
   const childrenWithProps = React.Children.map(children, child => {
     if (isHeader && React.isValidElement(child) && child.type === Cell) {
       return React.cloneElement(child, {

@@ -2,10 +2,10 @@ import type { Config, DatasetRange } from '@/types';
 
 export const formatDate = (date: Date, range: DatasetRange, config: Config) => {
   switch (range) {
-    case 'days': {
-      return new Date(date.toISOString().split('T')[0]).toLocaleDateString(
+    case 'years': {
+      return new Date(date.toISOString().split('-')[0]).toLocaleDateString(
         config.settings.locale,
-        { day: 'numeric', month: 'short', year: 'numeric' }
+        { year: 'numeric' }
       );
     }
     case 'months': {
@@ -16,12 +16,11 @@ export const formatDate = (date: Date, range: DatasetRange, config: Config) => {
         year: 'numeric'
       });
     }
-    case 'years': {
-      return new Date(date.toISOString().split('-')[0]).toLocaleDateString(
+    default: {
+      return new Date(date.toISOString().split('T')[0]).toLocaleDateString(
         config.settings.locale,
-        { year: 'numeric' }
+        { day: 'numeric', month: 'short', year: 'numeric' }
       );
     }
-    // No default
   }
 };

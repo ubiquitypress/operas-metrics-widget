@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { Loading, Navigation, TabPanel, useNavigation } from './components';
 import { useConfig } from './config';
 import { useEvents } from './events';

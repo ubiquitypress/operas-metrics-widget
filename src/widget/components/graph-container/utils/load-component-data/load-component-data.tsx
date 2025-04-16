@@ -1,18 +1,3 @@
-import React from 'react';
-import type {
-  Config,
-  GraphData,
-  Graphs,
-  LineGraph as ILineGraph,
-  TextGraph as ITextGraph,
-  CountryTable as ICountryTable,
-  WorldMap as IWorldMap,
-  HypothesisTable as IHypothesisTable,
-  Tweets as ITweets,
-  List as IList,
-  Graph,
-  Tab
-} from '@/types';
 import {
   CountryTable,
   HypothesisTable,
@@ -22,14 +7,29 @@ import {
   Tweets,
   WorldMap
 } from '@/components';
+import type {
+  Config,
+  Graph,
+  GraphData,
+  Graphs,
+  CountryTable as ICountryTable,
+  HypothesisTable as IHypothesisTable,
+  LineGraph as ILineGraph,
+  List as IList,
+  TextGraph as ITextGraph,
+  Tweets as ITweets,
+  WorldMap as IWorldMap,
+  Tab
+} from '@/types';
 import { log } from '@/utils';
+import type React from 'react';
 import {
-  mapLineGraphData,
   mapCountryTableData,
-  mapWorldMapData,
   mapHypothesisData,
+  mapLineGraphData,
+  mapListData,
   mapTweetsData,
-  mapListData
+  mapWorldMapData
 } from '../maps';
 
 interface LoaderData<T> {
@@ -113,13 +113,13 @@ const loader: Record<Graphs, Loader> = {
 /**
  * Fetches data for a graph component and returns the component
  */
-export const loadComponentData = async (
+export const loadComponentData = (
   id: string,
   graph: Graph,
   data: GraphData,
   tab: Tab,
   config: Config
-): Promise<ComponentData> => {
+): ComponentData | Promise<ComponentData> => {
   try {
     return loader[graph.type]({ id, graph, data, tab, config });
   } catch (err) {

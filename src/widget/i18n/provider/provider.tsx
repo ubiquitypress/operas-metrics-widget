@@ -1,5 +1,6 @@
-import React, { useContext, useEffect, createContext } from 'react';
 import { useConfig } from '@/config';
+import type React from 'react';
+import { createContext, useContext, useEffect } from 'react';
 import { createDictionary, getLang } from '../utils';
 
 interface IntlProviderProps {

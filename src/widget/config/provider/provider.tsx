@@ -1,6 +1,7 @@
-import React, { useState, createContext, useContext } from 'react';
 import type { Config, UserConfig } from '@/types';
 import { deepMerge } from '@/utils';
+import type React from 'react';
+import { createContext, useContext, useState } from 'react';
 import { defaultConfig } from '../default-config';
 
 interface ConfigProviderProps {

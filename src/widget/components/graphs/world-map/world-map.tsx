@@ -1,7 +1,7 @@
-import React, { useEffect, useMemo } from 'react';
 import { GraphEmptyMessage } from '@/components/common';
 import { useConfig } from '@/config';
 import { formatNumber, getWidgetStyle } from '@/utils';
+import { useEffect, useMemo } from 'react';
 import styles from './world-map.module.scss';
 
 interface WorldMapProps {
@@ -65,7 +65,11 @@ export const WorldMap = (props: WorldMapProps) => {
       },
 
       // The tooltip
-      onRegionTipShow: function (e: any, el: any, code: string) {
+      onRegionTipShow: (
+        _e: JQuery.Event,
+        el: JQuery<HTMLElement>,
+        code: string
+      ) => {
         // Get the country name
         const { locale } = config.settings;
         const regionNames = new Intl.DisplayNames([locale], { type: 'region' });
@@ -87,6 +91,7 @@ export const WorldMap = (props: WorldMapProps) => {
 
   // Render the graph when the component is mounted
   useEffect(() => {
+    // @ts-ignore jQuery is not defined in the global scope
     globalThis.$(`#${canvasId}`).vectorMap(options);
   }, [canvasId, options]);
 

@@ -1,5 +1,3 @@
-/* eslint-disable no-var */
-
 declare global {
   /**
    * Requires the external script `Twitter` to be loaded.

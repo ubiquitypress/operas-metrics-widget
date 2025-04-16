@@ -1,0 +1,127 @@
+{
+  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+  "vcs": {
+    "enabled": false,
+    "clientKind": "git",
+    "useIgnoreFile": false
+  },
+  "files": {
+    "ignoreUnknown": false,
+    "ignore": [
+      "**/styled-system",
+      "**/node_modules",
+      "**/yarn.lock",
+      "**/build",
+      "**/.next",
+      "**/.yarn",
+      "**/dist",
+      "**/.turbo",
+      "**/public"
+    ]
+  },
+  "formatter": {
+    "enabled": true,
+    "useEditorconfig": true,
+    "formatWithErrors": false,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineEnding": "lf",
+    "lineWidth": 80,
+    "attributePosition": "auto",
+    "bracketSpacing": true,
+    "ignore": ["**/node_modules", "**/yarn.lock", "**/build"]
+  },
+  "organizeImports": {
+    "enabled": true
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "complexity": {
+        "noExcessiveCognitiveComplexity": "off",
+        "noUselessStringConcat": "error",
+        "noVoid": "error",
+        "useSimplifiedLogicExpression": "off"
+      },
+      "correctness": {
+        "noUnusedImports": "warn",
+        "noUnusedPrivateClassMembers": "warn",
+        "noUnusedVariables": "warn",
+        "useArrayLiterals": "error",
+        "useHookAtTopLevel": "error"
+      },
+      "nursery": {
+        "noDuplicateElseIf": "warn",
+        "noIrregularWhitespace": "error",
+        "noNestedTernary": "warn",
+        "noOctalEscape": "error",
+        "noSecrets": "off",
+        "noStaticElementInteractions": "error",
+        "noSubstr": "error",
+        "noTemplateCurlyInString": "error",
+        "noUselessEscapeInRegex": "error",
+        "noUselessStringRaw": "error",
+        "useAriaPropsSupportedByRole": "warn",
+        "useAtIndex": "warn",
+        "useCollapsedIf": "warn",
+        "useExplicitType": "off",
+        "useGuardForIn": "error",
+        "useTrimStartEnd": "warn",
+        "useValidAutocomplete": "warn"
+      },
+      "performance": {
+        "useTopLevelRegex": "warn"
+      },
+      "style": {
+        "noDoneCallback": "warn",
+        "noNamespace": "error",
+        "noNamespaceImport": "error",
+        "noNegationElse": "warn",
+        "noUselessElse": "off",
+        "noYodaExpression": "error",
+        "useBlockStatements": "error",
+        "useCollapsedElseIf": "warn",
+        "useConsistentArrayType": {
+          "level": "warn",
+          "options": {
+            "syntax": "shorthand"
+          }
+        },
+        "useDefaultSwitchClause": "warn",
+        "useExplicitLengthCheck": "warn",
+        "useFilenamingConvention": {
+          "level": "error",
+          "options": {
+            "requireAscii": true,
+            "filenameCases": ["kebab-case"]
+          }
+        },
+        "useForOf": "warn",
+        "useShorthandAssign": "warn",
+        "useThrowNewError": "warn"
+      },
+      "suspicious": {
+        "noEmptyBlockStatements": "warn",
+        "noEvolvingTypes": "warn",
+        "noExplicitAny": "off",
+        "noMisplacedAssertion": "warn",
+        "useAwait": "warn",
+        "useNumberToFixedDigitsArgument": "warn"
+      }
+    }
+  },
+  "javascript": {
+    "formatter": {
+      "jsxQuoteStyle": "single",
+      "quoteProperties": "asNeeded",
+      "trailingCommas": "none",
+      "semicolons": "always",
+      "arrowParentheses": "asNeeded",
+      "bracketSameLine": false,
+      "quoteStyle": "single",
+      "attributePosition": "auto",
+      "bracketSpacing": true
+    }
+  }
+}

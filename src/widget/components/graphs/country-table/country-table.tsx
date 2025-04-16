@@ -1,8 +1,7 @@
-import React from 'react';
 import { GraphEmptyMessage } from '@/components/common';
 import { useConfig } from '@/config';
-import { formatNumber } from '@/utils';
 import { useIntl } from '@/i18n';
+import { formatNumber } from '@/utils';
 import styles from './country-table.module.scss';
 
 interface CountryTableProps {

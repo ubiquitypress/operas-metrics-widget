@@ -1,4 +1,3 @@
-import React from 'react';
 import { GraphEmptyMessage, Link } from '@/components/common';
 
 export interface ListData {

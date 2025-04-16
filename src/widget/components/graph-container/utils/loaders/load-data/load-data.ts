@@ -1,4 +1,4 @@
-import type { Graph, GraphData, Tab, Config } from '@/types';
+import type { Config, Graph, GraphData, Tab } from '@/types';
 import { HTTPRequest } from '@/utils';
 import type { APIResponse } from './types';
 

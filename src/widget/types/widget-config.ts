@@ -27,8 +27,8 @@ export interface Config {
   tabs: Tab[];
   locales: Record<string, object>;
   components?: {
-    initial_loading_screen?: JSX.Element;
-    tab_panel_loading_screen?: JSX.Element;
+    initial_loading_screen?: React.ReactElement;
+    tab_panel_loading_screen?: React.ReactElement;
   };
 }
 

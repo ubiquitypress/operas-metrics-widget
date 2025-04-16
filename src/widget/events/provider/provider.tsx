@@ -1,5 +1,6 @@
-import React, { createContext, useContext, useState } from 'react';
-import type { Event, EventArgs, EventsMap, EventState } from '../types';
+import type React from 'react';
+import { createContext, useContext, useState } from 'react';
+import type { Event, EventArgs, EventState, EventsMap } from '../types';
 import { getWindowEvents } from '../utils';
 
 interface EventsProviderProps {

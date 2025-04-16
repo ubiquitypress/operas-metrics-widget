@@ -1,4 +1,3 @@
-import React from 'react';
 import { useIntl } from '@/i18n';
 import styles from './graph-empty-message.module.scss';
 

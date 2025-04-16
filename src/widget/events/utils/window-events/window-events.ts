@@ -32,7 +32,7 @@ export const initWindowEvents = () => {
       if (events[event]) {
         events[event].push(callback);
       } else {
-        events[event] = [callback] as any;
+        events[event] = [callback] as EventState[typeof event];
       }
     },
     off: (event, callback) => {
@@ -41,7 +41,7 @@ export const initWindowEvents = () => {
       }
       events[event] = events[event].filter(
         cb => cb.toString() !== callback.toString()
-      ) as any;
+      ) as EventState[typeof event];
     }
   };
 

@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { cx, log } from '@/utils';
-import type { Graph, Tab } from '@/types';
 import { graphDefaults, graphScripts, useConfig } from '@/config';
 import { useEvents } from '@/events';
+import type { Graph, Tab } from '@/types';
+import { cx, log } from '@/utils';
+import { useEffect, useState } from 'react';
 import { useNavigation } from '../navigation';
 import { GraphTitle } from './components';
-import type { ComponentData } from './utils';
-import { loadData, loadScripts, loadComponentData } from './utils';
 import styles from './graph-container.module.scss';
+import type { ComponentData } from './utils';
+import { loadComponentData, loadData, loadScripts } from './utils';
 
 interface GraphContainerProps {
   graph: Graph;
@@ -124,7 +124,7 @@ export const GraphContainer = (props: GraphContainerProps) => {
       {graph.title && <GraphTitle>{graph.title}</GraphTitle>}
 
       <div
-        className={styles['graph']}
+        className={styles.graph}
         style={{ overflowY: graphDefaults[graph.type].overflowY }}
       >
         {state.componentData.Component}

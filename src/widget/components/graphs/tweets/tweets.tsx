@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import { GraphEmptyMessage } from '@/components/common';
 import { useIntl } from '@/i18n';
 import type { Graph } from '@/types';
-import { GraphEmptyMessage } from '@/components/common';
+import { useState } from 'react';
 import { Tweet } from './components';
 import styles from './tweets.module.scss';
 
@@ -22,7 +22,7 @@ export const Tweets = (props: TweetsProps) => {
     return <GraphEmptyMessage />;
   }
   return (
-    <div id={id} className={styles['tweets']}>
+    <div id={id} className={styles.tweets}>
       {data.map((id, i) => {
         let hidden = false;
 

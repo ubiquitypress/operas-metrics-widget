@@ -2,7 +2,7 @@
  * A utility function to join class names, similar to the `classnames` package.
  */
 export const cx = (...args: unknown[]) => {
-  const classes = [];
+  const classes: string[] = [];
 
   for (const arg of args) {
     const argType = typeof arg;
@@ -12,7 +12,7 @@ export const cx = (...args: unknown[]) => {
     }
 
     if (argType === 'string' || argType === 'number') {
-      classes.push(arg);
+      classes.push(arg as string);
     } else if (Array.isArray(arg)) {
       classes.push(...arg);
     } else if (argType === 'object') {

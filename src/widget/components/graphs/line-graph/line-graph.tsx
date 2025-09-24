@@ -1,11 +1,17 @@
 import { GraphEmptyMessage } from '@/components/common';
 import { useConfig } from '@/config';
-import type { Dataset, LineGraph as ILineGraph } from '@/types';
+import type {
+  ChartConfiguration,
+  ChartDatasetConfig,
+  ChartTooltipContext,
+  Dataset,
+  LineGraph as ILineGraph
+} from '@/types';
 import { formatNumber, getWidgetStyle } from '@/utils';
 import { transparentize } from 'polished';
 import { useEffect } from 'react';
-import { LineGraphTable } from './line-graph-table';
 import styles from './line-graph.module.scss';
+import { LineGraphTable } from './line-graph-table';
 import { tooltipConfig } from './utils';
 
 export interface LineGraphProps {
@@ -51,43 +57,47 @@ export const LineGraph = (props: LineGraphProps) => {
     }
 
     // Create the chart
-    new globalThis.Chart(ctx, {
+    const chartDatasets: ChartDatasetConfig[] = datasets.map(
+      (dataset, index) => {
+        // Get the colour for the dataset
+        const color = colors[index];
+
+        // Get the various config options
+        const { background = 'fill', border_width } = graph.config || {};
+
+        // Determine the background colour
+        let fill: 'origin' | 'start' | 'end' | boolean = false;
+        let backgroundColor: string | CanvasGradient = 'transparent';
+        if (background === 'fill') {
+          fill = 'origin';
+          backgroundColor = color;
+        } else if (background === 'gradient') {
+          fill = 'origin';
+          backgroundColor = ctx.createLinearGradient(0, 0, 0, 400);
+          backgroundColor.addColorStop(0, transparentize(0.6, color));
+          backgroundColor.addColorStop(1, 'rgba(255, 255, 255, 0');
+        }
+
+        return {
+          ...dataset,
+          pointRadius: 0,
+          pointHitRadius: 0,
+          borderWidth: border_width ?? 1,
+          borderColor: color,
+          backgroundColor,
+          fill
+        } satisfies ChartDatasetConfig;
+      }
+    );
+
+    const chartConfig: ChartConfiguration = {
       type: 'line',
       data: {
         // Labels for the x-axis
         labels: labels,
 
         // Data for the graph
-        datasets: datasets.map((dataset, index) => {
-          // Get the colour for the dataset
-          const color = colors[index];
-
-          // Get the various config options
-          const { background = 'fill', border_width } = graph.config || {};
-
-          // Determine the background colour
-          let fill: 'origin' | 'start' | 'end' | boolean = false;
-          let backgroundColor: string | CanvasGradient = 'transparent';
-          if (background === 'fill') {
-            fill = 'origin';
-            backgroundColor = color;
-          } else if (background === 'gradient') {
-            fill = 'origin';
-            backgroundColor = ctx.createLinearGradient(0, 0, 0, 400);
-            backgroundColor.addColorStop(0, transparentize(0.6, color));
-            backgroundColor.addColorStop(1, 'rgba(255, 255, 255, 0');
-          }
-
-          return {
-            ...dataset,
-            pointRadius: 0,
-            pointHitRadius: 0,
-            borderWidth: border_width ?? 1,
-            borderColor: color,
-            backgroundColor,
-            fill
-          };
-        })
+        datasets: chartDatasets
       },
 
       // Customise the legend
@@ -119,7 +129,7 @@ export const LineGraph = (props: LineGraphProps) => {
           tooltip: {
             enabled: false,
             intersect: false,
-            external: (context: any) =>
+            external: (context: ChartTooltipContext) =>
               tooltipConfig(
                 context,
                 {
@@ -135,7 +145,9 @@ export const LineGraph = (props: LineGraphProps) => {
           }
         }
       }
-    });
+    };
+
+    new globalThis.Chart(ctx, chartConfig);
   }, [
     canvasId,
     colors,

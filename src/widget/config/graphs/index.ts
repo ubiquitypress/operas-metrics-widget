@@ -1,2 +1,2 @@
-export * from './scripts';
 export * from './defaults';
+export * from './scripts';

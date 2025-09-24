@@ -25,7 +25,6 @@ export const Navigation = (props: NavigationProps) => {
         const isActive = tab.id === activeTab;
 
         return (
-          // biome-ignore lint/nursery/useAriaPropsSupportedByRole: This is actually valid
           <button
             key={tab.id}
             className={cx(styles['navigation-button'], {

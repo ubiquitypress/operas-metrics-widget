@@ -1,3 +1,5 @@
+import type { ChartConstructor } from '@/types';
+
 declare global {
   /**
    * Requires the external script `Twitter` to be loaded.
@@ -11,9 +13,5 @@ declare global {
   /**
    * Requires the external script `ChartJS` to be loaded.
    */
-  var Chart: {
-    new (ctx: CanvasRenderingContext2D, config: any): any;
-  };
+  var Chart: ChartConstructor;
 }
-
-export {};

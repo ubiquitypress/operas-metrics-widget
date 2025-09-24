@@ -3,8 +3,8 @@ import { useConfig } from '@/config';
 import type { WorldMap as IWorldMap } from '@/types';
 import { formatNumber, getWidgetStyle } from '@/utils';
 import { useEffect, useMemo } from 'react';
-import { WorldMapTable } from './world-map-table';
 import styles from './world-map.module.scss';
+import { WorldMapTable } from './world-map-table';
 
 export interface WorldMapProps {
   id: string;
@@ -94,7 +94,7 @@ export const WorldMap = (props: WorldMapProps) => {
 
   // Render the graph when the component is mounted
   useEffect(() => {
-    // @ts-ignore jQuery is not defined in the global scope
+    // @ts-expect-error jQuery is not defined in the global scope
     globalThis.$(`#${canvasId}`).vectorMap(options);
   }, [canvasId, options]);
 

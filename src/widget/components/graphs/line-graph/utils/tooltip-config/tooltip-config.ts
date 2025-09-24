@@ -1,4 +1,4 @@
-import type { Config, LineGraph } from '@/types';
+import type { ChartTooltipContext, Config, LineGraph } from '@/types';
 import { formatNumber } from '@/utils';
 
 interface TooltipElements {
@@ -10,7 +10,7 @@ interface TooltipElements {
 }
 
 export const tooltipConfig = (
-  context: any,
+  context: ChartTooltipContext,
   elements: TooltipElements,
   config: Config,
   graph: LineGraph
@@ -34,7 +34,12 @@ export const tooltipConfig = (
   // Render the tooltip
   // (the HTML is already rendered by the LineGraph component)
   if (tooltipModel.body) {
-    const { raw, label, dataset } = tooltipModel.dataPoints[0];
+    const [firstDataPoint] = tooltipModel.dataPoints;
+    if (!firstDataPoint) {
+      return;
+    }
+
+    const { raw, label, dataset } = firstDataPoint;
 
     // Set the date text
     const dateEl = document.querySelector(`#${tooltipDateId}`);

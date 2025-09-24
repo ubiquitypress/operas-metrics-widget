@@ -1,11 +1,17 @@
+import type { CachedItem } from '../cache';
 import { cache } from '../cache';
 
-export const resolveCache = (url: string, data: any) => {
-  for (const callback of cache[url].onLoad) {
+export const resolveCache = <T>(url: string, data: T) => {
+  const entry = cache[url] as CachedItem<T> | undefined;
+  if (!entry) {
+    return;
+  }
+
+  for (const callback of entry.onLoad) {
     callback(data);
   }
 
   // Update the cache
-  cache[url].data = data;
-  cache[url].loading = false;
+  entry.data = data;
+  entry.loading = false;
 };

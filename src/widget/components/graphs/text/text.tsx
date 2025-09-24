@@ -1,6 +1,7 @@
 import { useConfig } from '@/config';
 import type { GraphData, TextGraph } from '@/types';
 import { formatNumber, getAppVersion, sanitizeHTML } from '@/utils';
+import type { HTMLAttributes } from 'react';
 import styles from './text.module.scss';
 
 interface TextProps {
@@ -11,8 +12,7 @@ interface TextProps {
 
 const DEFAULT_REGEX = /{(.*?)}/;
 
-export const Text = (props: TextProps) => {
-  const { id, config, data } = props;
+export const Text: React.FC<TextProps> = ({ id, config, data }) => {
   const widget = useConfig();
 
   // Pull the options from the config
@@ -47,15 +47,16 @@ export const Text = (props: TextProps) => {
     }
   );
 
-  // Make a component to render the text
-  const Component = (props: any) => {
-    return <div id={id} className={styles.text} {...props} />;
+  const textProps: HTMLAttributes<HTMLDivElement> = {
+    id,
+    className: styles.text
   };
 
   // If HTML support is enabled, render the text as HTML
   if (html_support === 'unsafe' || html_support === 'safe') {
     return (
-      <Component
+      <div
+        {...textProps}
         // biome-ignore lint/security/noDangerouslySetInnerHtml: HTML is sanitized
         dangerouslySetInnerHTML={{
           __html: html_support === 'safe' ? sanitizeHTML(message) : message
@@ -65,5 +66,5 @@ export const Text = (props: TextProps) => {
   }
 
   // No HTML support, just render the text
-  return <Component>{message}</Component>;
+  return <div {...textProps}>{message}</div>;
 };

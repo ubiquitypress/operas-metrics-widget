@@ -6,9 +6,7 @@ import { getState, setState } from './utils';
  * @param script - The external script to load.
  * @returns A promise that resolves when the script is loaded.
  */
-export const loadExternalScript = async (
-  script: ExternalScript
-): Promise<void> => {
+export const loadExternalScript = (script: ExternalScript): Promise<void> => {
   return new Promise((resolve, reject) => {
     const { id, url } = script;
 

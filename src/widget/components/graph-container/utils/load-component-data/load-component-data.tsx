@@ -11,7 +11,6 @@ import type {
   Config,
   Graph,
   GraphData,
-  Graphs,
   CountryTable as ICountryTable,
   HypothesisTable as IHypothesisTable,
   LineGraph as ILineGraph,
@@ -32,9 +31,9 @@ import {
   mapWorldMapData
 } from '../maps';
 
-interface LoaderData<T> {
+interface LoaderData<TGraph> {
   id: string;
-  graph: T;
+  graph: TGraph;
   data: GraphData;
   tab: Tab;
   config: Config;
@@ -45,69 +44,72 @@ export interface ComponentData {
   hasData: boolean;
 }
 
-type Loader = (data: LoaderData<any>) => ComponentData | Promise<ComponentData>;
+type Loader<TGraph> = (
+  data: LoaderData<TGraph>
+) => ComponentData | Promise<ComponentData>;
 
-// A map of graph types to their loader functions
-const loader: Record<Graphs, Loader> = {
-  text: ({ id, graph, data }: LoaderData<ITextGraph>) => {
-    return {
-      Component: <Text id={id} config={graph.config} data={data} />,
-      hasData: true // there is no data to fetch for text graphs
-    };
-  },
-  line: ({ id, data, graph, tab, config }: LoaderData<ILineGraph>) => {
-    const res = mapLineGraphData(data, graph, tab, config);
-    return {
-      Component: (
-        <LineGraph
-          id={id}
-          labels={res.labels}
-          datasets={res.datasets}
-          graph={graph}
-        />
-      ),
-      hasData: res.datasets.length > 0
-    };
-  },
-  country_table: ({ id, data, config }: LoaderData<ICountryTable>) => {
-    const res = mapCountryTableData(data, config);
-    return {
-      Component: <CountryTable id={id} data={res} />,
-      hasData: res.length > 0
-    };
-  },
-  world_map: ({ id, data, graph }: LoaderData<IWorldMap>) => {
-    const res = mapWorldMapData(data);
-    return {
-      Component: <WorldMap id={id} data={res} graph={graph} />,
-      hasData: Object.keys(res).length > 0
-    };
-  },
-  hypothesis_table: async ({
-    id,
-    data,
-    config
-  }: LoaderData<IHypothesisTable>) => {
-    const res = await mapHypothesisData(data, config);
-    return {
-      Component: <HypothesisTable id={id} data={res} />,
-      hasData: res.length > 0
-    };
-  },
-  tweets: ({ id, data, graph }: LoaderData<ITweets>) => {
-    const res = mapTweetsData(data);
-    return {
-      Component: <Tweets id={id} data={res} graphId={graph.id} />,
-      hasData: res.length > 0
-    };
-  },
-  list: ({ id, data, graph }: LoaderData<IList>) => {
-    const res = mapListData(data, graph);
-    return {
-      Component: <List id={id} data={res} />,
-      hasData: res.length > 0
-    };
-  }
+const loadText: Loader<ITextGraph> = ({ id, graph, data }) => ({
+  Component: <Text id={id} config={graph.config} data={data} />,
+  hasData: true // there is no data to fetch for text graphs
+});
+
+const loadLine: Loader<ILineGraph> = ({ id, data, graph, tab, config }) => {
+  const res = mapLineGraphData(data, graph, tab, config);
+  return {
+    Component: (
+      <LineGraph
+        id={id}
+        labels={res.labels}
+        datasets={res.datasets}
+        graph={graph}
+      />
+    ),
+    hasData: res.datasets.length > 0
+  };
+};
+
+const loadCountryTable: Loader<ICountryTable> = ({ id, data, config }) => {
+  const res = mapCountryTableData(data, config);
+  return {
+    Component: <CountryTable id={id} data={res} />,
+    hasData: res.length > 0
+  };
+};
+
+const loadWorldMap: Loader<IWorldMap> = ({ id, data, graph }) => {
+  const res = mapWorldMapData(data);
+  return {
+    Component: <WorldMap id={id} data={res} graph={graph} />,
+    hasData: Object.keys(res).length > 0
+  };
+};
+
+const loadHypothesisTable: Loader<IHypothesisTable> = async ({
+  id,
+  data,
+  config
+}) => {
+  const res = await mapHypothesisData(data, config);
+  return {
+    Component: <HypothesisTable id={id} data={res} />,
+    hasData: res.length > 0
+  };
+};
+
+const loadTweets: Loader<ITweets> = ({ id, data, graph }) => {
+  const res = mapTweetsData(data);
+  return {
+    Component: <Tweets id={id} data={res} graphId={graph.id} />,
+    hasData: res.length > 0
+  };
+};
+
+const loadList: Loader<IList> = ({ id, data, graph }) => {
+  const res = mapListData(data, graph);
+  return {
+    Component: <List id={id} data={res} />,
+    hasData: res.length > 0
+  };
 };
 
 /**
@@ -121,7 +123,26 @@ export const loadComponentData = (
   config: Config
 ): ComponentData | Promise<ComponentData> => {
   try {
-    return loader[graph.type]({ id, graph, data, tab, config });
+    switch (graph.type) {
+      case 'text':
+        return loadText({ id, graph, data, tab, config });
+      case 'line':
+        return loadLine({ id, graph, data, tab, config });
+      case 'country_table':
+        return loadCountryTable({ id, graph, data, tab, config });
+      case 'world_map':
+        return loadWorldMap({ id, graph, data, tab, config });
+      case 'hypothesis_table':
+        return loadHypothesisTable({ id, graph, data, tab, config });
+      case 'tweets':
+        return loadTweets({ id, graph, data, tab, config });
+      case 'list':
+        return loadList({ id, graph, data, tab, config });
+      default: {
+        const _unreachable: never = graph;
+        throw new Error('Unhandled graph type');
+      }
+    }
   } catch (err) {
     log.error(`Failed to load data for "${graph.type}" graph`, err);
     return {

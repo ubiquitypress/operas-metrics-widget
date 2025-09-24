@@ -19,28 +19,32 @@ export const HTTPRequest = async <T>(
   try {
     // Check the cache for the data
     if (shouldCache && isCached(url)) {
-      return getCache(url);
+      return getCache<T>(url);
     }
 
     // Create a new cache entry for this request
     if (shouldCache) {
-      createCache(url);
+      createCache<T>(url);
     }
 
     // Make the request
-    const { data } = await axios({
+    const { data } = await axios<T>({
       method: method,
       url: url
     });
 
     // Update the cache
-    resolveCache(url, data);
+    if (shouldCache) {
+      resolveCache<T>(url, data);
+    }
 
     // Return the data
     return data;
   } catch {
     // We must resolve the cache, to allow functions waiting for the data to continue
-    resolveCache(url, { data: [] });
+    if (shouldCache) {
+      resolveCache<T>(url, { data: [] } as T);
+    }
 
     // Return a rejected promise
     throw new Error('HTTP request failed');

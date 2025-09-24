@@ -84,8 +84,8 @@ export const getTimestamps = (
     const date = new Date(timestamp);
     date.setUTCMinutes(60);
     date.setUTCDate(1);
-    const month = date.getMonth();
-    const year = date.getFullYear();
+    const month = date.getUTCMonth();
+    const year = date.getUTCFullYear();
 
     // Add the timestamp to the `rawData` object
     rawData.days.push(timestamp.split('T')[0]);

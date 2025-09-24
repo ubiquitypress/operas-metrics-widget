@@ -14,8 +14,8 @@ export const timeBetweenDates = (
 };
 
 const monthsBetweenDates = (date1: Date, date2: Date) => {
-  const months = (date2.getFullYear() - date1.getFullYear()) * 12;
-  return months + date2.getMonth() - date1.getMonth();
+  const months = (date2.getUTCFullYear() - date1.getUTCFullYear()) * 12;
+  return months + date2.getUTCMonth() - date1.getUTCMonth();
 };
 
 const daysBetweenDates = (date1: Date, date2: Date) => {

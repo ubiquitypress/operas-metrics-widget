@@ -1,26 +1,37 @@
 import type { Config, DatasetRange } from '@/types';
 
 export const formatDate = (date: Date, range: DatasetRange, config: Config) => {
+  const locale = config.settings.locale;
+  const options = { timeZone: 'UTC' } as const;
+
   switch (range) {
     case 'years': {
-      return new Date(date.toISOString().split('-')[0]).toLocaleDateString(
-        config.settings.locale,
-        { year: 'numeric' }
-      );
+      const utcYear = Date.UTC(date.getUTCFullYear(), 0, 1);
+      return new Date(utcYear).toLocaleDateString(locale, {
+        year: 'numeric',
+        ...options
+      });
     }
     case 'months': {
-      return new Date(
-        date.toISOString().split('-').slice(0, 2).join('-')
-      ).toLocaleDateString(config.settings.locale, {
+      const utcMonth = Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), 1);
+      return new Date(utcMonth).toLocaleDateString(locale, {
         month: 'short',
-        year: 'numeric'
+        year: 'numeric',
+        ...options
       });
     }
     default: {
-      return new Date(date.toISOString().split('T')[0]).toLocaleDateString(
-        config.settings.locale,
-        { day: 'numeric', month: 'short', year: 'numeric' }
+      const utcDay = Date.UTC(
+        date.getUTCFullYear(),
+        date.getUTCMonth(),
+        date.getUTCDate()
       );
+      return new Date(utcDay).toLocaleDateString(locale, {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric',
+        ...options
+      });
     }
   }
 };

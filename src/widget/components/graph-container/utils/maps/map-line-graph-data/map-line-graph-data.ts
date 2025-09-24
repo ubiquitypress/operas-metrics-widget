@@ -40,16 +40,17 @@ export const mapLineGraphData = (
   const endDate = new Date(rawTimestampsRange.at(-1) || '');
   const now = new Date();
 
-  // Adjust the end date based on the current date and the chosen range
-  endDate.setDate(now.getDate());
+  // Adjust the end date based on the current date and the chosen range, keeping
+  // everything in UTC to avoid timezone-dependent truncation.
+  endDate.setUTCDate(now.getUTCDate());
   if (range === 'years') {
-    endDate.setMonth(now.getMonth());
+    endDate.setUTCMonth(now.getUTCMonth());
   }
 
   // Generate a list of timestamps between the start and end dates
   const completeTimestamps = generateCompleteTimestamps(
     startDate,
-    endDate,
+    incrementDate(new Date(endDate), range),
     range,
     config
   );

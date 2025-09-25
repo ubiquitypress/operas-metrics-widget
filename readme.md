@@ -750,7 +750,7 @@ Alternatively, the widget will still fully function even if you choose to not im
 
 ## Building
 
-1. Run `npm run lint` to make sure there are no linting issues.
+1. Run `npm run check` to make sure there are no issues.
 2. Update the version in the `package.json` file. Sub-versions can be denoted using hyphens, such as `1.0.0-beta.12`.
 3. Run `npm run build` to build the application. This must be done _after_ changing the version.
 

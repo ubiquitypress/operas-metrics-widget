@@ -540,7 +540,7 @@ It’s possible that you want to modify the “key" display before rendering the
 Renders a paginated list of citing sources (articles, books, etc.) with metadata and links.
 
 - Data source: the widget calls `settings.citations_url` (default `https://metrics-api.operas-eu.org/citations`) once per scope with `work_uri=<your work>` query params. It expects an array of records with fields like `authors`, `editors`, `year`, `title`, `source`, `volume`, `issue`, `page`, `doi`, `url`, and `type`. The list is paginated client-side using the config `page_size`.
-- Totals: the total shown is the count of returned records (or `count` if the API includes it). Each record’s `value` is treated as `1` if it is missing.
+- Totals: the total shown is the sum of each citation record’s `value` (defaulting to `1` when `value` is missing).
 - Links: the DOI link is used if present; otherwise the `url` is used.
 
 | config               | type      | description                                                                                 |

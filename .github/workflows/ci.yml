@@ -1,0 +1,124 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - 'v*'
+  pull_request:
+
+env:
+  NPM_CONFIG_FUND: "false"
+  NPM_CONFIG_AUDIT: "false"
+
+jobs:
+  lint_typecheck:
+    name: Lint & Typecheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run check
+
+  build_embed:
+    name: Build embed bundle
+    runs-on: ubuntu-latest
+    needs: lint_typecheck
+    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/')
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run build:embed
+      - uses: actions/upload-artifact@v4
+        with:
+          name: embed-dist
+          path: dist
+          retention-days: 7
+
+  build_npm:
+    name: Build npm bundle
+    runs-on: ubuntu-latest
+    needs: lint_typecheck
+    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/')
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run build:npm
+      - run: npm run build:types
+      - uses: actions/upload-artifact@v4
+        with:
+          name: npm-dist
+          path: dist/npm
+          retention-days: 7
+
+  publish_npm:
+    name: Publish to npm (Trusted)
+    runs-on: ubuntu-latest
+    needs: build_npm
+    if: startsWith(github.ref, 'refs/tags/')
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          registry-url: https://registry.npmjs.org
+      - uses: actions/download-artifact@v4
+        with:
+          name: npm-dist
+          path: .
+      - run: npm ci
+      - name: Guard tag vs package.json version
+        run: |
+          VERSION_TAG="${GITHUB_REF#refs/tags/v}"
+          PKG_VERSION="$(node -p "require('./package.json').version")"
+          if [ "$VERSION_TAG" != "$PKG_VERSION" ]; then
+            echo "Tag ($VERSION_TAG) does not match package.json version ($PKG_VERSION)"
+            exit 1
+          fi
+      - name: Publish with provenance
+        run: npm publish --access public --provenance
+
+  upload_cdn:
+    name: Upload CDN assets to GCS
+    runs-on: ubuntu-latest
+    needs: build_embed
+    if: startsWith(github.ref, 'refs/tags/')
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: embed-dist
+          path: .
+      - id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT_EMAIL }}
+      - uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: ${{ secrets.GCP_PROJECT }}
+      - name: Upload to GCS
+        run: |
+          PKG_VERSION="$(node -p "require('./package.json').version")"
+          MAJOR="${PKG_VERSION%%.*}"
+          VERSION_PATH="${{ secrets.GCS_BUCKET }}/v${MAJOR}/${PKG_VERSION}"
+          LATEST_PATH="${{ secrets.GCS_BUCKET }}/v${MAJOR}/latest"
+          gsutil -m rsync -r dist "$VERSION_PATH"
+          gsutil -m rsync -r dist "$LATEST_PATH"

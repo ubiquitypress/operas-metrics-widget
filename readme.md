@@ -82,7 +82,7 @@ This script does two main things:
 - imports the `widget.js` script containing the core logic of the widget.
 - creates a _window_ object called `operaswidget` which allows you to [un]subscribe to custom widget events, discussed in the [events section](#events).
 
-⚒️ The minified version of the script above is recommended to improve performance, but you can also use or modify the [unminified version](https://gitlab.com/ubiquitypress/metrics-widget/-/blob/master/dist/index.html#L205-232).
+⚒️ The minified version of the script above is recommended to improve performance, but you can also use or modify the unminified version in `dist/index.html` if needed.
 
 ℹ️ In the example above, you will automatically receive the latest changes to the widget in the `v1` release. If you wish to change or understand this behaviour, see [Versioning](#versioning).
 
@@ -616,7 +616,7 @@ If you need to overwrite any pre-defined localisations within the widget, you ca
 }
 ```
 
-Refer to the [en.json file in the widget source](https://gitlab.com/ubiquitypress/metrics-widget/-/blob/master/src/widget/localisation/en.json?ref_type=heads) for the most up-to-date structure reference.
+Refer to the `src/widget/localisation/en.json` file in the repository for the most up-to-date structure reference.
 
 To set the widget to use the language you defined, you simply need to set the `settings.locale` string to match whatever language code was in the root of your tree.
 

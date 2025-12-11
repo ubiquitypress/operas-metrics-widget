@@ -1,0 +1,19 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "emitDeclarationOnly": true,
+    "declaration": true,
+    "outDir": "dist/npm/types",
+    "module": "ESNext",
+    "target": "ESNext",
+    "skipLibCheck": false
+  },
+  "include": [
+    "src/react.tsx",
+    "src/widget/**/*.ts",
+    "src/widget/**/*.tsx",
+    "src/types/**/*.d.ts"
+  ],
+  "exclude": ["node_modules", "dist"]
+}

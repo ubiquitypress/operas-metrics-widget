@@ -1,5 +1,7 @@
 # Dist
 dist/widget.js*
+dist/*.widget.js*
+dist/npm
 
 # Node
 node_modules

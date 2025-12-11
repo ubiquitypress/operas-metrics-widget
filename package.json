@@ -1,15 +1,45 @@
 {
-  "name": "metrics-widget",
-  "version": "1.1.0",
+  "name": "@ubiquitypress/metrics-widget",
+  "version": "1.1.1",
   "repository": "https://gitlab.com/ubiquitypress/metrics-widget.git",
   "license": "MIT",
   "scripts": {
     "check": "npm run lint && npm run typecheck",
     "dev": "webpack serve --mode development",
-    "build": "webpack --mode production --progress",
+    "build": "npm run build:embed && npm run build:npm && npm run build:types",
+    "build:embed": "webpack --mode production --progress",
+    "build:npm": "webpack --config webpack.npm.config.js --mode production",
+    "build:types": "tsc -p tsconfig.types.json",
     "format": "biome format --write .",
     "lint": "biome check --fix .",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "prepare": "npm run build"
+  },
+  "files": [
+    "dist/npm",
+    "dist/widget.js",
+    "dist/widget.css",
+    "dist/widget.js.LICENSE.txt",
+    "dist/index.html",
+    "dist/images"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/npm/types/react.d.ts",
+      "import": "./dist/npm/index.js",
+      "require": "./dist/npm/index.js"
+    },
+    "./widget.css": "./dist/npm/widget.css"
+  },
+  "types": "./dist/npm/types/react.d.ts",
+  "main": "./dist/npm/index.js",
+  "module": "./dist/npm/index.js",
+  "peerDependencies": {
+    "react": "^18.0.0 || ^19.0.0",
+    "react-dom": "^18.0.0 || ^19.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "devDependencies": {
     "@babel/core": "^7.28.5",

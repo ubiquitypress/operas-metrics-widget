@@ -20,7 +20,28 @@ Implementing the widget requires:
 
 # Getting Started
 
-## HTML
+## Preferred: React / npm
+
+If you are using React, install and render the component directly (recommended for typed configs and bundler-friendly usage):
+
+```bash
+npm install @ubiquitypress/metrics-widget
+```
+
+```tsx
+import { MetricsWidget, type UserConfig } from '@ubiquitypress/metrics-widget';
+import '@ubiquitypress/metrics-widget/widget.css';
+
+const config: UserConfig = {
+  // ... your configuration
+};
+
+export const Example = () => <MetricsWidget config={config} />;
+```
+
+If you are not using React, use the HTML embed below.
+
+## HTML embed (non-React)
 
 The first step is to add a HTML element to the page which will contain the widget:
 
@@ -89,6 +110,31 @@ Although it is recommended to use the default CSS and modify any classes where r
 All classes within the widget are prefixed with `mw__` to avoid any style conflicts.
 
 ℹ️ Similar to the JavaScript code, you can also use either `latest` to always use the latest version of the widget’s CSS, or provide a specific version instead.
+
+## NPM / React
+
+You can also consume the widget directly in a React codebase.
+
+1. Install:
+
+```bash
+npm install @ubiquitypress/metrics-widget
+```
+
+2. Use it like any other component:
+
+```tsx
+import { MetricsWidget, type UserConfig } from '@ubiquitypress/metrics-widget';
+import '@ubiquitypress/metrics-widget/widget.css';
+
+const config: UserConfig = {
+  // ...your configuration
+};
+
+export const Example = () => <MetricsWidget config={config} />;
+```
+
+`react` and `react-dom` are peer dependencies. The HTML/CDN snippet continues to work as before for non-React frontends.
 
 # Versioning
 

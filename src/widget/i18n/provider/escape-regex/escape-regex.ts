@@ -3,4 +3,4 @@
  * @param value - Raw string to escape before embedding in a regex.
  */
 export const escapeRegex = (value: string) =>
-  value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  value.replace(/[\\^$.*+?()[\]{}|]/g, '\\$&');

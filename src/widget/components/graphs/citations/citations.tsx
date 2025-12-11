@@ -89,17 +89,18 @@ export const Citations = (props: CitationsProps) => {
   const pageCount = Math.max(1, Math.ceil(total / pageSize));
   const showInlineTitle = graph.config?.show_inline_title ?? true;
 
-  const viewAllLink =
-    graph.config?.view_all_url ||
-    (() => {
-      const doi = data.find(item => item.doi)?.doi;
-      if (!doi) {
-        return undefined;
-      }
-      return `https://search.crossref.org/search/works?q=${encodeURIComponent(
-        doi
-      )}&from_ui=yes`;
-    })();
+  const viewAllLink = useMemo(() => {
+    if (graph.config?.view_all_url) {
+      return graph.config.view_all_url;
+    }
+    const doi = data.find(item => item.doi)?.doi;
+    if (!doi) {
+      return undefined;
+    }
+    return `https://search.crossref.org/search/works?q=${encodeURIComponent(
+      doi
+    )}&from_ui=yes`;
+  }, [data, graph.config?.view_all_url]);
 
   const pageSlice = useMemo(() => {
     const start = (page - 1) * pageSize;
@@ -213,7 +214,10 @@ export const Citations = (props: CitationsProps) => {
         >
           <button
             type='button'
-            onClick={() => setPage(Math.max(1, page - 1))}
+            onClick={() => {
+              setPage(Math.max(1, page - 1));
+              listRef.current?.scrollTo({ top: 0 });
+            }}
             disabled={page === 1}
             aria-label={t('graphs.citations.prev_page')}
           >

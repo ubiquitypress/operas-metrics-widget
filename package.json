@@ -17,11 +17,8 @@
   },
   "files": [
     "dist/npm",
-    "dist/widget.js",
-    "dist/widget.css",
-    "dist/widget.js.LICENSE.txt",
-    "dist/index.html",
-    "dist/images"
+    "LICENSE",
+    "readme.md"
   ],
   "exports": {
     ".": {

@@ -1,5 +1,5 @@
 import type { CitationRecord } from '@/components';
-import type { APIEvent, Config, GraphData, Tab } from '@/types';
+import type { APIEvent, Config, GraphData, NameInput, Tab } from '@/types';
 
 export const mapCitationsData = (
   data: GraphData,
@@ -7,16 +7,6 @@ export const mapCitationsData = (
   _config: Config
 ): { items: CitationRecord[]; total: number } => {
   // For now, use the merged array (all scopes). If needed, we can filter by graph.scopes later.
-  type NameInput =
-    | string
-    | {
-        last_name?: string;
-        initial?: string;
-        family?: string;
-        given?: string;
-        name?: string;
-      };
-
   const formatPerson = (person: NameInput) => {
     if (typeof person === 'string') {
       return person;

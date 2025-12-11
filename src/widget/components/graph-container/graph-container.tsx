@@ -7,7 +7,7 @@ import { useNavigation } from '../navigation';
 import { GraphTitle } from './components';
 import styles from './graph-container.module.scss';
 import type { ComponentData } from './utils';
-import { loadComponentData, loadData, loadScripts } from './utils';
+import { loadComponentData, loadData } from './utils';
 
 interface GraphContainerProps {
   graph: Graph;
@@ -59,7 +59,7 @@ export const GraphContainer = (props: GraphContainerProps) => {
 
         // Fetch and load any external scripts needed to load this graph
         const scripts = graphScripts(config)[graph.type];
-        await loadScripts(scripts);
+        await scripts?.();
 
         // Load the graph data from the OPERAS API
         const data = await loadData(tab, graph, config);

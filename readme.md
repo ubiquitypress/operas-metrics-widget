@@ -118,7 +118,7 @@ Because minor and patch changes do not include breaking changes, you can safely 
 
 When breaking changes are released, they will be versioned under a new major version directory (eg. `/v2/2.0.0`). You will need to manually update to this new version if you are on a previous major version.
 
-Note that if you are using the `latest` version, by default the `cdn_scripts_url` and `cdn_images_url` in the widget [Settings](#settings) will still link to the represented version folders rather than the `/latest/` directory. If this is unwanted, you can overwrite the defaults for those variables to replace `{version}` with `latest`.
+Note that if you are using the `latest` version, by default the `cdn_images_url` in the widget [Settings](#settings) will still link to the represented version folders rather than the `/latest/` directory. If this is unwanted, you can overwrite the defaults for those variables to replace `{version}` with `latest`.
 
 And of course, there is no obligation to stick to the `latest` version, and using hard-coded version URLs will work just as well.
 
@@ -126,7 +126,7 @@ And of course, there is no obligation to stick to the `latest` version, and usin
 
 If you wish to host the core script on your own CDN, you can simply replace the URL in the [Getting Started](#getting-started) script with your own.
 
-Additional scripts and images are hosted in sub-directories, but you can overwrite those in the widget [Settings](#settings) by providing a custom `cdn_scripts_url` and `cdn_images_url` which links to your own CDN.
+Images are hosted in sub-directories, but you can overwrite those in the widget [Settings](#settings) by providing a custom `cdn_images_url` which links to your own CDN. The core JavaScript dependencies are now installed via `package.json` and lazy loaded from the bundle; Twitter embeds still fetch `https://platform.twitter.com/widgets.js` at runtime (Twitter’s requirement).
 
 These strings support custom variables which will be replaced at runtime:
 
@@ -136,7 +136,7 @@ These strings support custom variables which will be replaced at runtime:
 - `{version}`: the full version string
 - `{preRelease}`: the pre-release version number
 
-For instance, you can see this being used in the default value for `cdn_scripts_url`:
+For instance, you can see this being used in the default value for `cdn_images_url`:
 
 [https://storage.googleapis.com/operas/metrics-widget/v{major}/{version}/scripts](https://storage.googleapis.com/operas/metrics-widget/v%7Bmajor%7D/%7Bversion%7D/scripts)
 
@@ -199,10 +199,10 @@ Unless otherwise instructed, it’s likely the only setting you’ll need to spe
 | base_url        | string | https://metrics-api.operas-eu.org/events                                        | a link to the API that provides the metrics                                                                                                                                                                                                                                                                                       |
 | element_id      | string | metrics-widget                                                                  | the widget will be rendered within the DOM element that has this id attribute                                                                                                                                                                                                                                                     |
 | locale          | string | en-US                                                                           | the locale to render the widget in<br/><br/>(see [Locales](#locales) for more information on how this property works)                                                                                                                                                                                                             |
-| cdn_scripts_url | string | https://storage.googleapis.com/operas/metrics-widget/v{major}/{version}/scripts | a link to the directory containing additional widget scripts (eg. chartjs, jquery, jvectormap, etc.)<br /><br/>these scripts are loaded on an as-needed basis in order to keep the core bundle size smaller.<br/><br/>more information about the variables available in this string can be found under [Versioning](#versioning). |
+| cdn_scripts_url | string | https://storage.googleapis.com/operas/metrics-widget/v{major}/{version}/scripts | (legacy) not used by the current build, which bundles JS deps from npm and lazy-loads them. |
 | cdn_images_url  | string | https://storage.googleapis.com/operas/metrics-widget/v{major}/{version}/images  | a link to the directory containing the required widget images (eg. hypothesis-logo.png). <br/><br>more information about the variables available in this string can be found under [Versioning](#versioning).                                                                                                                     |
 
-For `cdn_scripts_url` and `cdn_images_url`, the `{version}` variable in the URL will be automatically replaced by the version of the widget you are running (as defined in the [Getting Started](#getting-started) section). This isn’t needed, but recommended to prevent a mismatch between file versions.
+For `cdn_images_url`, the `{version}` variable in the URL will be automatically replaced by the version of the widget you are running (as defined in the [Getting Started](#getting-started) section). This isn’t needed, but recommended to prevent a mismatch between file versions.
 
 ℹ️ If you are using the auto-updating `-latest` version of the widget, the `{version}` will be replaced with the _actual_ version number of the widget. So if the latest version is `1.0.0`, the variable will be replaced with `1.0.0`.
 

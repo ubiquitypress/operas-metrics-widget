@@ -1,51 +1,84 @@
-import type { Config, Graphs } from '@/types';
-import { getAssetPath } from '@/utils';
+import type { ChartConstructor, Config, Graphs } from '@/types';
 
-export interface ExternalScript {
-  id: string;
-  url: string;
-}
+export type GraphScriptLoader = { [key in Graphs]: () => Promise<void> };
 
-type GraphScripts = { [key in Graphs]: ExternalScript[] };
-
-export const graphScripts = (config: Config): GraphScripts => {
-  // A dictionary of all the external scripts that may be required
-  const scripts: { [key: string]: ExternalScript } = {
-    ChartJS: {
-      id: 'mw-chartjs',
-      url: getAssetPath('script', 'chartjs-4.1.2.umd.min.js', config)
-    },
-    JQuery: {
-      id: 'mw-jquery',
-      url: getAssetPath('script', 'jquery-3.6.3.min.js', config)
-    },
-    JVectorMapWorldMerc: {
-      id: 'mw-jvectormap-world-merc',
-      url: getAssetPath('script', 'jvectormap-world-merc.js', config)
-    },
-    JVectorMap: {
-      id: 'mw-jvectormap',
-      url: getAssetPath('script', 'jvectormap-2.0.5.min.js', config)
-    },
-    Twitter: {
-      id: 'mw-twitter',
-      url: getAssetPath('script', 'twitter.js', config)
-    }
-  };
-
-  // Return the scripts required for each graph type
-  // NB: The scripts are loaded in the order they are listed -- this is important for dependencies!
+/**
+ * Lazy loaders for third-party libraries used by specific graphs.
+ * Each loader only runs when the graph type is rendered.
+ */
+export const graphScripts = (_config: Config): GraphScriptLoader => {
   return {
-    text: [],
-    line: [scripts.ChartJS],
-    country_table: [],
-    world_map: [
-      scripts.JQuery,
-      scripts.JVectorMap,
-      scripts.JVectorMapWorldMerc
-    ],
-    hypothesis_table: [],
-    tweets: [scripts.Twitter],
-    list: []
+    text: async () => undefined,
+    line: async () => {
+      const chartModule = await import('chart.js/auto');
+      const Chart =
+        (chartModule as { default?: ChartConstructor }).default ||
+        (chartModule as { Chart?: ChartConstructor }).Chart;
+      if (Chart) {
+        (globalThis as typeof globalThis & { Chart?: ChartConstructor }).Chart =
+          Chart;
+      }
+    },
+    country_table: async () => undefined,
+    world_map: async () => {
+      const jqModule = await import('jquery');
+      const $ = (jqModule as { default?: unknown }).default || jqModule;
+
+      // jvectormap relies on a global jQuery instance
+      if (!(globalThis as typeof globalThis & { $?: unknown }).$) {
+        (globalThis as typeof globalThis & { $?: unknown }).$ = $;
+        (globalThis as typeof globalThis & { jQuery?: unknown }).jQuery = $;
+      }
+
+      await import('jvectormap');
+
+      const mapModule = await import('jvectormap-content/world-merc');
+      const mapData =
+        (mapModule as { default?: unknown }).default || (mapModule as unknown);
+
+      // Register the map so it can be referenced by name
+      if (
+        typeof ($ as { fn?: { vectorMap?: unknown } }).fn?.vectorMap ===
+        'function'
+      ) {
+        (
+          $ as typeof $ & {
+            fn?: {
+              vectorMap?: (cmd: string, name: string, data: unknown) => void;
+            };
+          }
+        ).fn?.vectorMap?.('addMap', 'world_merc', mapData);
+      }
+    },
+    hypothesis_table: async () => undefined,
+    tweets: async () => {
+      const twitterWidgets = await import('twitter-widgets');
+      const load =
+        (
+          twitterWidgets as {
+            load?: (callback?: (error?: Error) => void) => void;
+          }
+        ).load ||
+        (
+          twitterWidgets as {
+            default?: { load?: (callback?: (error?: Error) => void) => void };
+          }
+        ).default?.load;
+
+      if (!load) {
+        return;
+      }
+
+      await new Promise<void>((resolve, reject) => {
+        load(error => {
+          if (error) {
+            reject(error);
+          } else {
+            resolve();
+          }
+        });
+      });
+    },
+    list: async () => undefined
   };
 };

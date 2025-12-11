@@ -4,7 +4,7 @@
   "repository": "https://gitlab.com/ubiquitypress/metrics-widget.git",
   "license": "MIT",
   "scripts": {
-    "check": "pnpm run lint && pnpm run typecheck",
+    "check": "npm run lint && npm run typecheck",
     "dev": "webpack serve --mode development",
     "build": "webpack --mode production --progress",
     "format": "biome format --write .",
@@ -38,12 +38,17 @@
   },
   "dependencies": {
     "axios": "^1.13.2",
+    "chart.js": "^4.1.2",
     "date-fns": "^4.1.0",
     "dompurify": "^3.3.1",
+    "jquery": "^3.7.1",
+    "jvectormap": "^2.0.4",
+    "jvectormap-content": "^0.1.1",
     "mini-css-extract-plugin": "^2.9.4",
     "polished": "^4.3.1",
     "react": "^19.2.1",
     "react-dom": "^19.2.1",
+    "twitter-widgets": "^2.0.0",
     "ts-deepmerge": "^7.0.3"
   }
 }

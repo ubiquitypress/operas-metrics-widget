@@ -7,7 +7,6 @@ export * from './get-country-code-from-uri';
 export * from './get-root-element';
 export * from './get-widget-style';
 export * from './http-request';
-export * from './load-external-script';
 export * from './log';
 export * from './sanitize-html';
 export * from './time-between-dates';

@@ -1,6 +1,6 @@
 {
   "name": "@ubiquitypress/operas-metrics-widget",
-  "version": "1.3.4",
+  "version": "1.3.5",
   "repository": "https://github.com/ubiquitypress/operas-metrics-widget.git",
   "license": "MIT",
   "scripts": {

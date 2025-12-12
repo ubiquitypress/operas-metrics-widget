@@ -114,13 +114,20 @@ export const WorldMap = (props: WorldMapProps) => {
         return;
       }
 
+      // Prefer the nearest graph container height if present (has inline 250px)
+      const graphContainer =
+        host.closest('[class*="graph-container"]') || host.parentElement;
+      const containerRect = graphContainer?.getBoundingClientRect();
+
       // Prefer measured heights, fall back to computed CSS or a sane default
       const { height: rectHeight } = host.getBoundingClientRect();
       const cssHeight = Number.parseFloat(
         globalThis.getComputedStyle?.(host)?.height || '0'
       );
+      const containerHeight = containerRect?.height || 0;
 
       const candidateHeight =
+        containerHeight ||
         rectHeight ||
         host.clientHeight ||
         host.offsetHeight ||
@@ -137,6 +144,7 @@ export const WorldMap = (props: WorldMapProps) => {
         return;
       }
 
+      host.style.height = `${targetHeight}px`;
       map.container?.css?.({ width: '100%', height: `${targetHeight}px` });
       map.updateSize?.();
     };

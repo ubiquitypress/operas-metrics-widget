@@ -95,7 +95,72 @@ export const WorldMap = (props: WorldMapProps) => {
   // Render the graph when the component is mounted
   useEffect(() => {
     // @ts-expect-error jQuery is not defined in the global scope
-    globalThis.$(`#${canvasId}`).vectorMap(options);
+    const $el = globalThis.$(`#${canvasId}`);
+    if (!$el || typeof $el.vectorMap !== 'function') {
+      return;
+    }
+
+    $el.vectorMap(options);
+
+    // Helper to get current map instance
+    const getMap = () =>
+      $el.vectorMap('get', 'mapObject') || $el.data('mapObject');
+
+    const resizeMap = () => {
+      const map = getMap();
+      const host = document.getElementById(canvasId);
+      if (!map || !host) {
+        return;
+      }
+
+      const width =
+        host.clientWidth ||
+        host.offsetWidth ||
+        map.width ||
+        map.defaultWidth ||
+        0;
+      if (!width) {
+        return;
+      }
+
+      const aspect =
+        map.defaultHeight && map.defaultWidth
+          ? map.defaultHeight / map.defaultWidth
+          : 0.6;
+      const targetHeight = Math.max(
+        200,
+        Math.min(800, Math.round(width * aspect))
+      );
+
+      map.container?.css?.({ width: '100%', height: `${targetHeight}px` });
+      map.updateSize?.();
+    };
+
+    // Initial pass to normalise sizing
+    resizeMap();
+
+    // Debounced window resize handling
+    let resizeScheduled = false;
+    const onResize = () => {
+      if (resizeScheduled) {
+        return;
+      }
+      resizeScheduled = true;
+      requestAnimationFrame(() => {
+        resizeMap();
+        resizeScheduled = false;
+      });
+    };
+
+    window.addEventListener('resize', onResize);
+
+    return () => {
+      window.removeEventListener('resize', onResize);
+      const map = getMap();
+      if (map) {
+        $el.vectorMap('remove');
+      }
+    };
   }, [canvasId, options]);
 
   if (Object.keys(data).length === 0) {

@@ -127,9 +127,12 @@ export const TabPanel = (props: TabPanelProps) => {
         aria-hidden={!isActive || state.loading || undefined}
       >
         {rows.map(row => {
+          const rowKey =
+            row.id ||
+            `${tab.id}-row-${row.graphs.map(graph => graph.id).join('_')}`;
           return (
             <div
-              key={row.id}
+              key={rowKey}
               id={row.id}
               className={cx(styles['tab-panel-row'], row.class)}
             >

@@ -1,7 +1,7 @@
 {
-  "name": "@ubiquitypress/metrics-widget",
+  "name": "@ubiquitypress/operas-metrics-widget",
   "version": "1.2.0",
-  "repository": "https://github.com/ubiquitypress/metrics-widget.git",
+  "repository": "https://github.com/ubiquitypress/operas-metrics-widget.git",
   "license": "MIT",
   "scripts": {
     "check": "npm run lint && npm run typecheck",

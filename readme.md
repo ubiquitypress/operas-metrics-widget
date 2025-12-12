@@ -25,12 +25,12 @@ Implementing the widget requires:
 If you are using React, install and render the component directly (recommended for typed configs and bundler-friendly usage):
 
 ```bash
-npm install @ubiquitypress/metrics-widget
+npm install @ubiquitypress/operas-metrics-widget
 ```
 
 ```tsx
-import { MetricsWidget, type UserConfig } from '@ubiquitypress/metrics-widget';
-import '@ubiquitypress/metrics-widget/widget.css';
+import { MetricsWidget, type UserConfig } from '@ubiquitypress/operas-metrics-widget';
+import '@ubiquitypress/operas-metrics-widget/widget.css';
 
 const config: UserConfig = {
   // ... your configuration
@@ -120,14 +120,14 @@ You can also consume the widget directly in a React codebase.
 1. Install:
 
 ```bash
-npm install @ubiquitypress/metrics-widget
+npm install @ubiquitypress/operas-metrics-widget
 ```
 
 2. Use it like any other component:
 
 ```tsx
-import { MetricsWidget, type UserConfig } from '@ubiquitypress/metrics-widget';
-import '@ubiquitypress/metrics-widget/widget.css';
+import { MetricsWidget, type UserConfig } from '@ubiquitypress/operas-metrics-widget';
+import '@ubiquitypress/operas-metrics-widget/widget.css';
 
 const config: UserConfig = {
   // ...your configuration

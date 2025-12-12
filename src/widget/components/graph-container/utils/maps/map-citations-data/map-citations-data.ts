@@ -1,10 +1,14 @@
 import type { CitationRecord } from '@/components';
-import type { APIEvent, Config, GraphData, NameInput, Tab } from '@/types';
+import type { APIEvent, GraphData, NameInput } from '@/types';
 
+/**
+ * Maps merged graph events into citation records for the table view.
+ *
+ * @param data Graph payload that includes merged citation entries and total count.
+ * @returns Normalized citation records plus a total count fallback to item length.
+ */
 export const mapCitationsData = (
-  data: GraphData,
-  _tab: Tab,
-  _config: Config
+  data: GraphData
 ): { items: CitationRecord[]; total: number } => {
   // For now, use the merged array (all scopes). If needed, we can filter by graph.scopes later.
   const formatPerson = (person: NameInput) => {

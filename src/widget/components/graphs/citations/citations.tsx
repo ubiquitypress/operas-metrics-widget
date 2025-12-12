@@ -2,17 +2,11 @@ import { GraphEmptyMessage } from '@/components/common';
 import { useIntl } from '@/i18n';
 import type { Citations as ICitations } from '@/types';
 import { cx, formatNumber } from '@/utils';
-import {
-  Book,
-  ChevronLeft,
-  ChevronRight,
-  Database,
-  ExternalLink,
-  FileText,
-  Info
-} from 'lucide-react';
+import { ChevronLeft, ChevronRight, ExternalLink } from 'lucide-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { CitationIcon } from './citation-icon';
 import styles from './citations.module.scss';
+import { formatMeta } from './format-meta';
 
 export interface CitationRecord {
   title: string;
@@ -34,50 +28,6 @@ export interface CitationsProps {
   total: number;
   graph: ICitations;
 }
-
-const TypeIcon = ({ type }: { type: string }) => {
-  const normalized = type.toLowerCase();
-  const common = normalized.replace(/[-_]/g, '');
-
-  const icon = (() => {
-    if (common.includes('journal') || common.includes('article')) {
-      return <FileText aria-hidden='true' />;
-    }
-    if (common.includes('book')) {
-      return <Book aria-hidden='true' />;
-    }
-    if (common.includes('dataset') || common.includes('data')) {
-      return <Database aria-hidden='true' />;
-    }
-    return <Info aria-hidden='true' />;
-  })();
-
-  return <span className={styles.icon}>{icon}</span>;
-};
-
-const formatMeta = (item: CitationRecord) => {
-  const parts: string[] = [];
-  if (item.source) {
-    parts.push(item.source);
-  }
-  const volIssue: string[] = [];
-  if (item.volume) {
-    volIssue.push(item.volume);
-  }
-  if (item.issue) {
-    volIssue.push(item.issue);
-  }
-  // When both volume and issue exist, render as "volume(issue)"; otherwise show the single value.
-  if (volIssue.length === 2) {
-    parts.push(`${volIssue[0]}(${volIssue[1]})`);
-  } else if (volIssue.length === 1) {
-    parts.push(volIssue[0]);
-  }
-  if (item.page) {
-    parts.push(item.page);
-  }
-  return parts.join(', ');
-};
 
 export const Citations = (props: CitationsProps) => {
   const { id, data, total, graph } = props;
@@ -173,7 +123,7 @@ export const Citations = (props: CitationsProps) => {
                 <div className={styles.badge}>{rank}</div>
                 <div className={styles.content}>
                   <div className={styles.type}>
-                    <TypeIcon type={typeLabel} />
+                    <CitationIcon type={typeLabel} />
                     <span>{typeLabel}</span>
                   </div>
                   <div className={styles.citationTitle}>{item.title}</div>

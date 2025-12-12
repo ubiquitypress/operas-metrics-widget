@@ -115,14 +115,8 @@ const loadList: Loader<IList> = ({ id, data, graph }) => {
   };
 };
 
-const loadCitations: Loader<ICitations> = ({
-  id,
-  data,
-  graph,
-  tab,
-  config
-}) => {
-  const res = mapCitationsData(data, tab, config);
+const loadCitations: Loader<ICitations> = ({ id, data, graph }) => {
+  const res = mapCitationsData(data);
   return {
     Component: (
       <Citations id={id} data={res.items} total={res.total} graph={graph} />

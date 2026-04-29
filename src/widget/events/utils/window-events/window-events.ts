@@ -36,7 +36,7 @@ export const initWindowEvents = () => {
       }
     },
     off: (event, callback) => {
-      if (!events || !events[event]) {
+      if (!events?.[event]) {
         return;
       }
       events[event] = events[event].filter(

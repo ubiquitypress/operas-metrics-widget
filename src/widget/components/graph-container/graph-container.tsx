@@ -123,6 +123,10 @@ export const GraphContainer = (props: GraphContainerProps) => {
   // announced meaningfully.
   const regionLabel =
     graph.title || (isScrollable ? t(`graphs.${graph.type}.region_label`) : '');
+  const regionProps =
+    isScrollable && regionLabel
+      ? ({ role: 'region', 'aria-label': regionLabel } as const)
+      : {};
 
   // We have the data, render the graph
   return (
@@ -143,8 +147,7 @@ export const GraphContainer = (props: GraphContainerProps) => {
         className={styles.graph}
         style={{ overflowY }}
         tabIndex={isScrollable ? 0 : undefined}
-        role={isScrollable && regionLabel ? 'region' : undefined}
-        aria-label={isScrollable && regionLabel ? regionLabel : undefined}
+        {...regionProps}
       >
         {state.componentData.Component}
       </div>

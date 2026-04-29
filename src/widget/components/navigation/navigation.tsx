@@ -32,7 +32,7 @@ export const Navigation = (props: NavigationProps) => {
       return;
     }
 
-    let nextIndex: number | null = null;
+    let nextIndex: number;
     switch (e.key) {
       case 'ArrowRight':
       case 'ArrowDown':
@@ -48,9 +48,8 @@ export const Navigation = (props: NavigationProps) => {
       case 'End':
         nextIndex = counts.length - 1;
         break;
-    }
-    if (nextIndex === null) {
-      return;
+      default:
+        return;
     }
 
     e.preventDefault();

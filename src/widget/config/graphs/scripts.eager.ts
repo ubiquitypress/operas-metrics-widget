@@ -21,39 +21,7 @@ export const graphScripts = (_config: Config): GraphScriptLoader => {
       }
     },
     country_table: async () => undefined,
-    world_map: async () => {
-      // Return a promise to satisfy the async signature
-      await Promise.resolve();
-      const jqModule = require('jquery');
-      const $ = (jqModule as { default?: unknown }).default || jqModule;
-
-      // jvectormap relies on a global jQuery instance
-      if (!(globalThis as typeof globalThis & { $?: unknown }).$) {
-        (globalThis as typeof globalThis & { $?: unknown }).$ = $;
-        (globalThis as typeof globalThis & { jQuery?: unknown }).jQuery = $;
-      }
-
-      require('jvectormap');
-
-      const mapModule = require('jvectormap-content/world-merc');
-      const mapData =
-        (mapModule as { default?: unknown }).default || (mapModule as unknown);
-
-      // Register the map so it can be referenced by name
-      if (
-        typeof ($ as { fn?: { vectorMap?: unknown } }).fn?.vectorMap ===
-        'function'
-      ) {
-        const mapper = $ as typeof $ & {
-          fn?: {
-            vectorMap?: (cmd: string, name: string, data: unknown) => void;
-          };
-        };
-        mapper.fn?.vectorMap?.('addMap', 'world_merc', mapData);
-        // Alias to the default name some builds may expect
-        mapper.fn?.vectorMap?.('addMap', 'world_mill_en', mapData);
-      }
-    },
+    world_map: async () => undefined,
     hypothesis_table: async () => undefined,
     tweets: async () => {
       const twitterWidgets = require('twitter-widgets');

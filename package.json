@@ -3,10 +3,11 @@
   "version": "1.3.17",
   "repository": "https://github.com/ubiquitypress/operas-metrics-widget.git",
   "license": "MIT",
+  "packageManager": "pnpm@10.33.2",
   "scripts": {
-    "check": "npm run lint && npm run typecheck && npm run knip",
+    "check": "pnpm lint && pnpm typecheck && pnpm knip",
     "dev": "webpack serve --mode development",
-    "build": "npm run build:embed && npm run build:npm && npm run build:types",
+    "build": "pnpm build:embed && pnpm build:npm && pnpm build:types",
     "build:embed": "webpack --mode production --progress",
     "build:npm": "webpack --config webpack.npm.config.js --mode production",
     "build:types": "tsc -p tsconfig.types.json",
@@ -15,7 +16,7 @@
     "typecheck": "tsc --noEmit",
     "knip": "knip",
     "prepare": "lefthook install",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "pnpm build"
   },
   "files": [
     "dist/npm",
@@ -77,8 +78,10 @@
     "webpack-cli": "^7.0.2",
     "webpack-dev-server": "^5.2.3"
   },
-  "overrides": {
-    "uuid": "^14.0.0"
+  "pnpm": {
+    "overrides": {
+      "uuid": "^14.0.0"
+    }
   },
   "dependencies": {
     "axios": "^1.15.2",

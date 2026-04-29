@@ -778,13 +778,13 @@ Alternatively, the widget will still fully function even if you choose to not im
 
 ## Installation
 
-1. Run `npm install` to install dependencies.
-2. Run `npm run dev` to start the local dev server (webpack-dev-server).
+1. Run `pnpm install` to install dependencies (Corepack will pick up the version pinned in `package.json`'s `packageManager` field; run `corepack enable` once if you don't have pnpm yet).
+2. Run `pnpm dev` to start the local dev server (webpack-dev-server).
 
 ## Building
 
-1. Run `npm run check` to lint and typecheck.
-2. Run `npm run build`.
+1. Run `pnpm check` to lint, typecheck, and run knip.
+2. Run `pnpm build`.
 
 This produces:
 

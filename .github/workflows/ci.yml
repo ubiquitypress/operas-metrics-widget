@@ -23,12 +23,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: npm
-      - run: npm ci
-      - run: npm run check
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm check
 
   release:
     name: Release
@@ -47,22 +48,25 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
 
+      - uses: pnpm/action-setup@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: npm
+          cache: pnpm
           registry-url: https://registry.npmjs.org
 
-      # The trusted-publishing flow expects modern npm; the existing release
-      # path upgraded npm before publishing, kept here for parity.
+      # The trusted-publishing flow expects modern npm; @semantic-release/npm
+      # invokes the `npm` binary directly regardless of which package manager
+      # we use, so this still applies under pnpm.
       - name: Upgrade npm (for trusted publishing / provenance)
         run: npm install -g npm@latest
 
-      - run: npm ci
+      - run: pnpm install --frozen-lockfile
 
       # Build both bundles up front. The npm publish below reads dist/npm
       # via the `files` field in package.json; the GCS upload reads dist/.
-      - run: npm run build
+      - run: pnpm build
 
       # semantic-release decides the next version, bumps package*.json, writes
       # CHANGELOG.md, publishes to npm with provenance, creates the GitHub

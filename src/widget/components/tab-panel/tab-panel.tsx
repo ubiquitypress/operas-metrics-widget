@@ -125,6 +125,11 @@ export const TabPanel = (props: TabPanelProps) => {
         className={styles['tab-panel-rows']}
         data-hidden={!isActive || state.loading || undefined}
         aria-hidden={!isActive || state.loading || undefined}
+        // `inert` removes the subtree from focus order in addition to
+        // the AT tree — without it, links / pagination buttons inside
+        // the inactive tab's panel remain tabbable, which axe flags as
+        // aria-hidden-focus.
+        inert={!isActive || state.loading}
       >
         {rows.map(row => {
           const rowKey =

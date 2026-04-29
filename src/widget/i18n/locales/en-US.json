@@ -13,10 +13,12 @@
       "title": "Hypothesis",
       "date": "Date",
       "author": "Author",
-      "summary": "Summary"
+      "summary": "Summary",
+      "region_label": "Annotations"
     },
     "country_table": {
-      "unknown": "Unknown"
+      "unknown": "Unknown",
+      "region_label": "Country breakdown"
     },
     "world_map": {
       "country_label": "Country",
@@ -24,7 +26,11 @@
       "total_label": "Total"
     },
     "tweets": {
-      "load_more": "More tweets"
+      "load_more": "More tweets",
+      "region_label": "Tweets"
+    },
+    "list": {
+      "region_label": "Items"
     },
     "citations": {
       "title": "Citing Sources",
@@ -35,7 +41,8 @@
       "pagination_label": "Citation pagination",
       "prev_page": "Previous page",
       "next_page": "Next page",
-      "go_to_page": "Go to page {page}"
+      "go_to_page": "Go to page {page}",
+      "region_label": "Citations"
     }
   }
 }

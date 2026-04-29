@@ -1,5 +1,6 @@
 import { graphDefaults, graphScripts, useConfig } from '@/config';
 import { useEvents } from '@/events';
+import { useIntl } from '@/i18n';
 import type { Graph, Tab } from '@/types';
 import { cx, log } from '@/utils';
 import { useEffect, useState } from 'react';
@@ -24,6 +25,7 @@ export const GraphContainer = (props: GraphContainerProps) => {
   const { graph, tab, onGraphLoaded } = props;
   const events = useEvents();
   const { config } = useConfig();
+  const { t } = useIntl();
   const { activeTab } = useNavigation();
   const [state, setState] = useState<GraphContainerState>({
     loading: false,
@@ -108,6 +110,20 @@ export const GraphContainer = (props: GraphContainerProps) => {
     return null;
   }
 
+  // A scrollable region must be in the focus order so keyboard users
+  // can pan it (axe: scrollable-region-focusable). Add tabIndex only
+  // when the container actually scrolls.
+  const overflowY = graphDefaults[graph.type].overflowY;
+  const isScrollable = overflowY === 'auto' || overflowY === 'scroll';
+
+  // When the wrapper is focusable, give it a label so screen readers
+  // announce what it is on focus rather than landing silently. Prefer
+  // the configured graph title; fall back to a per-type i18n key
+  // (`graphs.<type>.region_label`) so untitled graphs are still
+  // announced meaningfully.
+  const regionLabel =
+    graph.title || (isScrollable ? t(`graphs.${graph.type}.region_label`) : '');
+
   // We have the data, render the graph
   return (
     <div
@@ -125,7 +141,10 @@ export const GraphContainer = (props: GraphContainerProps) => {
 
       <div
         className={styles.graph}
-        style={{ overflowY: graphDefaults[graph.type].overflowY }}
+        style={{ overflowY }}
+        tabIndex={isScrollable ? 0 : undefined}
+        role={isScrollable && regionLabel ? 'region' : undefined}
+        aria-label={isScrollable && regionLabel ? regionLabel : undefined}
       >
         {state.componentData.Component}
       </div>

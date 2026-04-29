@@ -10,4 +10,3 @@ export * from './get-widget-style';
 export * from './http-request';
 export * from './log';
 export * from './sanitize-html';
-export * from './time-between-dates';

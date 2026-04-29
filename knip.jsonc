@@ -1,0 +1,23 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema-jsonc.json",
+  // scripts.eager.ts is swapped in for scripts.ts via webpack
+  // NormalModuleReplacementPlugin in the npm build — knip can't see that.
+  "entry": ["src/widget/config/graphs/scripts.eager.ts!"],
+  "ignoreDependencies": [
+    // Babel preset-env injects core-js / regenerator-runtime polyfills
+    // at build time; nothing imports them directly in source.
+    "core-js",
+    "regenerator-runtime",
+    // Aliased in for `react`/`react-dom` in webpack.config.js (embed bundle).
+    "preact",
+    // Selected dynamically in webpack.config.js based on NODE_ENV.
+    "style-loader"
+  ],
+  "rules": {
+    // 21 *Props interfaces and chart.js type aliases are exported but only
+    // used in their own file. Out-of-scope for the tooling-introduction
+    // commit; revisit as a focused cleanup.
+    "types": "off",
+    "exports": "off"
+  }
+}

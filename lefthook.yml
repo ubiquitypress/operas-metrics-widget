@@ -1,0 +1,19 @@
+# Git hooks managed by lefthook. Installed by the `prepare` npm script,
+# so `npm install` sets them up automatically.
+#
+# Pre-commit: lint + format staged files only (fast).
+# Pre-push: full check (lint, typecheck, knip) — catches type errors and
+# dead code before they reach CI.
+
+pre-commit:
+  parallel: true
+  commands:
+    biome:
+      glob: '*.{ts,tsx,js,jsx,json,scss}'
+      run: npx biome check --no-errors-on-unmatched --staged --write {staged_files}
+      stage_fixed: true
+
+pre-push:
+  commands:
+    check:
+      run: npm run check

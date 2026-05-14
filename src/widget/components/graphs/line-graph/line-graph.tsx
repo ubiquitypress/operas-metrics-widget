@@ -1,5 +1,6 @@
 import { GraphEmptyMessage } from '@/components/common';
 import { useConfig } from '@/config';
+import { useIntl } from '@/i18n';
 import type {
   ChartConfiguration,
   ChartDatasetConfig,
@@ -25,14 +26,12 @@ export interface LineGraphProps {
 export const LineGraph = (props: LineGraphProps) => {
   const { id, labels, datasets, graph } = props;
   const { config } = useConfig();
+  const { t } = useIntl();
+  const totalLabel = t('graphs.line_graph.total_label');
 
   // All the IDs we need to reference the graph
   const canvasId = `${id}-line-graph`;
   const tooltipId = `${id}-line-graph-tooltip`;
-  const tooltipContainerId = `${id}-line-graph-tooltip-container`;
-  const tooltipDateId = `${id}-line-graph-tooltip-date`;
-  const tooltipValueId = `${id}-line-graph-tooltip-value`;
-  const tooltipScopeId = `${id}-line-graph-tooltip-scope`;
 
   // Get the primary colours from the widget CSS
   const colors = datasets.map((_, index) => {
@@ -138,23 +137,15 @@ export const LineGraph = (props: LineGraphProps) => {
             display: datasets.length > 1 // Only show the legend if there are multiple datasets
           },
 
-          // Custom tooltip
+          // Custom tooltip — mode 'index' captures every dataset at the
+          // hovered x-position so we can show "Series A: 2,212 / Series B:
+          // 172 / Total: 2,384" rather than just one series at a time.
           tooltip: {
             enabled: false,
+            mode: 'index',
             intersect: false,
             external: (context: ChartTooltipContext) =>
-              tooltipConfig(
-                context,
-                {
-                  tooltipId,
-                  tooltipContainerId,
-                  tooltipDateId,
-                  tooltipValueId,
-                  tooltipScopeId
-                },
-                config,
-                graph
-              )
+              tooltipConfig(context, { tooltipId, totalLabel }, config, graph)
           }
         }
       }
@@ -162,7 +153,52 @@ export const LineGraph = (props: LineGraphProps) => {
 
     chart = new globalThis.Chart(ctx, chartConfig) as unknown as Chart;
 
+    // chart.js's `external` tooltip callback only fires when the tooltip's
+    // data points change — with mode:'index', that's per x-bucket, so
+    // pure vertical cursor movement within the same x doesn't re-render
+    // the tooltip. Hook canvas mousemove ourselves so the active-row
+    // highlight tracks vertical motion in real time.
+    const isStacked = !!graph.config?.stacked;
+    const activeClass = styles['line-graph-tooltip-row-active'];
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!isStacked) {
+        return;
+      }
+      const tip = document.getElementById(tooltipId);
+      if (!tip || tip.style.opacity === '0') {
+        return;
+      }
+      const c = ChartLib?.getChart?.(canvas);
+      const yScale = c?.scales?.y;
+      const dps = c?.tooltip?.dataPoints;
+      if (!c || !yScale || !dps || dps.length === 0) {
+        return;
+      }
+      const valueAtCursor = yScale.getValueForPixel(e.offsetY);
+      if (typeof valueAtCursor !== 'number') {
+        return;
+      }
+      let cumulative = 0;
+      let activeIndex = -1;
+      for (const dp of dps) {
+        const v = (dp.raw as number) || 0;
+        if (valueAtCursor >= cumulative && valueAtCursor <= cumulative + v) {
+          activeIndex = dp.datasetIndex;
+          break;
+        }
+        cumulative += v;
+      }
+      for (const row of tip.querySelectorAll<HTMLElement>(
+        '[data-dataset-index]'
+      )) {
+        const idx = Number(row.dataset.datasetIndex);
+        row.classList.toggle(activeClass, idx === activeIndex);
+      }
+    };
+    canvas.addEventListener('mousemove', handleMouseMove);
+
     return () => {
+      canvas.removeEventListener('mousemove', handleMouseMove);
       chart?.destroy();
       chart = null;
     };
@@ -173,11 +209,8 @@ export const LineGraph = (props: LineGraphProps) => {
     datasets,
     graph,
     labels,
-    tooltipContainerId,
-    tooltipDateId,
     tooltipId,
-    tooltipScopeId,
-    tooltipValueId
+    totalLabel
   ]);
 
   if (datasets.length === 0) {
@@ -185,27 +218,14 @@ export const LineGraph = (props: LineGraphProps) => {
   }
   return (
     <div className={styles['line-graph-container']}>
-      {/* Canvas and tooltip */}
+      {/* Canvas and tooltip. The tooltip is populated imperatively by
+          chart.js's `external` callback (see tooltip-config.ts). */}
       <canvas id={canvasId} className={styles['line-graph']} aria-hidden />
-      <div id={tooltipId} className={styles['line-graph-tooltip']} aria-hidden>
-        <div
-          id={tooltipScopeId}
-          className={styles['line-graph-tooltip-scope']}
-        />
-        <div
-          id={tooltipContainerId}
-          className={styles['line-graph-tooltip-container']}
-        >
-          <div
-            id={tooltipDateId}
-            className={styles['line-graph-tooltip-date']}
-          />
-          <div
-            id={tooltipValueId}
-            className={styles['line-graph-tooltip-value']}
-          />
-        </div>
-      </div>
+      <div
+        id={tooltipId}
+        className={styles['line-graph-tooltip']}
+        aria-hidden
+      />
 
       {/* Render contents into a visually hidden table for screen readers */}
       <LineGraphTable {...props} />

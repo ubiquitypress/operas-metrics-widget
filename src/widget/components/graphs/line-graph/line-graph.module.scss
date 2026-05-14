@@ -7,37 +7,83 @@
   opacity: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.5em;
+  gap: 0.4em;
   position: absolute;
   background-color: #fff;
   border: 1px solid #ccc;
   box-shadow: rgb(60 64 67 / 15%) 0px 2px 6px 2px;
-  padding: 1.1em;
+  padding: 0.85em 1em;
   pointer-events: none;
   border-radius: 4px;
   color: #3c4043;
   font-size: smaller;
-  transition: all 0.1s ease;
+  transition: opacity 0.1s ease;
   z-index: 2;
+  min-inline-size: 12em;
+  max-inline-size: min(22em, calc(100% - 1em));
 }
 
-.line-graph-tooltip-container {
-  display: flex;
-  justify-content: space-between;
-  gap: 2em;
+.line-graph-tooltip-date {
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: smaller;
+  letter-spacing: 0.05em;
+  color: #5f6368;
+  padding-block-end: 0.2em;
+}
+
+.line-graph-tooltip-row,
+.line-graph-tooltip-total {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 0.6em;
+}
+
+.line-graph-tooltip-row-active {
+  background: rgb(60 64 67 / 7%);
+  border-radius: 3px;
+  margin-inline: -0.4em;
+  padding-inline: 0.4em;
+}
+
+.line-graph-tooltip-total {
+  border-block-start: 1px solid #e5e7eb;
+  padding-block-start: 0.4em;
+  margin-block-start: 0.1em;
+  grid-template-columns: 1fr auto;
+  font-weight: 600;
+}
+
+.line-graph-tooltip-swatch {
+  inline-size: 0.7em;
+  block-size: 0.7em;
+  border-radius: 2px;
+  display: inline-block;
+}
+
+.line-graph-tooltip-label {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .line-graph-tooltip-value {
-  font-weight: bold;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
 }
 
-.line-graph-tooltip-scope {
-  font-weight: 600;
-  text-transform: uppercase;
-  font-size: smaller;
-  opacity: 0.7;
+// On narrow viewports, let labels wrap rather than ellipsis-truncate —
+// readability matters more than horizontal density when the chart is
+// only ~300px wide.
+@media (max-width: 480px) {
+  .line-graph-tooltip {
+    max-inline-size: calc(100% - 1em);
+    padding: 0.65em 0.8em;
+  }
 
-  &:empty {
-    display: none;
+  .line-graph-tooltip-label {
+    white-space: normal;
+    line-height: 1.3;
   }
 }

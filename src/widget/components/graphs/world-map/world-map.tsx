@@ -119,14 +119,18 @@ export const WorldMap = ({ id, data, graph }: WorldMapProps) => {
           height: graph.options?.height || graphDefaults.world_map.height || ''
         }}
       >
+        {/* biome-ignore lint/a11y/noSvgWithoutTitle: decorative — accessible
+            data is rendered in the sibling WorldMapTable. An <svg><title>
+            shows as a native browser tooltip on hover and conflicts with the
+            custom country tooltip below. */}
         <svg
           viewBox={`0 0 ${VIEW_WIDTH} ${VIEW_HEIGHT}`}
           preserveAspectRatio='xMidYMid meet'
           className={styles['world-map-svg']}
           onMouseMove={handleMouseMove}
           onMouseLeave={() => setHover(null)}
+          aria-hidden
         >
-          <title>{graph.title || 'World map'}</title>
           {COUNTRIES.map(f => {
             const numericId = String(f.id).padStart(3, '0');
             const alpha2 = isoNumericToAlpha2[numericId];

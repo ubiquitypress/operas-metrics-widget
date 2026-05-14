@@ -3,9 +3,15 @@ import type { Dataset } from './graphs';
 export interface ChartTooltipDataPoint {
   raw: number;
   label: string;
+  datasetIndex: number;
   dataset: {
     label?: string;
+    borderColor?: string | CanvasGradient;
   };
+}
+
+export interface ChartScale {
+  getValueForPixel(pixel: number): number | undefined;
 }
 
 export interface ChartTooltipModel {
@@ -24,6 +30,7 @@ export interface ChartCanvasElement extends HTMLCanvasElement {
 export interface ChartTooltipContext {
   chart: {
     canvas: ChartCanvasElement;
+    scales: { y: ChartScale };
   };
   tooltip: ChartTooltipModel;
 }
@@ -52,6 +59,7 @@ export interface ChartScalesOptions {
 export interface ChartTooltipOptions {
   enabled: boolean;
   intersect: boolean;
+  mode?: 'index' | 'nearest' | 'point' | 'dataset' | 'x' | 'y';
   external: (context: ChartTooltipContext) => void;
 }
 

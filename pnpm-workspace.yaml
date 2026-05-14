@@ -1,0 +1,15 @@
+allowBuilds:
+  '@parcel/watcher': true
+  core-js: false
+  lefthook: true
+
+# Transitive-dep pins. Keep these scoped to the smallest range that closes the
+# specific advisory or deprecation we're working around.
+overrides:
+  # sockjs (webpack-dev-server -> sockjs) pulls uuid@^8, which is fully
+  # deprecated. uuid@14 is API-compatible for the random-v4 path sockjs uses.
+  uuid: ^14.0.0
+  # mini-css-extract-plugin -> schema-utils -> ajv -> fast-uri. <=3.1.1 has
+  # GHSA-q3j6-qgpj-74h6 (path traversal) and GHSA-v39h-62p7-jpjc (host
+  # confusion); patched in 3.1.2.
+  fast-uri: ^3.1.2

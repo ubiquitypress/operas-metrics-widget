@@ -779,7 +779,7 @@ Alternatively, the widget will still fully function even if you choose to not im
 ## Installation
 
 1. Run `pnpm install` to install dependencies (Corepack will pick up the version pinned in `package.json`'s `packageManager` field; run `corepack enable` once if you don't have pnpm yet).
-2. Run `pnpm dev` to start the local dev server (webpack-dev-server).
+2. Run `pnpm dev` to start the local dev server (Vite).
 
 ## Building
 
@@ -794,20 +794,35 @@ This produces:
 
 ## Releasing
 
-Releases are automated via GitHub Actions on version tags (`v*`).
+Releases are fully automated by [semantic-release](https://semantic-release.gitbook.io/) on every push to `main`. There is no manual `npm version`, no manual `git tag`, and no manual `npm publish` — conventional commit messages drive everything.
 
-1. Update the `version` in `package.json` (this is used at runtime for CDN asset paths).
-2. Run `npm run check` (and optionally `npm run build`) locally.
-3. Create and push a tag that matches the package version:
+### Developer workflow
 
-```bash
-git tag v1.3.17
-git push origin v1.3.17
-```
+1. Write commits using [Conventional Commits](https://www.conventionalcommits.org/) (commitlint enforces this via the lefthook `commit-msg` hook).
+2. Open a PR, get it merged to `main`.
+3. CI takes it from there.
 
-On tag push, CI will:
+### What CI does on push to `main`
 
-1. lint and typecheck
-2. build the embed and npm bundles
-3. publish the npm package (trusted publishing)
-4. upload `dist/` to GCS under both `v{major}/{version}` and `v{major}/latest`
+1. **`check` job** — lint (biome), typecheck (tsc), and dead-code check (knip).
+2. **`release` job** — only runs if `check` passes:
+    1. `pnpm build` produces both bundles.
+    2. `semantic-release` inspects commits since the last `v*` tag, decides the next version, bumps `package.json`, writes `CHANGELOG.md`, creates the GitHub release + tag, and pushes a `chore(release): X.Y.Z [skip ci]` commit back to `main`. (`[skip ci]` keeps that push from triggering another release run.)
+    3. If a new version was minted, `npm publish --access public --provenance` ships it to npm via [trusted publishing](https://docs.npmjs.com/trusted-publishers) (OIDC handshake — no `NPM_TOKEN` involved).
+    4. If a new version was minted, `dist/` is uploaded to GCS under both `v{major}/{version}` and `v{major}/latest`.
+
+### Commit-type → version bump
+
+Configured in [release.config.mjs](release.config.mjs):
+
+| Commit prefix                          | Bump       |
+| -------------------------------------- | ---------- |
+| `feat:`                                | minor      |
+| `fix:` or `perf:`                      | patch      |
+| any type with `BREAKING CHANGE:` footer or `!` after the type (e.g. `feat!:`) | major      |
+| `docs(...)`, `ci(...)`, `release(...)` scopes | no release |
+| `chore:`, `refactor:`, `test:`, `style:`, etc. | no release |
+
+If nothing release-worthy has landed since the last tag, `semantic-release` exits cleanly and CI is a no-op past the build step.
+
+The `version` field in `package.json` is read at runtime for default CDN asset paths, but semantic-release owns it — don't edit it by hand.

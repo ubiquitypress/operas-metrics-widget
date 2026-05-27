@@ -4,6 +4,7 @@ import type { EventsMap } from './widget/events';
 import type {
   Config,
   Graph,
+  GraphRowObject,
   Graphs,
   Scope,
   Tab,
@@ -38,4 +39,4 @@ export const MetricsWidget = ({
   </div>
 );
 
-export type { Config, Graph, Graphs, Scope, Tab, UserConfig };
+export type { Config, Graph, GraphRowObject, Graphs, Scope, Tab, UserConfig };

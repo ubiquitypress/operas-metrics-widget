@@ -1,3 +1,9 @@
+## [2.0.1](https://github.com/paradigm-publishing/operas-metrics-widget/compare/v2.0.0...v2.0.1) (2026-05-27)
+
+### Bug Fixes
+
+* widen GraphTab to allow mixing Graph and GraphRowObject entries ([22b3ccb](https://github.com/paradigm-publishing/operas-metrics-widget/commit/22b3ccb4ad57ef2fbfbdac6d9a536394e6d8f2fc))
+
 ## [2.0.0](https://github.com/ubiquitypress/operas-metrics-widget/compare/v1.4.0...v2.0.0) (2026-05-14)
 
 ### ⚠ BREAKING CHANGES

@@ -1,3 +1,9 @@
+## [2.0.2](https://github.com/paradigm-publishing/operas-metrics-widget/compare/v2.0.1...v2.0.2) (2026-05-27)
+
+### Bug Fixes
+
+* export GraphRowObject type from package entry point ([cb69a92](https://github.com/paradigm-publishing/operas-metrics-widget/commit/cb69a92d793447c18e1993e15f3f238c444aeb0c))
+
 ## [2.0.1](https://github.com/paradigm-publishing/operas-metrics-widget/compare/v2.0.0...v2.0.1) (2026-05-27)
 
 ### Bug Fixes

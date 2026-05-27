@@ -9,7 +9,7 @@ export interface GraphRowObject {
   class?: string;
   graphs: Graph[];
 }
-export type GraphTab = Graph[] | GraphRowObject[];
+export type GraphTab = (Graph | GraphRowObject)[];
 
 export type Graph =
   | TextGraph

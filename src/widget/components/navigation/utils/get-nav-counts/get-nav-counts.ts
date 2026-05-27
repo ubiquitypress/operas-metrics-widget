@@ -1,4 +1,4 @@
-import type { Config, Graph, GraphRowObject, NavCount } from '@/types';
+import type { Config, NavCount } from '@/types';
 import { HTTPRequest, loadCitationScope, log } from '@/utils';
 import { flattenGraphs } from '../flatten-graphs';
 import type { APIResponse } from './types';
@@ -23,9 +23,7 @@ export const getNavCounts = async (config: Config): Promise<NavCount[]> => {
     };
 
     const citationScopes = new Set<string>();
-    const graphs = (tab.graphs as (Graph | GraphRowObject)[]).flatMap(
-      flattenGraphs
-    );
+    const graphs = tab.graphs.flatMap(flattenGraphs);
     for (const graph of graphs) {
       if (graph.type === 'citations') {
         graph.scopes?.forEach(scope => {
